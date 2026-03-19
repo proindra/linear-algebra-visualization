@@ -82,9 +82,14 @@
             <ul class="list-disc pl-5 space-y-1 text-gray-300 text-sm mb-4">
                 <li>Z = {0} is orthogonal to all subspaces.</li>
                 <li>In ℝ³, a line can be orthogonal to a plane.</li>
-                <li>In ℝ³, a plane cannot be orthogonal to a plane.</li>
+                <li>In ℝ³, a plane cannot be orthogonal to a plane. <span style="color:#60A5FA; cursor:pointer; text-decoration:underline;" onclick="setMode(4)">→ See Tab 4</span></li>
             </ul>
             <span class="math-text text-sm block mt-2 text-center bg-gray-900 py-2 rounded">dim S + dim T ≤ dim V</span>
+            <ul class="list-disc pl-5 space-y-1 text-gray-300 mt-2">
+                <li>If <span class="badge-blue">S</span> and <span class="badge-red">T</span> are merely <strong>orthogonal</strong>, their dimensions can add up to <em>at most</em> n.</li>
+                <li>If <span class="badge-blue">S</span> and <span class="badge-red">T</span> are <strong>orthogonal complements</strong>, equality holds: dim S + dim T = n.</li>
+                <li>Here n=3. Two orthogonal lines each have dim=1, so 1+1=2 ≤ 3. ✓</li>
+            </ul>
         </div>
     </div>
 
@@ -102,6 +107,15 @@
             The space of <strong>all vectors orthogonal to V</strong> is the orthogonal complement, written <span class="badge-red math-text text-lg">V<sup>⊥</sup></span>.<br><br>
             If <span class="badge-blue">V</span> is a 1D line, then <span class="badge-red">V<sup>⊥</sup></span> is a full 2D plane. Every vector on the red plane is orthogonal to the blue line.
         </p>
+        <div class="text-left bg-gray-800 p-3 rounded-lg border border-gray-700 text-sm mt-4">
+            <p class="text-gray-300 mb-2">If <span class="badge-blue">S</span> and <span class="badge-red">T</span> are orthogonal complements in ℝ<sup>n</sup>, then:</p>
+            <span class="math-text block text-center bg-gray-900 py-2 rounded mb-2">dim S + dim T = n</span>
+            <ul class="list-disc pl-5 space-y-1 text-gray-300">
+                <li>This is always true — no exceptions.</li>
+                <li>Here n=3, dim V=1, so dim V<sup>⊥</sup>=2. The line and plane together fill all of ℝ³.</li>
+                <li>Every vector in ℝ³ can be uniquely split into a part in <span class="badge-blue">V</span> and a part in <span class="badge-red">V<sup>⊥</sup></span>.</li>
+            </ul>
+        </div>
     </div>
 
 
