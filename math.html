@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Orthogonal Visualization</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #111827; color: white; font-family: sans-serif; display: flex; flex-direction: row; height: 100vh; }
+        .ui-panel { width: 380px; min-width: 380px; background: #1F2937; padding: 24px; box-shadow: 5px 0 25px rgba(0,0,0,0.6); border-right: 1px solid #374151; overflow-y: auto; display: flex; flex-direction: column; z-index: 10; }
+        #canvas-container { flex-grow: 1; height: 100%; min-height: 0; position: relative; outline: none; }
+        canvas { display: block; outline: none; }
+        .btn-group { display: flex; flex-direction: column; gap: 4px; margin-bottom: 25px; background: rgba(0,0,0,0.2); padding: 6px; border-radius: 12px; border: 1px solid #374151; }
+        button { background: transparent; color: #9CA3AF; border: none; padding: 10px 14px; border-radius: 0; cursor: pointer; transition: all 0.2s ease; font-weight: 500; font-size: 14px; text-align: left; width: 100%; display: block; box-sizing: border-box; }
+        button:hover { background: rgba(59,130,246,0.15); color: #E5E7EB; }
+        button.active { background: #3B82F6; color: white; font-weight: 600; box-shadow: 0 4px 14px rgba(59,130,246,0.3); }
+        .math-text { font-family: monospace; color: #93C5FD; font-size: 1.1em; }
+        .badge-blue { color: #60A5FA; font-weight: bold; }
+        .badge-red { color: #F87171; font-weight: bold; }
+        .badge-purple { color: #C084FC; font-weight: bold; }
+        .badge-green { color: #4ADE80; font-weight: bold; }
+        .description-content { display: none; }
+        #desc-1 { display: block; }
+        @media (max-width: 800px) {
+            body { flex-direction: column-reverse; }
+            .ui-panel { width: 100%; min-width: 100%; height: 45vh; border-right: none; border-top: 1px solid #374151; }
+            #canvas-container { height: 55vh; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="ui-panel">
+    <div style="margin-bottom: 20px;">
+        <label style="font-size:13px; color:#9CA3AF; display:block; margin-bottom:6px;">Zoom <span id="zoom-val" style="color:#60A5FA; font-weight:600;">20%</span></label>
+        <input type="range" id="zoom-slider" min="5" max="20" value="8" step="0.5"
+            style="width:100%; accent-color:#3B82F6; cursor:pointer;"
+            oninput="setZoom(this.value)">
+    </div>
+    <div class="btn-group">
+        <button id="btn-1" onclick="setMode(1)">1. Orthogonal Vectors</button>
+        <button id="btn-2" onclick="setMode(2)">2. Subspace Types</button>
+        <button id="btn-3" onclick="setMode(3)">3. 1D Ortho Subspaces</button>
+        <button id="btn-4" onclick="setMode(4)">4. Intersecting Planes</button>
+        <button id="btn-5" onclick="setMode(5)">5. Orthogonal Complement</button>
+    </div>
+
+    <div id="desc-1" class="description-content">
+        <h3 class="text-xl font-bold mb-2">Orthogonal Vectors</h3>
+        <p class="text-gray-300 text-sm mb-2">
+            The inner product of <span class="badge-blue">x(2,1,0)</span> and <span class="badge-red">y(-1,2,0)</span> is zero.
+            <br><span class="math-text block mt-1">x<sup>T</sup>y = y<sup>T</sup>x = 0</span>
+        </p>
+        <div class="text-left bg-gray-800 p-3 rounded-lg border border-gray-700 text-sm mt-4">
+            <ul class="list-disc pl-5 space-y-2 text-gray-300">
+                <li>Zero is the <strong>only</strong> vector orthogonal to itself.</li>
+                <li>Zero is the <strong>only</strong> vector orthogonal to every other vector.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="desc-2" class="description-content">
+        <h3 class="text-xl font-bold mb-2">Types of Subspaces in ℝ³</h3>
+        <p class="text-gray-300 text-sm mb-2">A subspace must <strong>always contain the origin</strong>. In 3D space, there are exactly four types:</p>
+        <div class="text-left bg-gray-800 p-3 rounded-lg border border-gray-700 text-sm mt-4">
+            <ul class="list-disc pl-5 space-y-2 text-gray-300">
+                <li><strong>0D:</strong> The origin alone <span class="math-text">Z={0}</span>.</li>
+                <li><span class="badge-blue">1D:</span> Any line through the origin.</li>
+                <li><span class="badge-red">2D:</span> Any plane through the origin.</li>
+                <li><span class="badge-green">3D:</span> The entire ℝ³ space.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="desc-3" class="description-content">
+        <h3 class="text-xl font-bold mb-2">Orthogonal Subspaces</h3>
+        <p class="text-gray-300 text-sm mb-3">
+            Two subspaces <span class="badge-blue">S</span> and <span class="badge-red">T</span> are orthogonal if every x in S is orthogonal to every y in T.<br>
+            <span class="math-text block mt-2">x<sup>T</sup>y = 0 &nbsp; for all x ∈ S, y ∈ T</span>
+        </p>
+        <div class="text-left bg-gray-800 p-3 rounded-lg border border-gray-700 text-sm mt-4">
+            <ul class="list-disc pl-5 space-y-1 text-gray-300 text-sm mb-4">
+                <li>Z = {0} is orthogonal to all subspaces.</li>
+                <li>In ℝ³, a line can be orthogonal to a plane.</li>
+                <li>In ℝ³, a plane cannot be orthogonal to a plane.</li>
+            </ul>
+            <span class="math-text text-sm block mt-2 text-center bg-gray-900 py-2 rounded">dim S + dim T ≤ dim V</span>
+        </div>
+    </div>
+
+    <div id="desc-4" class="description-content">
+        <h3 class="text-xl font-bold mb-2">"A plane cannot be orthogonal to another plane"</h3>
+        <p class="text-gray-300 text-sm leading-relaxed">
+            In ℝ³, two 2D planes must intersect along a line. They share the <span class="badge-purple">Purple Vector v</span>.<br><br>
+            Since v is in both planes and <span class="math-text">v<sup>T</sup>v ≠ 0</span>, the planes cannot be orthogonal subspaces.
+        </p>
+    </div>
+
+    <div id="desc-5" class="description-content">
+        <h3 class="text-xl font-bold mb-2">Orthogonal Complement</h3>
+        <p class="text-gray-300 text-sm">
+            The space of <strong>all vectors orthogonal to V</strong> is the orthogonal complement, written <span class="badge-red math-text text-lg">V<sup>⊥</sup></span>.<br><br>
+            If <span class="badge-blue">V</span> is a 1D line, then <span class="badge-red">V<sup>⊥</sup></span> is a full 2D plane. Every vector on the red plane is orthogonal to the blue line.
+        </p>
+    </div>
+
+
+</div>
+
+<div id="canvas-container"></div>
+
+<script src="three.min.js"></script>
+<script src="OrbitControls.js"></script>
+<script>
+    var scene, camera, renderer, controls;
+    var vectorsGroup, typesGroup, subspacesGroup, complementGroup, planesGroup;
+    var u, v, w1, w2, origin;
+
+    function makeTextSprite(message, color) {
+        var c = document.createElement('canvas');
+        c.width = 512; c.height = 128;
+        var ctx = c.getContext('2d');
+        ctx.font = 'Bold 45px sans-serif';
+        ctx.fillStyle = color;
+        ctx.textAlign = 'center';
+        ctx.fillText(message, 256, 85);
+        var tex = new THREE.CanvasTexture(c);
+        var mat = new THREE.SpriteMaterial({ map: tex, depthTest: false, transparent: true });
+        var sprite = new THREE.Sprite(mat);
+        sprite.scale.set(3.0, 0.75, 1);
+        return sprite;
+    }
+
+    function createThickArrow(dir, org, length, color) {
+        var shaftLen = length - 0.5;
+        var mat = new THREE.MeshBasicMaterial({ color: color });
+        var shaftGeo = new THREE.CylinderGeometry(0.04, 0.04, shaftLen, 12);
+        shaftGeo.translate(0, shaftLen / 2, 0);
+        var shaft = new THREE.Mesh(shaftGeo, mat);
+        var headGeo = new THREE.ConeGeometry(0.15, 0.5, 12);
+        headGeo.translate(0, 0.25, 0);
+        var head = new THREE.Mesh(headGeo, mat);
+        head.position.y = shaftLen;
+        var arrow = new THREE.Group();
+        arrow.add(shaft); arrow.add(head);
+        arrow.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0), dir.clone().normalize());
+        arrow.position.copy(org);
+        return arrow;
+    }
+
+    function createThickLine(p1, p2, color) {
+        var len = p1.distanceTo(p2);
+        var geo = new THREE.CylinderGeometry(0.03, 0.03, len, 12);
+        geo.translate(0, len / 2, 0);
+        var mesh = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: color }));
+        var dir = new THREE.Vector3().subVectors(p2, p1).normalize();
+        mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0), dir);
+        mesh.position.copy(p1);
+        return mesh;
+    }
+
+    function createRightAngle(vec1, vec2) {
+        var size = 0.4;
+        var pts = [
+            origin.clone(),
+            vec1.clone().multiplyScalar(size),
+            vec1.clone().multiplyScalar(size).add(vec2.clone().multiplyScalar(size)),
+            vec2.clone().multiplyScalar(size),
+            origin.clone()
+        ];
+        var geo = new THREE.BufferGeometry().setFromPoints(pts);
+        return new THREE.Line(geo, new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.5 }));
+    }
+
+    function setMode(mode) {
+        for (var i = 1; i <= 5; i++) {
+            document.getElementById('btn-' + i).classList.remove('active');
+            document.getElementById('desc-' + i).style.display = 'none';
+        }
+        document.getElementById('btn-' + mode).classList.add('active');
+        document.getElementById('desc-' + mode).style.display = 'block';
+
+        vectorsGroup.visible    = (mode === 1);
+        typesGroup.visible      = (mode === 2);
+        subspacesGroup.visible  = (mode === 3);
+        planesGroup.visible     = (mode === 4);
+        complementGroup.visible = (mode === 5);
+
+        controls.autoRotateSpeed = (mode === 2 || mode === 4) ? 0.5 : 1.0;
+    }
+
+    function setZoom(val) {
+        var inverted = 25 - parseFloat(val);
+        camera.position.setLength(inverted);
+        var pct = Math.round(((parseFloat(val) - 5) / 15) * 100);
+        document.getElementById('zoom-val').textContent = pct + '%';
+    }
+
+    function init() {
+        var container = document.getElementById('canvas-container');
+        var W = window.innerWidth - 380;
+        var H = window.innerHeight;
+
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x111827);
+
+        camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 100);
+        camera.position.set(4, 4, 8);
+        camera.position.setLength(17);
+
+        renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(W, H);
+        container.appendChild(renderer.domElement);
+
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 1.0;
+
+        scene.add(new THREE.GridHelper(10, 20, 0x444444, 0x222222));
+        var axes = new THREE.AxesHelper(3);
+        axes.material.transparent = true;
+        axes.material.opacity = 0.3;
+        scene.add(axes);
+
+        u      = new THREE.Vector3(2, 1, 0).normalize();
+        v      = new THREE.Vector3(-1, 2, 0).normalize();
+        w1     = new THREE.Vector3(0, 0, 1);
+        w2     = new THREE.Vector3(-1, 2, 1).normalize();
+        origin = new THREE.Vector3(0, 0, 0);
+
+        // Groups
+        vectorsGroup    = new THREE.Group();
+        typesGroup      = new THREE.Group();
+        subspacesGroup  = new THREE.Group();
+        complementGroup = new THREE.Group();
+        planesGroup     = new THREE.Group();
+        // --- MODE 1: Orthogonal Vectors ---
+        var arrowU = createThickArrow(u, origin, 2.5, 0x3B82F6);
+        var arrowV = createThickArrow(v, origin, 2.5, 0xEF4444);
+        var sqPts = [origin, u.clone().multiplyScalar(0.4), u.clone().multiplyScalar(0.4).add(v.clone().multiplyScalar(0.4)), v.clone().multiplyScalar(0.4), origin];
+        var rightAngleLine = new THREE.Line(new THREE.BufferGeometry().setFromPoints(sqPts), new THREE.LineBasicMaterial({ color: 0xffffff }));
+        var lblU = makeTextSprite('x', '#60A5FA'); lblU.position.copy(u).multiplyScalar(2.9);
+        var lblV = makeTextSprite('y', '#F87171'); lblV.position.copy(v).multiplyScalar(2.9);
+        var lbl90 = makeTextSprite('90°', '#FFFFFF'); lbl90.position.copy(u).add(v).multiplyScalar(0.3); lbl90.scale.set(1.0, 0.45, 1);
+        vectorsGroup.add(arrowU, arrowV, rightAngleLine, lblU, lblV, lbl90);
+
+        // --- MODE 2: Subspace Types ---
+        var pt0D = new THREE.Mesh(new THREE.SphereGeometry(0.18, 16, 16), new THREE.MeshBasicMaterial({ color: 0xFFFFFF }));
+        var lbl0D = makeTextSprite('0D: Origin {0}', '#FFFFFF'); lbl0D.position.set(0, -0.6, 0);
+        var line1D = createThickLine(u.clone().multiplyScalar(-6), u.clone().multiplyScalar(6), 0x3B82F6);
+        var lbl1D = makeTextSprite('1D: Line', '#93C5FD'); lbl1D.position.copy(u).multiplyScalar(4.5).add(new THREE.Vector3(0, 0.8, 0));
+        var plane2D = new THREE.Mesh(new THREE.PlaneGeometry(8,8), new THREE.MeshBasicMaterial({ color: 0xEF4444, side: THREE.DoubleSide, transparent: true, opacity: 0.2 }));
+        plane2D.rotation.x = Math.PI / 2;
+        var p2D_Grid = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.PlaneGeometry(8,8,8,8)), new THREE.LineBasicMaterial({ color: 0xEF4444, transparent: true, opacity: 0.3 }));
+        p2D_Grid.rotation.x = Math.PI / 2;
+        var lbl2D = makeTextSprite('2D: Plane', '#FCA5A5'); lbl2D.position.set(3.5, 0, -3.5);
+        var box3D = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(11,11,11)), new THREE.LineBasicMaterial({ color: 0x4ADE80, transparent: true, opacity: 0.15 }));
+        var lbl3D = makeTextSprite('3D: Entire Space ℝ³', '#86EFAC'); lbl3D.position.set(-5.5, 5.5, 5.5);
+        typesGroup.add(pt0D, lbl0D, line1D, lbl1D, plane2D, p2D_Grid, lbl2D, box3D, lbl3D);
+
+        // --- MODE 3: 1D Ortho Subspaces ---
+        var lineS1 = createThickLine(u.clone().multiplyScalar(-5), u.clone().multiplyScalar(5), 0x3B82F6);
+        var lineS2 = createThickLine(v.clone().multiplyScalar(-5), v.clone().multiplyScalar(5), 0xEF4444);
+        var aX1 = createThickArrow(u, origin, 4.0, 0x60A5FA);
+        var aX2 = createThickArrow(u.clone().negate(), origin, 2.5, 0x1D4ED8);
+        var aY1 = createThickArrow(v, origin, 3.0, 0xF87171);
+        var aY2 = createThickArrow(v.clone().negate(), origin, 4.5, 0xB91C1C);
+        var lblX = makeTextSprite('x ∈ S', '#93C5FD'); lblX.position.copy(u).multiplyScalar(4.5);
+        var lblY = makeTextSprite('y ∈ T', '#FCA5A5'); lblY.position.copy(v).multiplyScalar(3.5);
+        var zeroSphere = new THREE.Mesh(new THREE.SphereGeometry(0.12, 16, 16), new THREE.MeshBasicMaterial({ color: 0xFFFFFF }));
+        var lblZ = makeTextSprite('Z={0}', '#FFFFFF'); lblZ.position.set(0, -0.6, 0);
+        subspacesGroup.add(lineS1, lineS2, aX1, aX2, aY1, aY2, lblX, lblY, zeroSphere, lblZ, rightAngleLine.clone());
+
+        // --- MODE 4: Intersecting Planes ---
+        var planeA = new THREE.Mesh(new THREE.PlaneGeometry(8,8), new THREE.MeshBasicMaterial({ color: 0x3B82F6, side: THREE.DoubleSide, transparent: true, opacity: 0.25 }));
+        planeA.rotation.x = Math.PI / 2;
+        var pA_Grid = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.PlaneGeometry(8,8,8,8)), new THREE.LineBasicMaterial({ color: 0x3B82F6, transparent: true, opacity: 0.3 }));
+        pA_Grid.rotation.x = Math.PI / 2;
+        var planeB = new THREE.Mesh(new THREE.PlaneGeometry(8,8), new THREE.MeshBasicMaterial({ color: 0xEF4444, side: THREE.DoubleSide, transparent: true, opacity: 0.25 }));
+        var pB_Grid = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.PlaneGeometry(8,8,8,8)), new THREE.LineBasicMaterial({ color: 0xEF4444, transparent: true, opacity: 0.3 }));
+        var intAxis = createThickLine(new THREE.Vector3(-4,0,0), new THREE.Vector3(4,0,0), 0xC084FC);
+        var sharedArrow = createThickArrow(new THREE.Vector3(1,0,0), origin, 3.5, 0xC084FC);
+        var lblShared = makeTextSprite('Shared vector v', '#D8B4FE'); lblShared.position.set(3.5, 0.6, 0);
+        var lblPA = makeTextSprite('Plane A', '#93C5FD'); lblPA.position.set(0, 0, -3.5);
+        var lblPB = makeTextSprite('Plane B', '#FCA5A5'); lblPB.position.set(0, 3.5, 0);
+        planesGroup.add(planeA, pA_Grid, planeB, pB_Grid, intAxis, sharedArrow, lblShared, lblPA, lblPB);
+
+        // --- MODE 5: Orthogonal Complement ---
+        var compPlane = new THREE.Mesh(new THREE.PlaneGeometry(8,8), new THREE.MeshBasicMaterial({ color: 0xEF4444, side: THREE.DoubleSide, transparent: true, opacity: 0.15 }));
+        var compGrid  = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.PlaneGeometry(8,8,8,8)), new THREE.LineBasicMaterial({ color: 0xEF4444, transparent: true, opacity: 0.3 }));
+        var quat = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0,0,1), u);
+        compPlane.setRotationFromQuaternion(quat);
+        compGrid.setRotationFromQuaternion(quat);
+        var aW1 = createThickArrow(w1, origin, 2.2, 0xF87171);
+        var aW2 = createThickArrow(w2, origin, 2.8, 0xF87171);
+        var aW3 = createThickArrow(v.clone(), origin, 2.0, 0xF87171);
+        var lblSV = makeTextSprite('Subspace V', '#60A5FA'); lblSV.position.copy(u).multiplyScalar(5.5);
+        var lblVP = makeTextSprite('V⊥ (V perp)', '#FCA5A5'); lblVP.position.set(3, -2, -3);
+        complementGroup.add(lineS1.clone(), compPlane, compGrid, arrowU.clone(), aW1, aW2, aW3, lblSV, lblVP);
+        complementGroup.add(createRightAngle(u, w1), createRightAngle(u, w2));
+
+        scene.add(vectorsGroup, typesGroup, subspacesGroup, complementGroup, planesGroup);
+
+        window.addEventListener('resize', function() {
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        });
+
+        setMode(1);
+    }
+
+    function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        renderer.render(scene, camera);
+    }
+
+    init();
+    animate();
+</script>
+</body>
+</html>
