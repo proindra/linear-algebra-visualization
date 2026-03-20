@@ -310,8 +310,6 @@
 
     function buildSubspacesSVG() {
         var overlay = document.getElementById('subspace-overlay');
-        var W = overlay.clientWidth || 600;
-        var H = overlay.clientHeight || 500;
         var hov = null;
 
         function getOpacity(region) {
@@ -322,31 +320,21 @@
         }
 
         function poly(ox, oy, u1x, u1y, u2x, u2y) {
-            var p1x=ox, p1y=oy;
-            var p2x=ox+u1x, p2y=oy+u1y;
-            var p3x=ox+u1x+u2x, p3y=oy+u1y+u2y;
-            var p4x=ox+u2x, p4y=oy+u2y;
-            return p1x+','+p1y+' '+p2x+','+p2y+' '+p3x+','+p3y+' '+p4x+','+p4y;
+            return (ox)+','+(oy)+' '+(ox+u1x)+','+(oy+u1y)+' '+(ox+u1x+u2x)+','+(oy+u1y+u2y)+' '+(ox+u2x)+','+(oy+u2y);
         }
 
-        // Scale based on container size
-        var sc = Math.min(W/1000, H/550);
-        var tx = (W - 1000*sc)/2;
-        var ty = (H - 550*sc)/2;
-
         function render() {
-            var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="'+W+'" height="'+H+'" style="background:#000;">'
+            var OLx=250,OLy=275, ORx=750,ORy=275;
+            var rowOp=getOpacity('row'), nullOp=getOpacity('null'), leftOp=getOpacity('leftnull');
+            var xrx=182,xry=167, xnx=182,xny=383, xvx=114,xvy=275, bx=708,by=173;
+
+            var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 550" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;background:#000;display:block;">'
             + '<defs>'
             + '<marker id="arr-s" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#525252"/></marker>'
             + '<marker id="arr-b" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#3b82f6"/></marker>'
             + '<marker id="arr-e" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#10b981"/></marker>'
             + '<marker id="arr-v" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#8b5cf6"/></marker>'
-            + '</defs>'
-            + '<g transform="translate('+tx+','+ty+') scale('+sc+')">';
-
-            var OLx=250,OLy=275, ORx=750,ORy=275;
-            var rowOp=getOpacity('row'), nullOp=getOpacity('null'), leftOp=getOpacity('leftnull');
-            var xrx=182,xry=167, xnx=182,xny=383, xvx=114,xvy=275, bx=708,by=173;
+            + '</defs>';
 
             // Row space (blue)
             svg += '<g style="opacity:'+rowOp+'">'
@@ -362,8 +350,7 @@
                 + '<text x="120" y="440" font-size="12" fill="#9ca3af">dim n&#x2212;r</text>'
                 + '</g>';
 
-            // Rn label
-            svg += '<text x="185" y="280" font-size="18" font-weight="bold" fill="#9ca3af">R<tspan baseline-shift="super" font-size="12">n</tspan></text>';
+            svg += '<text x="185" y="280" font-size="18" font-weight="bold" fill="#9ca3af">R<tspan dy="-6" font-size="12">n</tspan></text>';
 
             // Column space (red)
             svg += '<g style="opacity:'+rowOp+'">'
@@ -379,8 +366,7 @@
                 + '<text x="830" y="440" font-size="12" fill="#9ca3af">dim m&#x2212;r</text>'
                 + '</g>';
 
-            // Rm label
-            svg += '<text x="770" y="280" font-size="18" font-weight="bold" fill="#9ca3af">R<tspan baseline-shift="super" font-size="12">m</tspan></text>';
+            svg += '<text x="770" y="280" font-size="18" font-weight="bold" fill="#9ca3af">R<tspan dy="-6" font-size="12">m</tspan></text>';
 
             // Vectors in Rn
             svg += '<line x1="'+OLx+'" y1="'+OLy+'" x2="'+xrx+'" y2="'+xry+'" stroke="#525252" stroke-width="2"/>'
@@ -389,60 +375,57 @@
                 + '<line x1="'+xnx+'" y1="'+xny+'" x2="'+xvx+'" y2="'+xvy+'" stroke="#525252" stroke-width="2" stroke-dasharray="6,6"/>'
                 + '<circle cx="'+OLx+'" cy="'+OLy+'" r="4" fill="#737373"/>'
                 + '<circle cx="'+xrx+'" cy="'+xry+'" r="5" fill="#3b82f6"/>'
-                + '<text x="'+(xrx-10)+'" y="'+(xry-10)+'" font-size="16" font-style="italic" fill="#e5e7eb">x<tspan baseline-shift="sub" font-size="11">r</tspan></text>'
+                + '<text x="'+(xrx-10)+'" y="'+(xry-10)+'" font-size="16" font-style="italic" fill="#e5e7eb">x<tspan dy="4" font-size="11">r</tspan></text>'
                 + '<circle cx="'+xnx+'" cy="'+xny+'" r="5" fill="#10b981"/>'
-                + '<text x="'+(xnx-20)+'" y="'+(xny+5)+'" font-size="16" font-style="italic" fill="#e5e7eb">x<tspan baseline-shift="sub" font-size="11">n</tspan></text>'
+                + '<text x="'+(xnx-20)+'" y="'+(xny+5)+'" font-size="16" font-style="italic" fill="#e5e7eb">x<tspan dy="4" font-size="11">n</tspan></text>'
                 + '<circle cx="'+xvx+'" cy="'+xvy+'" r="5" fill="#8b5cf6"/>'
-                + '<text x="'+(xvx-5)+'" y="'+(xvy+25)+'" font-size="14" font-style="italic" fill="#c4b5fd">x = x<tspan baseline-shift="sub" font-size="10">r</tspan> + x<tspan baseline-shift="sub" font-size="10">n</tspan></text>';
+                + '<text x="'+(xvx-5)+'" y="'+(xvy+25)+'" font-size="13" font-style="italic" fill="#c4b5fd">x = x<tspan dy="3" font-size="10">r</tspan><tspan dy="-3"> + x</tspan><tspan dy="3" font-size="10">n</tspan></text>';
 
             // Arrows
-            var rowArrowColor = hov==='row' ? '#3b82f6' : '#525252';
-            var rowArrowW = hov==='row' ? 3 : 2;
-            var rowArrowMark = hov==='row' ? 'url(#arr-b)' : 'url(#arr-s)';
             svg += '<g style="opacity:'+(hov==='row'||!hov?1:0.2)+'">'
-                + '<path d="M'+xrx+' '+xry+' Q445 120 '+(bx-8)+' '+by+'" fill="none" stroke="'+rowArrowColor+'" stroke-width="'+rowArrowW+'" marker-end="'+rowArrowMark+'"/>'
-                + '<text x="445" y="108" text-anchor="middle" font-size="15" fill="#d1d5db">Ax<tspan baseline-shift="sub" font-size="10">r</tspan> = b</text>'
+                + '<path d="M'+xrx+' '+xry+' Q445 120 '+(bx-8)+' '+by+'" fill="none" stroke="'+(hov==='row'?'#3b82f6':'#525252')+'" stroke-width="'+(hov==='row'?3:2)+'" marker-end="'+(hov==='row'?'url(#arr-b)':'url(#arr-s)')+'" />'
+                + '<text x="445" y="108" text-anchor="middle" font-size="15" fill="#d1d5db">Ax<tspan dy="4" font-size="10">r</tspan><tspan dy="-4"> = b</tspan></text>'
                 + '</g>';
 
-            var fullOp = hov==='full'||!hov ? 1 : 0.2;
-            var fullColor = hov==='full' ? '#8b5cf6' : '#525252';
-            svg += '<g style="opacity:'+fullOp+'">'
-                + '<path d="M'+xvx+' '+xvy+' Q411 200 '+(bx-8)+' '+(by+5)+'" fill="none" stroke="'+fullColor+'" stroke-width="'+(hov==='full'?3:2)+'" marker-end="'+(hov==='full'?'url(#arr-v)':'url(#arr-s)')+'" />'
+            svg += '<g style="opacity:'+(hov==='full'||!hov?1:0.2)+'">'
+                + '<path d="M'+xvx+' '+xvy+' Q411 200 '+(bx-8)+' '+(by+5)+'" fill="none" stroke="'+(hov==='full'?'#8b5cf6':'#525252')+'" stroke-width="'+(hov==='full'?3:2)+'" marker-end="'+(hov==='full'?'url(#arr-v)':'url(#arr-s)')+'" />'
                 + '<text x="480" y="233" text-anchor="middle" font-size="15" fill="#c4b5fd">Ax = b</text>'
                 + '</g>';
 
-            var nullColor = hov==='null' ? '#10b981' : '#525252';
             svg += '<g style="opacity:'+(hov==='null'||!hov?1:0.2)+'">'
-                + '<path d="M'+xnx+' '+xny+' Q466 380 '+(ORx-8)+' '+(ORy+5)+'" fill="none" stroke="'+nullColor+'" stroke-width="'+(hov==='null'?3:2)+'" marker-end="'+(hov==='null'?'url(#arr-e)':'url(#arr-s)')+'" />'
-                + '<text x="445" y="368" text-anchor="middle" font-size="15" fill="#d1d5db">Ax<tspan baseline-shift="sub" font-size="10">n</tspan> = 0</text>'
+                + '<path d="M'+xnx+' '+xny+' Q466 380 '+(ORx-8)+' '+(ORy+5)+'" fill="none" stroke="'+(hov==='null'?'#10b981':'#525252')+'" stroke-width="'+(hov==='null'?3:2)+'" marker-end="'+(hov==='null'?'url(#arr-e)':'url(#arr-s)')+'" />'
+                + '<text x="445" y="368" text-anchor="middle" font-size="15" fill="#d1d5db">Ax<tspan dy="4" font-size="10">n</tspan><tspan dy="-4"> = 0</tspan></text>'
                 + '</g>';
 
             // Vectors in Rm
             svg += '<circle cx="'+ORx+'" cy="'+ORy+'" r="5" fill="#737373"/>'
                 + '<text x="'+(ORx+10)+'" y="'+(ORy+15)+'" font-size="16" fill="#d1d5db">0</text>'
-                + '<circle cx="'+bx+'" cy="'+by+'" r="5" fill="#f43f5e" style="opacity:'+(hov==='row'||hov==='full'||!hov?1:0.3)+'"/>'
-                + '<text x="'+(bx+10)+'" y="'+(by-10)+'" font-size="16" font-style="italic" fill="#fda4af" style="opacity:'+(hov==='row'||hov==='full'||!hov?1:0.3)+'">b</text>';
+                + '<circle cx="'+bx+'" cy="'+by+'" r="5" fill="#f43f5e" opacity="'+(hov==='row'||hov==='full'||!hov?1:0.3)+'"/>'
+                + '<text x="'+(bx+10)+'" y="'+(by-10)+'" font-size="16" font-style="italic" fill="#fda4af" opacity="'+(hov==='row'||hov==='full'||!hov?1:0.3)+'">b</text>';
 
-            // Hover regions (invisible hit areas)
-            svg += '<rect id="hit-row" x="130" y="155" width="240" height="120" fill="transparent" style="cursor:pointer"/>'
-                + '<rect id="hit-null" x="130" y="275" width="240" height="120" fill="transparent" style="cursor:pointer"/>'
-                + '<rect id="hit-leftnull" x="630" y="275" width="240" height="120" fill="transparent" style="cursor:pointer"/>'
-                + '<rect id="hit-full" x="60" y="240" width="120" height="70" fill="transparent" style="cursor:pointer"/>';
+            // Hit areas — same coordinate space as viewBox, cursor works perfectly
+            svg += '<polygon id="hit-row" points="'+poly(OLx,OLy,-120,-120,140,-60)+'" fill="transparent" style="cursor:pointer"/>'
+                + '<polygon id="hit-null" points="'+poly(OLx,OLy,-120,120,140,60)+'" fill="transparent" style="cursor:pointer"/>'
+                + '<polygon id="hit-col" points="'+poly(ORx,ORy,-120,-120,140,-60)+'" fill="transparent" style="cursor:pointer"/>'
+                + '<polygon id="hit-leftnull" points="'+poly(ORx,ORy,-120,120,140,60)+'" fill="transparent" style="cursor:pointer"/>'
+                + '<circle id="hit-full" cx="'+xvx+'" cy="'+xvy+'" r="30" fill="transparent" style="cursor:pointer"/>';
 
-            svg += '</g></svg>';
+            svg += '</svg>';
             overlay.innerHTML = svg;
 
-            // Attach hover events
-            function attachHover(id, region) {
+            function attach(id, region) {
                 var el = overlay.querySelector('#'+id);
                 if (!el) return;
                 el.addEventListener('mouseenter', function() { hov = region; render(); });
                 el.addEventListener('mouseleave', function() { hov = null; render(); });
+                el.addEventListener('touchstart', function(e) { e.preventDefault(); hov = region; render(); }, {passive:false});
+                el.addEventListener('touchend', function() { hov = null; render(); });
             }
-            attachHover('hit-row', 'row');
-            attachHover('hit-null', 'null');
-            attachHover('hit-leftnull', 'leftnull');
-            attachHover('hit-full', 'full');
+            attach('hit-row', 'row');
+            attach('hit-null', 'null');
+            attach('hit-col', 'row');
+            attach('hit-leftnull', 'leftnull');
+            attach('hit-full', 'full');
         }
 
         render();
