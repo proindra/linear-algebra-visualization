@@ -361,21 +361,21 @@
         // Row space
         +'<g id="g-row"><polygon points="'+poly(OLx,OLy,-120,-120,140,-60)+'" fill="rgba(30,58,138,0.45)" stroke="#3b82f6" stroke-width="2" stroke-linejoin="round"/>'
         +'<text x="250" y="130" text-anchor="middle" font-size="14" fill="#93c5fd">row space of A</text>'
-        +'<text x="140" y="100" font-size="12" fill="#9ca3af">dim r</text></g>'
+        +'<text x="140" y="100" font-size="12" fill="#e5e7eb">dim r</text></g>'
         // Nullspace
         +'<g id="g-null"><polygon points="'+poly(OLx,OLy,-120,120,140,60)+'" fill="rgba(6,78,59,0.45)" stroke="#10b981" stroke-width="2" stroke-linejoin="round"/>'
         +'<text x="250" y="420" text-anchor="middle" font-size="14" fill="#6ee7b7">nullspace</text>'
-        +'<text x="120" y="440" font-size="12" fill="#9ca3af">dim n&#x2212;r</text></g>'
-        +'<text x="185" y="280" font-size="18" font-weight="bold" fill="#9ca3af">R<tspan dy="-6" font-size="12">n</tspan></text>'
+        +'<text x="120" y="440" font-size="12" fill="#e5e7eb">dim n&#x2212;r</text></g>'
+        +'<text x="185" y="280" font-size="18" font-weight="bold" fill="#e5e7eb">R<tspan dy="-6" font-size="12">n</tspan></text>'
         // Column space
         +'<g id="g-col"><polygon points="'+poly(ORx,ORy,-120,-120,140,-60)+'" fill="rgba(127,29,29,0.45)" stroke="#ef4444" stroke-width="2" stroke-linejoin="round"/>'
         +'<text x="750" y="130" text-anchor="middle" font-size="14" fill="#fca5a5">column space of A</text>'
-        +'<text x="860" y="100" font-size="12" fill="#9ca3af">dim r</text></g>'
+        +'<text x="860" y="100" font-size="12" fill="#e5e7eb">dim r</text></g>'
         // Left nullspace
         +'<g id="g-leftnull"><polygon points="'+poly(ORx,ORy,-120,120,140,60)+'" fill="rgba(120,53,15,0.45)" stroke="#f59e0b" stroke-width="2" stroke-linejoin="round"/>'
         +'<text x="750" y="420" text-anchor="middle" font-size="14" fill="#fcd34d">left nullspace</text>'
-        +'<text x="830" y="440" font-size="12" fill="#9ca3af">dim m&#x2212;r</text></g>'
-        +'<text x="770" y="280" font-size="18" font-weight="bold" fill="#9ca3af">R<tspan dy="-6" font-size="12">m</tspan></text>'
+        +'<text x="830" y="440" font-size="12" fill="#e5e7eb">dim m&#x2212;r</text></g>'
+        +'<text x="770" y="280" font-size="18" font-weight="bold" fill="#e5e7eb">R<tspan dy="-6" font-size="12">m</tspan></text>'
         // Vectors Rn
         +'<line x1="'+OLx+'" y1="'+OLy+'" x2="'+xrx+'" y2="'+xry+'" stroke="#525252" stroke-width="2"/>'
         +'<line x1="'+OLx+'" y1="'+OLy+'" x2="'+xnx+'" y2="'+xny+'" stroke="#525252" stroke-width="2"/>'
@@ -390,15 +390,15 @@
         +'<text x="'+(xvx-5)+'" y="'+(xvy+26)+'" font-size="13" font-style="italic" fill="#c4b5fd">x=x<tspan dy="3" font-size="10">r</tspan><tspan dy="-3">+x</tspan><tspan dy="3" font-size="10">n</tspan></text>'
         // Arrows
         +'<g id="g-arr-row"><path d="M'+xrx+' '+xry+' Q445 120 '+(bx-8)+' '+by+'" fill="none" stroke="#3b82f6" stroke-width="2" marker-end="url(#arr-b)"/>'
-        +'<text x="445" y="108" text-anchor="middle" font-size="14" fill="#d1d5db">Ax<tspan dy="4" font-size="10">r</tspan><tspan dy="-4">=b</tspan></text></g>'
+        +'<text x="445" y="108" text-anchor="middle" font-size="14" fill="#f9fafb">Ax<tspan dy="4" font-size="10">r</tspan><tspan dy="-4">=b</tspan></text></g>'
         +'<g id="g-arr-full"><path d="M'+xvx+' '+xvy+' Q411 200 '+(bx-8)+' '+(by+5)+'" fill="none" stroke="#8b5cf6" stroke-width="2" marker-end="url(#arr-v)"/>'
         +'<path id="hit-full-line" d="M'+xvx+' '+xvy+' Q411 200 '+(bx-8)+' '+(by+5)+'" fill="none" stroke="transparent" stroke-width="20" style="cursor:pointer"/>'
         +'<text x="480" y="233" text-anchor="middle" font-size="14" fill="#c4b5fd">Ax=b</text></g>'
         +'<g id="g-arr-null"><path d="M'+xnx+' '+xny+' Q466 380 '+(ORx-8)+' '+(ORy+5)+'" fill="none" stroke="#10b981" stroke-width="2" marker-end="url(#arr-e)"/>'
-        +'<text x="445" y="368" text-anchor="middle" font-size="14" fill="#d1d5db">Ax<tspan dy="4" font-size="10">n</tspan><tspan dy="-4">=0</tspan></text></g>'
+        +'<text x="445" y="368" text-anchor="middle" font-size="14" fill="#f9fafb">Ax<tspan dy="4" font-size="10">n</tspan><tspan dy="-4">=0</tspan></text></g>'
         // Rm vectors
         +'<circle cx="'+ORx+'" cy="'+ORy+'" r="5" fill="#737373"/>'
-        +'<text x="'+(ORx+10)+'" y="'+(ORy+15)+'" font-size="16" fill="#d1d5db">0</text>'
+        +'<text x="'+(ORx+10)+'" y="'+(ORy+15)+'" font-size="16" fill="#f9fafb">0</text>'
         +'<g id="g-b"><circle cx="'+bx+'" cy="'+by+'" r="5" fill="#f43f5e"/>'
         +'<text x="'+(bx+10)+'" y="'+(by-10)+'" font-size="16" font-style="italic" fill="#fda4af">b</text></g>'
         // Hit areas
