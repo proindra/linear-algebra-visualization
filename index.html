@@ -136,6 +136,7 @@
             <p><span style="color:#FBBF24;font-weight:bold;">&#9632; b</span> — original vector</p>
             <p><span class="badge-blue">&#9632; p</span> — projection (shadow on subspace)</p>
             <p><span class="badge-red">&#9632; e = b − p</span> — error (perpendicular)</p>
+            <div class="desc-math-center" style="margin-top:6px;"><span class="math-text">x&#x0302; = a<sup>T</sup>b / a<sup>T</sup>a &nbsp;&nbsp; p = x&#x0302;a</span></div>
         </div>
     </div>
 
@@ -360,50 +361,79 @@
         function buildProjection(mode) {
             while (projectionGroup.children.length) projectionGroup.remove(projectionGroup.children[0]);
 
-            var b = new THREE.Vector3(1.5, 2.5, 1.0);
-            var orig = new THREE.Vector3(0,0,0);
-
             if (mode === 'line') {
-                // project b onto line along a=(1,1,0)
-                var a = new THREE.Vector3(1,1,0).normalize();
-                var p = a.clone().multiplyScalar(b.dot(a));
+                // Match textbook figure: a along x-axis direction, b up and to the left
+                // All in XY plane for clean 2D-style look
+                var a = new THREE.Vector3(1, 0.3, 0).normalize();  // line a — shallow angle
+                var b = new THREE.Vector3(0.6, 2.8, 0);            // b — tall, slightly right
+                var orig = new THREE.Vector3(0, 0, 0);
+
+                // scalar projection: x̂ = aᵀb / aᵀa
+                var xhat = b.dot(a);
+                var p = a.clone().multiplyScalar(xhat);
                 var e = new THREE.Vector3().subVectors(b, p);
-
-                // subspace line
-                projectionGroup.add(createThickLine(a.clone().multiplyScalar(-4), a.clone().multiplyScalar(4), 0x3B82F6));
-                var lblLine = makeTextSprite('Line a', '#60A5FA'); lblLine.position.copy(a).multiplyScalar(4.5); projectionGroup.add(lblLine);
-
-                // b vector (yellow)
-                projectionGroup.add(createThickArrow(b.clone().normalize(), orig, b.length() + 0.5, 0xFBBF24));
-                var lblB = makeTextSprite('b', '#FBBF24'); lblB.position.copy(b).add(new THREE.Vector3(0,0.4,0)); projectionGroup.add(lblB);
-
-                // projection p (blue)
-                projectionGroup.add(createThickArrow(p.clone().normalize(), orig, p.length() + 0.5, 0x3B82F6));
-                var lblP = makeTextSprite('p', '#60A5FA'); lblP.position.copy(p).add(new THREE.Vector3(0,-0.5,0)); projectionGroup.add(lblP);
-
-                // error e dashed (red) from p to b
                 var eN = e.clone().normalize();
                 var aN = a.clone().normalize();
+
+                // extended line a (both directions from origin)
+                projectionGroup.add(createThickLine(a.clone().multiplyScalar(-1), a.clone().multiplyScalar(5.5), 0x9CA3AF));
+
+                // arrow a (gray-white, from origin outward)
+                projectionGroup.add(createThickArrow(aN, orig, 5.0, 0xE5E7EB));
+                var lblA = makeTextSprite('a', '#E5E7EB'); lblA.position.copy(a).multiplyScalar(5.5).add(new THREE.Vector3(0, 0.4, 0)); projectionGroup.add(lblA);
+
+                // b vector (yellow)
+                projectionGroup.add(createThickArrow(b.clone().normalize(), orig, b.length(), 0xFBBF24));
+                var lblB = makeTextSprite('b', '#FBBF24'); lblB.position.copy(b).add(new THREE.Vector3(-0.3, 0.4, 0)); projectionGroup.add(lblB);
+
+                // projection p (blue arrow from origin to foot)
+                projectionGroup.add(createThickArrow(aN, orig, p.length(), 0x3B82F6));
+                var lblP = makeTextSprite('p = x\u0302a', '#60A5FA'); lblP.position.copy(p).add(new THREE.Vector3(0.2, -0.6, 0)); projectionGroup.add(lblP);
+
+                // dashed error e from p to b (red)
                 var dash = createDashedLine(p, b, 0xEF4444);
                 dash.computeLineDistances();
                 projectionGroup.add(dash);
-                var lblE = makeTextSprite('e', '#F87171');
-                lblE.position.copy(p).add(e.clone().multiplyScalar(0.5)).add(new THREE.Vector3(0.4, 0, 0));
-                projectionGroup.add(lblE);
-                var sqSize = 0.25;
+                var lblE = makeTextSprite('e = b\u2212p', '#F87171'); lblE.position.copy(p).add(e.clone().multiplyScalar(0.55)).add(new THREE.Vector3(0.5, 0, 0)); projectionGroup.add(lblE);
+
+                // right-angle square at p
+                var sqSize = 0.28;
                 var sq = [
                     p.clone(),
-                    p.clone().add(aN.clone().multiplyScalar(sqSize)),
-                    p.clone().add(aN.clone().multiplyScalar(sqSize)).add(eN.clone().multiplyScalar(sqSize)),
                     p.clone().add(eN.clone().multiplyScalar(sqSize)),
+                    p.clone().add(eN.clone().multiplyScalar(sqSize)).add(aN.clone().multiplyScalar(-sqSize)),
+                    p.clone().add(aN.clone().multiplyScalar(-sqSize)),
                     p.clone()
                 ];
-                projectionGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(sq), new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.6 })));
+                projectionGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(sq), new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.7 })));
+
+                // dot at foot p
+                var dot = new THREE.Mesh(new THREE.SphereGeometry(0.12, 16, 16), new THREE.MeshBasicMaterial({ color: 0x3B82F6 }));
+                dot.position.copy(p); projectionGroup.add(dot);
+
+                // angle arc θ at origin between a and b
+                var arcPts = [];
+                var bN = b.clone().normalize();
+                var angleAB = Math.acos(Math.min(1, aN.dot(bN)));
+                for (var i = 0; i <= 16; i++) {
+                    var t = (i / 16) * angleAB;
+                    var ax = Math.cos(t) * aN.x - Math.sin(t) * aN.y;
+                    var ay = Math.sin(t) * aN.x + Math.cos(t) * aN.y;
+                    arcPts.push(new THREE.Vector3(ax * 0.7, ay * 0.7, 0));
+                }
+                var arcGeo = new THREE.BufferGeometry().setFromPoints(arcPts);
+                projectionGroup.add(new THREE.Line(arcGeo, new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.6 })));
+                var lblTheta = makeTextSprite('\u03B8', '#FFFFFF'); lblTheta.scale.set(1.2, 0.6, 1);
+                var midAngle = angleAB / 2;
+                lblTheta.position.set(Math.cos(midAngle) * 1.1, Math.sin(midAngle) * 1.1, 0);
+                projectionGroup.add(lblTheta);
 
                 document.getElementById('proj-formula') && (document.getElementById('proj-formula').innerHTML = '');
 
             } else {
                 // project b onto XZ plane (y=0), normal = (0,1,0)
+                var b = new THREE.Vector3(1.5, 2.5, 1.0);
+                var orig = new THREE.Vector3(0,0,0);
                 var normal = new THREE.Vector3(0,1,0);
                 var p = b.clone().sub(normal.clone().multiplyScalar(b.dot(normal)));
                 var e = new THREE.Vector3().subVectors(b, p);
