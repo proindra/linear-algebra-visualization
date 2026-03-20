@@ -238,8 +238,8 @@
         <h3>Projection</h3>
         <p class="text-gray-300">Closest point in a subspace to <span style="color:#FBBF24;font-weight:bold;">b</span>.</p>
         <div style="display:flex;gap:6px;margin:6px 0;">
-            <button onclick="setProjMode('line')" id="proj-line" style="flex:1;padding:7px 5px;font-size:11px;border-radius:7px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:#9CA3AF;cursor:pointer;transition:all 0.18s;font-weight:500;">Onto Line</button>
-            <button onclick="setProjMode('plane')" id="proj-plane" style="flex:1;padding:7px 5px;font-size:11px;border-radius:7px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:#9CA3AF;cursor:pointer;transition:all 0.18s;font-weight:500;">Onto Plane</button>
+            <button onclick="setProjMode('line')" id="proj-line">Onto Line</button>
+            <button onclick="setProjMode('plane')" id="proj-plane">Onto Plane</button>
         </div>
         <div class="desc-box text-gray-300">
             <p><span style="color:#FBBF24;font-weight:bold;">&#9632; b</span> — original vector</p>
@@ -358,7 +358,7 @@
 
         if (mode === 7) {
             canvas.style.display = 'none';
-            overlay.style.display = 'block';
+            overlay.style.display = 'flex';
             buildSubspacesSVG();
         } else {
             canvas.style.display = 'block';
@@ -388,8 +388,6 @@
         var overlay = document.getElementById('subspace-overlay');
         var card = document.getElementById('subspace-card');
         var wrap = document.getElementById('subspace-svg-wrap');
-
-        overlay.style.display = 'flex';
 
         // Only build once
         if (_subspaceBuilt) return;
@@ -424,7 +422,6 @@
 
         wrap.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 550" preserveAspectRatio="xMidYMid meet" style="width:100%;display:block;">'
         +'<defs>'
-        +'<marker id="arr-s" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#525252"/></marker>'
         +'<marker id="arr-b" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#3b82f6"/></marker>'
         +'<marker id="arr-e" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#10b981"/></marker>'
         +'<marker id="arr-v" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#8b5cf6"/></marker>'
@@ -689,9 +686,7 @@
                 var dot = new THREE.Mesh(new THREE.SphereGeometry(0.12, 16, 16), new THREE.MeshBasicMaterial({ color: 0x3B82F6 }));
                 dot.position.copy(p); projectionGroup.add(dot);
 
-
-
-                document.getElementById('proj-formula') && (document.getElementById('proj-formula').innerHTML = '');
+                document.getElementById('proj-line').classList.add('active');
 
             } else {
                 // project b onto XZ plane (y=0), normal = (0,1,0)
@@ -740,7 +735,7 @@
                 var dot = new THREE.Mesh(new THREE.SphereGeometry(0.1,16,16), new THREE.MeshBasicMaterial({ color: 0x3B82F6 }));
                 dot.position.copy(p); projectionGroup.add(dot);
 
-                document.getElementById('proj-formula') && (document.getElementById('proj-formula').innerHTML = '');
+                document.getElementById('proj-plane').classList.add('active');
             }
 
             // origin dot
@@ -754,7 +749,6 @@
         };
 
         buildProjection('line');
-        document.getElementById('proj-line').classList.add('active');
 
         scene.add(vectorsGroup, typesGroup, subspacesGroup, complementGroup, planesGroup, projectionGroup);
 
