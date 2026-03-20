@@ -43,6 +43,7 @@
         <button id="btn-3" onclick="setMode(3)">3. 1D Ortho Subspaces</button>
         <button id="btn-4" onclick="setMode(4)">4. Intersecting Planes</button>
         <button id="btn-5" onclick="setMode(5)">5. Orthogonal Complement</button>
+        <button id="btn-6" onclick="setMode(6)">6. Projection</button>
     </div>
 
     <div id="desc-1" class="description-content">
@@ -119,6 +120,21 @@
     </div>
 
 
+    <div id="desc-6" class="description-content">
+        <h3 class="text-xl font-bold mb-2">Projection</h3>
+        <p class="text-gray-300 text-sm mb-3">The projection of <span class="badge-yellow" style="color:#FBBF24;font-weight:bold;">b</span> onto a subspace is the closest point in that subspace to <span class="badge-yellow" style="color:#FBBF24;font-weight:bold;">b</span>.</p>
+        <div style="display:flex;gap:6px;margin-bottom:12px;">
+            <button onclick="setProjMode('line')" id="proj-line" style="flex:1;padding:6px;font-size:12px;">Onto Line</button>
+            <button onclick="setProjMode('plane')" id="proj-plane" style="flex:1;padding:6px;font-size:12px;">Onto Plane</button>
+        </div>
+        <div class="bg-gray-800 p-3 rounded-lg border border-gray-700 text-sm space-y-2">
+            <p><span style="color:#FBBF24;font-weight:bold;">&#9632; b</span> — original vector</p>
+            <p><span class="badge-blue">&#9632; p</span> — projection (shadow on subspace)</p>
+            <p><span class="badge-red">&#9632; e = b − p</span> — error vector (perpendicular)</p>
+        </div>
+        <div id="proj-formula" class="bg-gray-900 p-3 rounded-lg border border-gray-700 text-xs mt-3 text-gray-300"></div>
+    </div>
+
 </div>
 
 <div id="canvas-container"></div>
@@ -127,7 +143,7 @@
 <script src="OrbitControls.js"></script>
 <script>
     var scene, camera, renderer, controls;
-    var vectorsGroup, typesGroup, subspacesGroup, complementGroup, planesGroup;
+    var vectorsGroup, typesGroup, subspacesGroup, complementGroup, planesGroup, projectionGroup;
     var u, v, w1, w2, origin;
 
     function makeTextSprite(message, color) {
@@ -187,7 +203,7 @@
     }
 
     function setMode(mode) {
-        for (var i = 1; i <= 5; i++) {
+        for (var i = 1; i <= 6; i++) {
             document.getElementById('btn-' + i).classList.remove('active');
             document.getElementById('desc-' + i).style.display = 'none';
         }
@@ -199,6 +215,8 @@
         subspacesGroup.visible  = (mode === 3);
         planesGroup.visible     = (mode === 4);
         complementGroup.visible = (mode === 5);
+        projectionGroup.visible = (mode === 6);
+        if (mode === 6) setProjMode('plane');
 
         controls.autoRotateSpeed = (mode === 2 || mode === 4) ? 0.5 : 1.0;
     }
@@ -322,7 +340,128 @@
         complementGroup.add(lineS1.clone(), compPlane, compGrid, arrowU.clone(), aW1, aW2, aW3, lblSV, lblVP);
         complementGroup.add(createRightAngle(u, w1), createRightAngle(u, w2));
 
-        scene.add(vectorsGroup, typesGroup, subspacesGroup, complementGroup, planesGroup);
+        // --- MODE 6: Projection ---
+        projectionGroup = new THREE.Group();
+
+        function createDashedLine(p1, p2, color) {
+            var pts = [p1, p2];
+            var geo = new THREE.BufferGeometry().setFromPoints(pts);
+            return new THREE.Line(geo, new THREE.LineDashedMaterial({ color: color, dashSize: 0.2, gapSize: 0.12, transparent: true, opacity: 0.9 }));
+        }
+
+        function buildProjection(mode) {
+            while (projectionGroup.children.length) projectionGroup.remove(projectionGroup.children[0]);
+
+            var b = new THREE.Vector3(1.5, 2.5, 1.0);
+            var orig = new THREE.Vector3(0,0,0);
+
+            if (mode === 'line') {
+                // project b onto line along a=(1,1,0)
+                var a = new THREE.Vector3(1,1,0).normalize();
+                var p = a.clone().multiplyScalar(b.dot(a));
+                var e = new THREE.Vector3().subVectors(b, p);
+
+                // subspace line
+                projectionGroup.add(createThickLine(a.clone().multiplyScalar(-4), a.clone().multiplyScalar(4), 0x3B82F6));
+                var lblLine = makeTextSprite('Line a', '#60A5FA'); lblLine.position.copy(a).multiplyScalar(4.5); projectionGroup.add(lblLine);
+
+                // b vector (yellow)
+                projectionGroup.add(createThickArrow(b.clone().normalize(), orig, b.length() + 0.5, 0xFBBF24));
+                var lblB = makeTextSprite('b', '#FBBF24'); lblB.position.copy(b).add(new THREE.Vector3(0,0.4,0)); projectionGroup.add(lblB);
+
+                // projection p (blue)
+                projectionGroup.add(createThickArrow(p.clone().normalize(), orig, p.length() + 0.5, 0x3B82F6));
+                var lblP = makeTextSprite('p', '#60A5FA'); lblP.position.copy(p).add(new THREE.Vector3(0,-0.5,0)); projectionGroup.add(lblP);
+
+                // error e dashed (red) from p to b
+                var dash = createDashedLine(p, b, 0xEF4444);
+                dash.computeLineDistances();
+                projectionGroup.add(dash);
+                var lblE = makeTextSprite('e', '#F87171');
+                var sqSize = 0.25;
+                var sq = [
+                    p.clone(),
+                    p.clone().add(aN.clone().multiplyScalar(sqSize)),
+                    p.clone().add(aN.clone().multiplyScalar(sqSize)).add(eN.clone().multiplyScalar(sqSize)),
+                    p.clone().add(eN.clone().multiplyScalar(sqSize)),
+                    p.clone()
+                ];
+                projectionGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(sq), new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.6 })));
+
+                document.getElementById('proj-formula').innerHTML =
+                    '<p class="math-text text-center mb-2">p = (aᵀb / aᵀa) a</p>' +
+                    '<p>a = (1,1,0), b = (1.5, 2.5, 1.0)</p>' +
+                    '<p>aᵀb = ' + b.dot(a).toFixed(2) + ', &nbsp; p = (' + p.x.toFixed(2) + ', ' + p.y.toFixed(2) + ', ' + p.z.toFixed(2) + ')</p>' +
+                    '<p>e = b−p = (' + e.x.toFixed(2) + ', ' + e.y.toFixed(2) + ', ' + e.z.toFixed(2) + ')</p>' +
+                    '<p class="mt-1">✓ eᵀa = ' + e.dot(a).toFixed(4) + ' ≈ 0 (perpendicular)</p>';
+
+            } else {
+                // project b onto XZ plane (y=0), normal = (0,1,0)
+                var normal = new THREE.Vector3(0,1,0);
+                var p = b.clone().sub(normal.clone().multiplyScalar(b.dot(normal)));
+                var e = new THREE.Vector3().subVectors(b, p);
+
+                // plane
+                var planeMesh = new THREE.Mesh(new THREE.PlaneGeometry(8,8), new THREE.MeshBasicMaterial({ color: 0x3B82F6, side: THREE.DoubleSide, transparent: true, opacity: 0.18 }));
+                planeMesh.rotation.x = Math.PI / 2;
+                var planeGrid = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.PlaneGeometry(8,8,8,8)), new THREE.LineBasicMaterial({ color: 0x3B82F6, transparent: true, opacity: 0.3 }));
+                planeGrid.rotation.x = Math.PI / 2;
+                projectionGroup.add(planeMesh, planeGrid);
+                var lblPlane = makeTextSprite('Plane', '#60A5FA'); lblPlane.position.set(3.5, 0, -3.5); projectionGroup.add(lblPlane);
+
+                // b vector (yellow)
+                projectionGroup.add(createThickArrow(b.clone().normalize(), orig, b.length() + 0.5, 0xFBBF24));
+                var lblB = makeTextSprite('b', '#FBBF24'); lblB.position.copy(b).add(new THREE.Vector3(0.3,0.3,0)); projectionGroup.add(lblB);
+
+                // projection p (blue) — foot on plane
+                projectionGroup.add(createThickArrow(p.clone().normalize(), orig, p.length() + 0.5, 0x3B82F6));
+                var lblP = makeTextSprite('p', '#60A5FA'); lblP.position.copy(p).add(new THREE.Vector3(0,-0.5,0)); projectionGroup.add(lblP);
+
+                // error e dashed (red) from p to b
+                var dash = createDashedLine(p, b, 0xEF4444);
+                dash.computeLineDistances();
+                projectionGroup.add(dash);
+                var lblE = makeTextSprite('e', '#F87171'); lblE.position.copy(p).add(e.clone().multiplyScalar(0.5)).add(new THREE.Vector3(0.5,0,0)); projectionGroup.add(lblE);
+
+                // right angle marker at p
+                var eN = e.clone().normalize();
+                var tang = new THREE.Vector3(1,0,0);
+                var sqSize = 0.25;
+                var sq = [
+                    p.clone(),
+                    p.clone().add(tang.clone().multiplyScalar(sqSize)),
+                    p.clone().add(tang.clone().multiplyScalar(sqSize)).add(eN.clone().multiplyScalar(sqSize)),
+                    p.clone().add(eN.clone().multiplyScalar(sqSize)),
+                    p.clone()
+                ];
+                projectionGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(sq), new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.6 })));
+
+                // dot at foot
+                var dot = new THREE.Mesh(new THREE.SphereGeometry(0.1,16,16), new THREE.MeshBasicMaterial({ color: 0x3B82F6 }));
+                dot.position.copy(p); projectionGroup.add(dot);
+
+                document.getElementById('proj-formula').innerHTML =
+                    '<p class="math-text text-center mb-2">p = b − (nᵀb) n</p>' +
+                    '<p>n = (0,1,0) (plane normal), b = (1.5, 2.5, 1.0)</p>' +
+                    '<p>nᵀb = ' + b.dot(normal).toFixed(2) + ', &nbsp; p = (' + p.x.toFixed(2) + ', ' + p.y.toFixed(2) + ', ' + p.z.toFixed(2) + ')</p>' +
+                    '<p>e = b−p = (' + e.x.toFixed(2) + ', ' + e.y.toFixed(2) + ', ' + e.z.toFixed(2) + ')</p>' +
+                    '<p class="mt-1">✓ e is perpendicular to the plane</p>';
+            }
+
+            // origin dot
+            projectionGroup.add(new THREE.Mesh(new THREE.SphereGeometry(0.1,16,16), new THREE.MeshBasicMaterial({ color: 0xFFFFFF })));
+        }
+
+        window.setProjMode = function(m) {
+            document.getElementById('proj-line').classList.toggle('active', m === 'line');
+            document.getElementById('proj-plane').classList.toggle('active', m === 'plane');
+            buildProjection(m);
+        };
+
+        buildProjection('plane');
+        document.getElementById('proj-plane').classList.add('active');
+
+        scene.add(vectorsGroup, typesGroup, subspacesGroup, complementGroup, planesGroup, projectionGroup);
 
         window.addEventListener('resize', function() {
             camera.aspect = container.clientWidth / container.clientHeight;
