@@ -256,8 +256,6 @@
             <ul style="margin-top:5px;">
                 <li>P is symmetric: <span class="math-text">P = P<sup>T</sup></span></li>
                 <li>Its square is itself: <span class="math-text">P<sup>2</sup> = P</span></li>
-                <li>Onto plane: <span class="math-text">P = A(A<sup>T</sup>A)<sup>-1</sup>A<sup>T</sup></span></li>
-                <li><span class="math-text">I − P</span> projects onto the perpendicular complement</li>
             </ul>
         </div>
         <div class="desc-box text-gray-300" style="margin-top:8px;">
@@ -265,9 +263,13 @@
             <p style="font-size:11px; color:#9CA3AF; margin-bottom:4px;">Derived from the fact that error <span class="badge-red">e = b − p</span> has length ≥ 0</p>
             <div class="desc-math-center"><span class="math-text">|a<sup>T</sup>b| ≤ ‖a‖ ‖b‖</span></div>
             <ul style="margin-top:5px;">
-                <li>Dividing both sides: <span class="math-text">|cos θ| ≤ 1</span></li>
-                <li><span class="math-text">cos θ = a<sup>T</sup>b / (‖a‖ ‖b‖)</span> — angle between vectors</li>
+                <li>Dividing both sides by ‖a‖‖b‖:</li>
             </ul>
+            <div class="desc-math-center"><span class="math-text">|a<sup>T</sup>b| / ‖a‖‖b‖ ≤ 1</span></div>
+            <ul style="margin-top:5px;">
+                <li>That gives the definition of angle:</li>
+            </ul>
+            <div class="desc-math-center"><span class="math-text">cos θ = a<sup>T</sup>b / (‖a‖ ‖b‖)</span></div>
         </div>
     </div>
 
