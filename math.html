@@ -132,7 +132,7 @@
             <p><span class="badge-blue">&#9632; p</span> — projection (shadow on subspace)</p>
             <p><span class="badge-red">&#9632; e = b − p</span> — error vector (perpendicular)</p>
         </div>
-        <div id="proj-formula" class="bg-gray-900 p-3 rounded-lg border border-gray-700 text-xs mt-3 text-gray-300"></div>
+
     </div>
 
 </div>
@@ -151,8 +151,12 @@
         c.width = 512; c.height = 128;
         var ctx = c.getContext('2d');
         ctx.font = 'Bold 45px sans-serif';
-        ctx.fillStyle = color;
         ctx.textAlign = 'center';
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 8;
+        ctx.lineJoin = 'round';
+        ctx.strokeText(message, 256, 85);
+        ctx.fillStyle = color;
         ctx.fillText(message, 256, 85);
         var tex = new THREE.CanvasTexture(c);
         var mat = new THREE.SpriteMaterial({ map: tex, depthTest: false, transparent: true });
@@ -216,7 +220,7 @@
         planesGroup.visible     = (mode === 4);
         complementGroup.visible = (mode === 5);
         projectionGroup.visible = (mode === 6);
-        if (mode === 6) setProjMode('plane');
+        if (mode === 6) setProjMode('line');
 
         controls.autoRotateSpeed = (mode === 2 || mode === 4) ? 0.5 : 1.0;
     }
@@ -234,7 +238,7 @@
         var H = window.innerHeight;
 
         scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x111827);
+        scene.background = new THREE.Color(0x000000);
 
         camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 100);
         camera.position.set(4, 4, 8);
@@ -374,10 +378,14 @@
                 var lblP = makeTextSprite('p', '#60A5FA'); lblP.position.copy(p).add(new THREE.Vector3(0,-0.5,0)); projectionGroup.add(lblP);
 
                 // error e dashed (red) from p to b
+                var eN = e.clone().normalize();
+                var aN = a.clone().normalize();
                 var dash = createDashedLine(p, b, 0xEF4444);
                 dash.computeLineDistances();
                 projectionGroup.add(dash);
                 var lblE = makeTextSprite('e', '#F87171');
+                lblE.position.copy(p).add(e.clone().multiplyScalar(0.5)).add(new THREE.Vector3(0.4, 0, 0));
+                projectionGroup.add(lblE);
                 var sqSize = 0.25;
                 var sq = [
                     p.clone(),
@@ -388,12 +396,7 @@
                 ];
                 projectionGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(sq), new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.6 })));
 
-                document.getElementById('proj-formula').innerHTML =
-                    '<p class="math-text text-center mb-2">p = (aᵀb / aᵀa) a</p>' +
-                    '<p>a = (1,1,0), b = (1.5, 2.5, 1.0)</p>' +
-                    '<p>aᵀb = ' + b.dot(a).toFixed(2) + ', &nbsp; p = (' + p.x.toFixed(2) + ', ' + p.y.toFixed(2) + ', ' + p.z.toFixed(2) + ')</p>' +
-                    '<p>e = b−p = (' + e.x.toFixed(2) + ', ' + e.y.toFixed(2) + ', ' + e.z.toFixed(2) + ')</p>' +
-                    '<p class="mt-1">✓ eᵀa = ' + e.dot(a).toFixed(4) + ' ≈ 0 (perpendicular)</p>';
+                document.getElementById('proj-formula') && (document.getElementById('proj-formula').innerHTML = '');
 
             } else {
                 // project b onto XZ plane (y=0), normal = (0,1,0)
@@ -440,12 +443,7 @@
                 var dot = new THREE.Mesh(new THREE.SphereGeometry(0.1,16,16), new THREE.MeshBasicMaterial({ color: 0x3B82F6 }));
                 dot.position.copy(p); projectionGroup.add(dot);
 
-                document.getElementById('proj-formula').innerHTML =
-                    '<p class="math-text text-center mb-2">p = b − (nᵀb) n</p>' +
-                    '<p>n = (0,1,0) (plane normal), b = (1.5, 2.5, 1.0)</p>' +
-                    '<p>nᵀb = ' + b.dot(normal).toFixed(2) + ', &nbsp; p = (' + p.x.toFixed(2) + ', ' + p.y.toFixed(2) + ', ' + p.z.toFixed(2) + ')</p>' +
-                    '<p>e = b−p = (' + e.x.toFixed(2) + ', ' + e.y.toFixed(2) + ', ' + e.z.toFixed(2) + ')</p>' +
-                    '<p class="mt-1">✓ e is perpendicular to the plane</p>';
+                document.getElementById('proj-formula') && (document.getElementById('proj-formula').innerHTML = '');
             }
 
             // origin dot
@@ -458,8 +456,8 @@
             buildProjection(m);
         };
 
-        buildProjection('plane');
-        document.getElementById('proj-plane').classList.add('active');
+        buildProjection('line');
+        document.getElementById('proj-line').classList.add('active');
 
         scene.add(vectorsGroup, typesGroup, subspacesGroup, complementGroup, planesGroup, projectionGroup);
 
