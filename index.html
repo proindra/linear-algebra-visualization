@@ -7,19 +7,26 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { margin: 0; overflow: hidden; background-color: #111827; color: white; font-family: sans-serif; display: flex; flex-direction: row; height: 100vh; }
-        .ui-panel { width: 380px; min-width: 380px; background: #1F2937; padding: 24px; box-shadow: 5px 0 25px rgba(0,0,0,0.6); border-right: 1px solid #374151; overflow-y: auto; display: flex; flex-direction: column; z-index: 10; }
+        .ui-panel { width: 340px; min-width: 340px; background: #1F2937; padding: 16px 18px; box-shadow: 5px 0 25px rgba(0,0,0,0.6); border-right: 1px solid #374151; overflow-y: auto; display: flex; flex-direction: column; z-index: 10; scrollbar-width: none; -ms-overflow-style: none; }
+        .ui-panel::-webkit-scrollbar { display: none; }
         #canvas-container { flex-grow: 1; height: 100%; min-height: 0; position: relative; outline: none; }
         canvas { display: block; outline: none; }
-        .btn-group { display: flex; flex-direction: column; gap: 4px; margin-bottom: 25px; background: rgba(0,0,0,0.2); padding: 6px; border-radius: 12px; border: 1px solid #374151; }
-        button { background: transparent; color: #9CA3AF; border: none; padding: 10px 14px; border-radius: 0; cursor: pointer; transition: all 0.2s ease; font-weight: 500; font-size: 14px; text-align: left; width: 100%; display: block; box-sizing: border-box; }
+        .btn-group { display: flex; flex-direction: column; gap: 3px; margin-bottom: 12px; background: rgba(0,0,0,0.25); padding: 5px; border-radius: 12px; border: 1px solid #374151; }
+        button { background: transparent; color: #9CA3AF; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; transition: all 0.2s ease; font-weight: 500; font-size: 13px; text-align: left; width: 100%; display: block; box-sizing: border-box; }
         button:hover { background: rgba(59,130,246,0.15); color: #E5E7EB; }
-        button.active { background: #3B82F6; color: white; font-weight: 600; box-shadow: 0 4px 14px rgba(59,130,246,0.3); }
-        .math-text { font-family: monospace; color: #93C5FD; font-size: 1.1em; }
+        button.active { background: linear-gradient(135deg,#2563EB,#3B82F6); color: white; font-weight: 600; box-shadow: 0 3px 10px rgba(59,130,246,0.35); border-radius: 8px; }
+        .math-text { font-family: monospace; color: #93C5FD; font-size: 1em; }
         .badge-blue { color: #60A5FA; font-weight: bold; }
         .badge-red { color: #F87171; font-weight: bold; }
         .badge-purple { color: #C084FC; font-weight: bold; }
         .badge-green { color: #4ADE80; font-weight: bold; }
         .description-content { display: none; }
+        .description-content h3 { font-size: 15px; font-weight: 700; margin-bottom: 7px; color: #F9FAFB; }
+        .description-content p { font-size: 12.5px; color: #D1D5DB; margin-bottom: 5px; line-height: 1.5; }
+        .description-content ul { padding-left: 16px; margin: 0; }
+        .description-content li { font-size: 12px; color: #D1D5DB; margin-bottom: 4px; line-height: 1.45; }
+        .desc-box { background: rgba(0,0,0,0.3); padding: 10px 12px; border-radius: 10px; border: 1px solid #374151; margin-top: 8px; }
+        .desc-math-center { text-align:center; padding: 5px 0; margin: 6px 0; background: rgba(0,0,0,0.2); border-radius: 6px; }
         #desc-1 { display: block; }
         @media (max-width: 800px) {
             body { flex-direction: column-reverse; }
@@ -31,8 +38,13 @@
 <body>
 
 <div class="ui-panel">
-    <div style="margin-bottom: 20px;">
-        <label style="font-size:13px; color:#9CA3AF; display:block; margin-bottom:6px;">Zoom <span id="zoom-val" style="color:#60A5FA; font-weight:600;">20%</span></label>
+    <div style="margin-bottom: 12px; text-align: center; padding: 10px 0 8px;">
+        <div style="font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: #6B7280; margin-bottom: 4px;">Interactive</div>
+        <div style="font-size: 20px; font-weight: 800; letter-spacing: 1px; background: linear-gradient(135deg, #60A5FA, #A78BFA, #F472B6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Linear Algebra</div>
+        <div style="height: 2px; margin: 6px auto 0; width: 55px; background: linear-gradient(90deg, #3B82F6, #A78BFA, #EC4899); border-radius: 2px;"></div>
+    </div>
+    <div style="margin-bottom: 12px;">
+        <label style="font-size:12px; color:#9CA3AF; display:block; margin-bottom:5px;">Zoom <span id="zoom-val" style="color:#60A5FA; font-weight:600;">20%</span></label>
         <input type="range" id="zoom-slider" min="5" max="20" value="8" step="0.5"
             style="width:100%; accent-color:#3B82F6; cursor:pointer;"
             oninput="setZoom(this.value)">
@@ -47,13 +59,11 @@
     </div>
 
     <div id="desc-1" class="description-content">
-        <h3 class="text-xl font-bold mb-2">Orthogonal Vectors</h3>
-        <p class="text-gray-300 text-sm mb-2">
-            The inner product of <span class="badge-blue">x(2,1,0)</span> and <span class="badge-red">y(-1,2,0)</span> is zero.
-            <br><span class="math-text block mt-1">x<sup>T</sup>y = y<sup>T</sup>x = 0</span>
-        </p>
-        <div class="text-left bg-gray-800 p-3 rounded-lg border border-gray-700 text-sm mt-4">
-            <ul class="list-disc pl-5 space-y-2 text-gray-300">
+        <h3>Orthogonal Vectors</h3>
+        <p class="text-gray-300">Inner product of <span class="badge-blue">x(2,1,0)</span> and <span class="badge-red">y(-1,2,0)</span> is zero.
+        <span class="math-text">x<sup>T</sup>y = y<sup>T</sup>x = 0</span></p>
+        <div class="desc-box text-gray-300">
+            <ul>
                 <li>Zero is the <strong>only</strong> vector orthogonal to itself.</li>
                 <li>Zero is the <strong>only</strong> vector orthogonal to every other vector.</li>
             </ul>
@@ -61,78 +71,70 @@
     </div>
 
     <div id="desc-2" class="description-content">
-        <h3 class="text-xl font-bold mb-2">Types of Subspaces in ℝ³</h3>
-        <p class="text-gray-300 text-sm mb-2">A subspace must <strong>always contain the origin</strong>. In 3D space, there are exactly four types:</p>
-        <div class="text-left bg-gray-800 p-3 rounded-lg border border-gray-700 text-sm mt-4">
-            <ul class="list-disc pl-5 space-y-2 text-gray-300">
-                <li><strong>0D:</strong> The origin alone <span class="math-text">Z={0}</span>.</li>
-                <li><span class="badge-blue">1D:</span> Any line through the origin.</li>
-                <li><span class="badge-red">2D:</span> Any plane through the origin.</li>
-                <li><span class="badge-green">3D:</span> The entire ℝ³ space.</li>
+        <h3>Types of Subspaces in ℝ³</h3>
+        <p class="text-gray-300">A subspace must always contain the origin. Four types in 3D:</p>
+        <div class="desc-box text-gray-300">
+            <ul>
+                <li><strong>0D:</strong> Origin alone <span class="math-text">Z={0}</span></li>
+                <li><span class="badge-blue">1D:</span> Any line through origin</li>
+                <li><span class="badge-red">2D:</span> Any plane through origin</li>
+                <li><span class="badge-green">3D:</span> Entire ℝ³ space</li>
             </ul>
         </div>
     </div>
 
     <div id="desc-3" class="description-content">
-        <h3 class="text-xl font-bold mb-2">Orthogonal Subspaces</h3>
-        <p class="text-gray-300 text-sm mb-3">
-            Two subspaces <span class="badge-blue">S</span> and <span class="badge-red">T</span> are orthogonal if every x in S is orthogonal to every y in T.<br>
-            <span class="math-text block mt-2">x<sup>T</sup>y = 0 &nbsp; for all x ∈ S, y ∈ T</span>
-        </p>
-        <div class="text-left bg-gray-800 p-3 rounded-lg border border-gray-700 text-sm mt-4">
-            <ul class="list-disc pl-5 space-y-1 text-gray-300 text-sm mb-4">
-                <li>Z = {0} is orthogonal to all subspaces.</li>
+        <h3>Orthogonal Subspaces</h3>
+        <p class="text-gray-300">Subspaces <span class="badge-blue">S</span> and <span class="badge-red">T</span> are orthogonal if every x∈S is orthogonal to every y∈T.
+        <span class="math-text">x<sup>T</sup>y = 0</span></p>
+        <div class="desc-box text-gray-300">
+            <ul>
+                <li>Z={0} is orthogonal to all subspaces.</li>
                 <li>In ℝ³, a line can be orthogonal to a plane.</li>
-                <li>In ℝ³, a plane cannot be orthogonal to a plane. <span style="color:#60A5FA; cursor:pointer; text-decoration:underline;" onclick="setMode(4)">→ See Tab 4</span></li>
+                <li>In ℝ³, two planes cannot be orthogonal. <span style="color:#60A5FA;cursor:pointer;text-decoration:underline;" onclick="setMode(4)">→ Tab 4</span></li>
             </ul>
-            <span class="math-text text-sm block mt-2 text-center bg-gray-900 py-2 rounded">dim S + dim T ≤ dim V</span>
-            <ul class="list-disc pl-5 space-y-1 text-gray-300 mt-2">
-                <li>If <span class="badge-blue">S</span> and <span class="badge-red">T</span> are merely <strong>orthogonal</strong>, their dimensions can add up to <em>at most</em> n.</li>
-                <li>If <span class="badge-blue">S</span> and <span class="badge-red">T</span> are <strong>orthogonal complements</strong>, equality holds: dim S + dim T = n.</li>
-                <li>Here n=3. Two orthogonal lines each have dim=1, so 1+1=2 ≤ 3. ✓</li>
+            <div class="desc-math-center"><span class="math-text">dim S + dim T ≤ n</span></div>
+            <ul>
+                <li>Orthogonal complements: dim S + dim T = n</li>
+                <li>Here n=3, two lines: 1+1=2 ≤ 3 ✓</li>
             </ul>
         </div>
     </div>
 
     <div id="desc-4" class="description-content">
-        <h3 class="text-xl font-bold mb-2">"A plane cannot be orthogonal to another plane"</h3>
-        <p class="text-gray-300 text-sm leading-relaxed">
-            In ℝ³, two 2D planes must intersect along a line. They share the <span class="badge-purple">Purple Vector v</span>.<br><br>
+        <h3>"A plane cannot be orthogonal to another plane"</h3>
+        <p class="text-gray-300">In ℝ³, two 2D planes must intersect along a line. They share the <span class="badge-purple">Purple Vector v</span>.</p>
+        <div class="desc-box text-gray-300">
             Since v is in both planes and <span class="math-text">v<sup>T</sup>v ≠ 0</span>, the planes cannot be orthogonal subspaces.
-        </p>
+        </div>
     </div>
 
     <div id="desc-5" class="description-content">
-        <h3 class="text-xl font-bold mb-2">Orthogonal Complement</h3>
-        <p class="text-gray-300 text-sm">
-            The space of <strong>all vectors orthogonal to V</strong> is the orthogonal complement, written <span class="badge-red math-text text-lg">V<sup>⊥</sup></span>.<br><br>
-            If <span class="badge-blue">V</span> is a 1D line, then <span class="badge-red">V<sup>⊥</sup></span> is a full 2D plane. Every vector on the red plane is orthogonal to the blue line.
-        </p>
-        <div class="text-left bg-gray-800 p-3 rounded-lg border border-gray-700 text-sm mt-4">
-            <p class="text-gray-300 mb-2">If <span class="badge-blue">S</span> and <span class="badge-red">T</span> are orthogonal complements in ℝ<sup>n</sup>, then:</p>
-            <span class="math-text block text-center bg-gray-900 py-2 rounded mb-2">dim S + dim T = n</span>
-            <ul class="list-disc pl-5 space-y-1 text-gray-300">
-                <li>This is always true — no exceptions.</li>
-                <li>Here n=3, dim V=1, so dim V<sup>⊥</sup>=2. The line and plane together fill all of ℝ³.</li>
-                <li>Every vector in ℝ³ can be uniquely split into a part in <span class="badge-blue">V</span> and a part in <span class="badge-red">V<sup>⊥</sup></span>.</li>
+        <h3>Orthogonal Complement</h3>
+        <p class="text-gray-300">All vectors orthogonal to <span class="badge-blue">V</span> form <span class="badge-red math-text">V<sup>⊥</sup></span>. If <span class="badge-blue">V</span> is a 1D line, <span class="badge-red">V<sup>⊥</sup></span> is a full 2D plane.</p>
+        <div class="desc-box text-gray-300">
+            <div class="desc-math-center"><span class="math-text">dim S + dim T = n</span></div>
+            <ul>
+                <li>Always true — no exceptions.</li>
+                <li>Here n=3, dim V=1 → dim V<sup>⊥</sup>=2 ✓</li>
+                <li>Every vector in ℝ³ splits uniquely into a part in <span class="badge-blue">V</span> and <span class="badge-red">V<sup>⊥</sup></span>.</li>
             </ul>
         </div>
     </div>
 
 
     <div id="desc-6" class="description-content">
-        <h3 class="text-xl font-bold mb-2">Projection</h3>
-        <p class="text-gray-300 text-sm mb-3">The projection of <span class="badge-yellow" style="color:#FBBF24;font-weight:bold;">b</span> onto a subspace is the closest point in that subspace to <span class="badge-yellow" style="color:#FBBF24;font-weight:bold;">b</span>.</p>
-        <div style="display:flex;gap:6px;margin-bottom:12px;">
-            <button onclick="setProjMode('line')" id="proj-line" style="flex:1;padding:6px;font-size:12px;">Onto Line</button>
-            <button onclick="setProjMode('plane')" id="proj-plane" style="flex:1;padding:6px;font-size:12px;">Onto Plane</button>
+        <h3>Projection</h3>
+        <p class="text-gray-300">Closest point in a subspace to <span style="color:#FBBF24;font-weight:bold;">b</span>.</p>
+        <div style="display:flex;gap:6px;margin:6px 0;">
+            <button onclick="setProjMode('line')" id="proj-line" style="flex:1;padding:5px;font-size:11px;">Onto Line</button>
+            <button onclick="setProjMode('plane')" id="proj-plane" style="flex:1;padding:5px;font-size:11px;">Onto Plane</button>
         </div>
-        <div class="bg-gray-800 p-3 rounded-lg border border-gray-700 text-sm space-y-2">
+        <div class="desc-box text-gray-300">
             <p><span style="color:#FBBF24;font-weight:bold;">&#9632; b</span> — original vector</p>
             <p><span class="badge-blue">&#9632; p</span> — projection (shadow on subspace)</p>
-            <p><span class="badge-red">&#9632; e = b − p</span> — error vector (perpendicular)</p>
+            <p><span class="badge-red">&#9632; e = b − p</span> — error (perpendicular)</p>
         </div>
-        <div id="proj-formula" class="bg-gray-900 p-3 rounded-lg border border-gray-700 text-xs mt-3 text-gray-300"></div>
     </div>
 
 </div>
@@ -151,8 +153,12 @@
         c.width = 512; c.height = 128;
         var ctx = c.getContext('2d');
         ctx.font = 'Bold 45px sans-serif';
-        ctx.fillStyle = color;
         ctx.textAlign = 'center';
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 8;
+        ctx.lineJoin = 'round';
+        ctx.strokeText(message, 256, 85);
+        ctx.fillStyle = color;
         ctx.fillText(message, 256, 85);
         var tex = new THREE.CanvasTexture(c);
         var mat = new THREE.SpriteMaterial({ map: tex, depthTest: false, transparent: true });
@@ -216,7 +222,7 @@
         planesGroup.visible     = (mode === 4);
         complementGroup.visible = (mode === 5);
         projectionGroup.visible = (mode === 6);
-        if (mode === 6) setProjMode('plane');
+        if (mode === 6) setProjMode('line');
 
         controls.autoRotateSpeed = (mode === 2 || mode === 4) ? 0.5 : 1.0;
     }
@@ -234,7 +240,7 @@
         var H = window.innerHeight;
 
         scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x111827);
+        scene.background = new THREE.Color(0x000000);
 
         camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 100);
         camera.position.set(4, 4, 8);
@@ -374,10 +380,14 @@
                 var lblP = makeTextSprite('p', '#60A5FA'); lblP.position.copy(p).add(new THREE.Vector3(0,-0.5,0)); projectionGroup.add(lblP);
 
                 // error e dashed (red) from p to b
+                var eN = e.clone().normalize();
+                var aN = a.clone().normalize();
                 var dash = createDashedLine(p, b, 0xEF4444);
                 dash.computeLineDistances();
                 projectionGroup.add(dash);
                 var lblE = makeTextSprite('e', '#F87171');
+                lblE.position.copy(p).add(e.clone().multiplyScalar(0.5)).add(new THREE.Vector3(0.4, 0, 0));
+                projectionGroup.add(lblE);
                 var sqSize = 0.25;
                 var sq = [
                     p.clone(),
@@ -388,12 +398,7 @@
                 ];
                 projectionGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(sq), new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.6 })));
 
-                document.getElementById('proj-formula').innerHTML =
-                    '<p class="math-text text-center mb-2">p = (aᵀb / aᵀa) a</p>' +
-                    '<p>a = (1,1,0), b = (1.5, 2.5, 1.0)</p>' +
-                    '<p>aᵀb = ' + b.dot(a).toFixed(2) + ', &nbsp; p = (' + p.x.toFixed(2) + ', ' + p.y.toFixed(2) + ', ' + p.z.toFixed(2) + ')</p>' +
-                    '<p>e = b−p = (' + e.x.toFixed(2) + ', ' + e.y.toFixed(2) + ', ' + e.z.toFixed(2) + ')</p>' +
-                    '<p class="mt-1">✓ eᵀa = ' + e.dot(a).toFixed(4) + ' ≈ 0 (perpendicular)</p>';
+                document.getElementById('proj-formula') && (document.getElementById('proj-formula').innerHTML = '');
 
             } else {
                 // project b onto XZ plane (y=0), normal = (0,1,0)
@@ -440,12 +445,7 @@
                 var dot = new THREE.Mesh(new THREE.SphereGeometry(0.1,16,16), new THREE.MeshBasicMaterial({ color: 0x3B82F6 }));
                 dot.position.copy(p); projectionGroup.add(dot);
 
-                document.getElementById('proj-formula').innerHTML =
-                    '<p class="math-text text-center mb-2">p = b − (nᵀb) n</p>' +
-                    '<p>n = (0,1,0) (plane normal), b = (1.5, 2.5, 1.0)</p>' +
-                    '<p>nᵀb = ' + b.dot(normal).toFixed(2) + ', &nbsp; p = (' + p.x.toFixed(2) + ', ' + p.y.toFixed(2) + ', ' + p.z.toFixed(2) + ')</p>' +
-                    '<p>e = b−p = (' + e.x.toFixed(2) + ', ' + e.y.toFixed(2) + ', ' + e.z.toFixed(2) + ')</p>' +
-                    '<p class="mt-1">✓ e is perpendicular to the plane</p>';
+                document.getElementById('proj-formula') && (document.getElementById('proj-formula').innerHTML = '');
             }
 
             // origin dot
@@ -458,8 +458,8 @@
             buildProjection(m);
         };
 
-        buildProjection('plane');
-        document.getElementById('proj-plane').classList.add('active');
+        buildProjection('line');
+        document.getElementById('proj-line').classList.add('active');
 
         scene.add(vectorsGroup, typesGroup, subspacesGroup, complementGroup, planesGroup, projectionGroup);
 
