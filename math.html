@@ -232,12 +232,18 @@
         controls.dampingFactor = 0.05;
         controls.autoRotate = true;
         controls.autoRotateSpeed = 1.0;
+        controls.minDistance = 5;
+        controls.maxDistance = 30;
+        controls.addEventListener('change', function() {
+            var len = camera.position.length();
+            var sliderVal = 25 - len;
+            sliderVal = Math.max(5, Math.min(20, sliderVal));
+            document.getElementById('zoom-slider').value = sliderVal;
+            var pct = Math.round(((sliderVal - 5) / 15) * 100);
+            document.getElementById('zoom-val').textContent = pct + '%';
+        });
 
         scene.add(new THREE.GridHelper(10, 20, 0x444444, 0x222222));
-        var axes = new THREE.AxesHelper(3);
-        axes.material.transparent = true;
-        axes.material.opacity = 0.3;
-        scene.add(axes);
 
         u      = new THREE.Vector3(2, 1, 0).normalize();
         v      = new THREE.Vector3(-1, 2, 0).normalize();
@@ -271,7 +277,7 @@
         var p2D_Grid = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.PlaneGeometry(8,8,8,8)), new THREE.LineBasicMaterial({ color: 0xEF4444, transparent: true, opacity: 0.3 }));
         p2D_Grid.rotation.x = Math.PI / 2;
         var lbl2D = makeTextSprite('2D: Plane', '#FCA5A5'); lbl2D.position.set(3.5, 0, -3.5);
-        var box3D = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(11,11,11)), new THREE.LineBasicMaterial({ color: 0x4ADE80, transparent: true, opacity: 0.15 }));
+        var box3D = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(11,11,11)), new THREE.LineBasicMaterial({ color: 0x4ADE80, transparent: true, opacity: 0.4 }));
         var lbl3D = makeTextSprite('3D: Entire Space ℝ³', '#86EFAC'); lbl3D.position.set(-5.5, 5.5, 5.5);
         typesGroup.add(pt0D, lbl0D, line1D, lbl1D, plane2D, p2D_Grid, lbl2D, box3D, lbl3D);
 
