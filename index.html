@@ -6,10 +6,10 @@
     <title>3D Orthogonal Visualization</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { margin: 0; overflow: hidden; background-color: #111827; color: white; font-family: sans-serif; display: flex; flex-direction: row; height: 100vh; }
+        body { margin: 0; overflow: hidden; background-color: #000000; color: white; font-family: sans-serif; display: flex; flex-direction: row; height: 100vh; }
         .ui-panel { width: 340px; min-width: 340px; background: #1F2937; padding: 16px 18px; box-shadow: 5px 0 25px rgba(0,0,0,0.6); border-right: 1px solid #374151; overflow-y: auto; display: flex; flex-direction: column; z-index: 10; scrollbar-width: none; -ms-overflow-style: none; }
         .ui-panel::-webkit-scrollbar { display: none; }
-        #canvas-container { flex-grow: 1; height: 100%; min-height: 0; position: relative; outline: none; }
+        #canvas-container { flex-grow: 1; height: 100%; min-height: 0; position: relative; outline: none; background: #000000; }
         canvas { display: block; outline: none; }
         .btn-group { display: flex; flex-direction: column; gap: 3px; margin-bottom: 12px; background: rgba(0,0,0,0.25); padding: 5px; border-radius: 12px; border: 1px solid #374151; }
         button { background: transparent; color: #9CA3AF; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; transition: all 0.2s ease; font-weight: 500; font-size: 13px; text-align: left; width: 100%; display: block; box-sizing: border-box; }
@@ -28,17 +28,41 @@
         .desc-box { background: rgba(0,0,0,0.3); padding: 10px 12px; border-radius: 10px; border: 1px solid #374151; margin-top: 8px; }
         .desc-math-center { text-align:center; padding: 5px 0; margin: 6px 0; background: rgba(0,0,0,0.2); border-radius: 6px; }
         #desc-1 { display: block; }
-        @media (max-width: 800px) {
-            body { flex-direction: column-reverse; }
-            .ui-panel { width: 100%; min-width: 100%; height: 45vh; border-right: none; border-top: 1px solid #374151; }
-            #canvas-container { height: 55vh; }
+
+        /* --- Mobile --- */
+        @media (max-width: 768px) {
+            body { flex-direction: column; height: 100dvh; overflow: hidden; }
+            .ui-panel {
+                width: 100%; min-width: 100%;
+                height: auto; max-height: 42dvh;
+                border-right: none; border-bottom: 1px solid #374151;
+                padding: 10px 12px;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+                overflow-y: auto;
+                order: 1;
+            }
+            #canvas-container { flex-grow: 1; width: 100%; order: 2; height: 58dvh; }
+            .title-block { display: none; }
+            .btn-group { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px; margin-bottom: 8px; }
+            button { padding: 7px 6px; font-size: 11px; text-align: center; }
+            .description-content h3 { font-size: 13px; margin-bottom: 4px; }
+            .description-content p { font-size: 11px; margin-bottom: 3px; }
+            .description-content li { font-size: 11px; margin-bottom: 2px; }
+            .desc-box { padding: 7px 9px; margin-top: 5px; }
+            .desc-math-center { padding: 3px 0; margin: 4px 0; font-size: 11px; }
+            .math-text { font-size: 0.88em; }
+        }
+
+        @media (max-width: 400px) {
+            .btn-group { grid-template-columns: 1fr 1fr; }
+            button { font-size: 10px; padding: 6px 4px; }
         }
     </style>
 </head>
 <body>
 
 <div class="ui-panel">
-    <div style="margin-bottom: 12px; text-align: center; padding: 10px 0 8px;">
+    <div style="margin-bottom: 12px; text-align: center; padding: 10px 0 8px;" class="title-block">
         <div style="font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: #6B7280; margin-bottom: 4px;">Interactive</div>
         <div style="font-size: 20px; font-weight: 800; letter-spacing: 1px; background: linear-gradient(135deg, #60A5FA, #A78BFA, #F472B6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Linear Algebra</div>
         <div style="height: 2px; margin: 6px auto 0; width: 55px; background: linear-gradient(90deg, #3B82F6, #A78BFA, #EC4899); border-radius: 2px;"></div>
@@ -243,8 +267,8 @@
 
     function init() {
         var container = document.getElementById('canvas-container');
-        var W = window.innerWidth - 380;
-        var H = window.innerHeight;
+        var W = container.clientWidth || (window.innerWidth - 340);
+        var H = container.clientHeight || window.innerHeight;
 
         scene = new THREE.Scene();
         scene.background = new THREE.Color(0x000000);
@@ -415,22 +439,7 @@
                 var dot = new THREE.Mesh(new THREE.SphereGeometry(0.12, 16, 16), new THREE.MeshBasicMaterial({ color: 0x3B82F6 }));
                 dot.position.copy(p); projectionGroup.add(dot);
 
-                // angle arc θ at origin between a and b
-                var arcPts = [];
-                var bN = b.clone().normalize();
-                var angleAB = Math.acos(Math.min(1, aN.dot(bN)));
-                for (var i = 0; i <= 16; i++) {
-                    var t = (i / 16) * angleAB;
-                    var ax = Math.cos(t) * aN.x - Math.sin(t) * aN.y;
-                    var ay = Math.sin(t) * aN.x + Math.cos(t) * aN.y;
-                    arcPts.push(new THREE.Vector3(ax * 0.7, ay * 0.7, 0));
-                }
-                var arcGeo = new THREE.BufferGeometry().setFromPoints(arcPts);
-                projectionGroup.add(new THREE.Line(arcGeo, new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.6 })));
-                var lblTheta = makeTextSprite('\u03B8', '#FFFFFF'); lblTheta.scale.set(1.2, 0.6, 1);
-                var midAngle = angleAB / 2;
-                lblTheta.position.set(Math.cos(midAngle) * 1.1, Math.sin(midAngle) * 1.1, 0);
-                projectionGroup.add(lblTheta);
+
 
                 document.getElementById('proj-formula') && (document.getElementById('proj-formula').innerHTML = '');
 
