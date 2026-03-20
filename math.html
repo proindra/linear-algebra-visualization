@@ -44,8 +44,8 @@
         <div style="height: 2px; margin: 6px auto 0; width: 55px; background: linear-gradient(90deg, #3B82F6, #A78BFA, #EC4899); border-radius: 2px;"></div>
     </div>
     <div style="margin-bottom: 12px;">
-        <label style="font-size:12px; color:#9CA3AF; display:block; margin-bottom:5px;">Zoom <span id="zoom-val" style="color:#60A5FA; font-weight:600;">20%</span></label>
-        <input type="range" id="zoom-slider" min="5" max="20" value="8" step="0.5"
+        <label style="font-size:12px; color:#9CA3AF; display:block; margin-bottom:5px;">Zoom <span id="zoom-val" style="color:#60A5FA; font-weight:600;">0%</span></label>
+        <input type="range" id="zoom-slider" min="5" max="20" value="5" step="0.5"
             style="width:100%; accent-color:#3B82F6; cursor:pointer;"
             oninput="setZoom(this.value)">
     </div>
@@ -244,7 +244,7 @@
 
         camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 100);
         camera.position.set(4, 4, 8);
-        camera.position.setLength(17);
+        camera.position.setLength(20);
 
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setPixelRatio(window.devicePixelRatio);
