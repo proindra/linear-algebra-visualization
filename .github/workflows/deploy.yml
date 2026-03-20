@@ -24,6 +24,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Verify required files
+        run: |
+          echo "Checking required files..."
+          test -f math.html && echo "✅ math.html found" || (echo "❌ math.html missing" && exit 1)
+          test -f three.min.js && echo "✅ three.min.js found" || (echo "❌ three.min.js missing" && exit 1)
+          test -f OrbitControls.js && echo "✅ OrbitControls.js found" || (echo "❌ OrbitControls.js missing" && exit 1)
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 

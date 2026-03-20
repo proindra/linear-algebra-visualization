@@ -15,6 +15,7 @@ An interactive 3D visualization of core linear algebra concepts, built with [Thr
 | 3 | **1D Ortho Subspaces** | Two orthogonal lines S and T through the origin |
 | 4 | **Intersecting Planes** | Two 2D planes sharing a line — proof that planes can't be orthogonal in ℝ³ |
 | 5 | **Orthogonal Complement** | A 1D subspace V (blue line) and its complement V⊥ (red plane) |
+| 6 | **Projection** | Project vector b onto a line or plane — shows p (projection) and e (error vector) |
 
 ---
 
@@ -24,6 +25,17 @@ An interactive 3D visualization of core linear algebra concepts, built with [Thr
 - **Zoom slider** — drag right to zoom in, left to zoom out (shows % indicator)
 - **Auto-rotate** — scene rotates automatically; orbit drag pauses it
 - **Tab buttons** — switch between visualizations
+- **Onto Line / Onto Plane** — toggle projection mode in Tab 6
+
+---
+
+## Features
+
+- Black 3D canvas background for maximum contrast
+- Outlined 3D labels — stay readable even when overlapping during rotation
+- Compact side panel — all info visible without scrolling
+- Gradient "Linear Algebra" title in the panel
+- Auto-deploy to GitHub Pages on every push to `main`
 
 ---
 
@@ -67,7 +79,7 @@ Then open `http://localhost:8080/math.html`.
 
 ## Deployment
 
-Pushes to the `main` branch automatically deploy to GitHub Pages via the included GitHub Actions workflow.
+Pushes to `main` automatically deploy to GitHub Pages via the included GitHub Actions workflow.
 
 The live site is served from the `gh-pages` branch at:
 `https://proindra.github.io/linear-algebra-visualization`
