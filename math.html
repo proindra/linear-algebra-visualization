@@ -162,7 +162,7 @@
         <button id="btn-3" class="tab-btn" onclick="setMode(3)"><span class="tab-num">3</span>1D Ortho Subspaces</button>
         <button id="btn-4" class="tab-btn" onclick="setMode(4)"><span class="tab-num">4</span>Intersecting Planes</button>
         <button id="btn-5" class="tab-btn" onclick="setMode(5)"><span class="tab-num">5</span>Orthogonal Complement</button>
-        <button id="btn-6" class="tab-btn" onclick="setMode(6)"><span class="tab-num">6</span>Projection</button>
+        <button id="btn-6" class="tab-btn" onclick="setMode(6)"><span class="tab-num">6</span><span>Projection Vector<br><span style="font-size:10.5px;color:#9CA3AF;font-weight:400;">& Matrix</span></span></button>
         <button id="btn-7" class="tab-btn" onclick="setMode(7)"><span class="tab-num">7</span>Fundamental Subspaces</button>
     </div>
     <div class="panel-divider"></div>
@@ -245,10 +245,19 @@
             <p><span style="color:#FBBF24;font-weight:bold;">&#9632; b</span> — original vector</p>
             <p><span class="badge-blue">&#9632; p</span> — projection (shadow on subspace)</p>
             <p><span class="badge-red">&#9632; e = b − p</span> — error (perpendicular)</p>
-            <div class="desc-math-center" style="margin-top:6px;"><span class="math-text">x&#x0302; = a<sup>T</sup>b / a<sup>T</sup>a &nbsp;&nbsp; p = x&#x0302;a</span></div>
-            <ul style="margin-top:6px;">
-                <li>P is a <strong>symmetric</strong> matrix: P = P<sup>T</sup></li>
-                <li>Its square is itself: P<sup>2</sup> = P</li>
+            <div class="desc-math-center" style="margin-top:6px;">
+                <span class="math-text">x&#x0302; = a<sup>T</sup>b / a<sup>T</sup>a &nbsp;&nbsp; p = x&#x0302;a</span>
+            </div>
+        </div>
+        <div class="desc-box text-gray-300" style="margin-top:8px;">
+            <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:5px;">Projection Matrix</p>
+            <div class="desc-math-center"><span class="math-text">P = aa<sup>T</sup> / a<sup>T</sup>a</span></div>
+            <div class="desc-math-center" style="margin-top:4px;"><span class="math-text">p = Pb</span></div>
+            <ul style="margin-top:5px;">
+                <li>P is symmetric: <span class="math-text">P = P<sup>T</sup></span></li>
+                <li>Its square is itself: <span class="math-text">P<sup>2</sup> = P</span></li>
+                <li>Onto plane: <span class="math-text">P = A(A<sup>T</sup>A)<sup>-1</sup>A<sup>T</sup></span></li>
+                <li><span class="math-text">I − P</span> projects onto the perpendicular complement</li>
             </ul>
         </div>
     </div>
