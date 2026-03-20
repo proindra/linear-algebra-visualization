@@ -6,27 +6,80 @@
     <title>3D Orthogonal Visualization</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { margin: 0; overflow: hidden; background-color: #000000; color: white; font-family: sans-serif; display: flex; flex-direction: row; height: 100vh; }
-        .ui-panel { width: 340px; min-width: 340px; background: #1F2937; padding: 16px 18px; box-shadow: 5px 0 25px rgba(0,0,0,0.6); border-right: 1px solid #374151; overflow-y: auto; display: flex; flex-direction: column; z-index: 10; scrollbar-width: none; -ms-overflow-style: none; }
+        body { margin: 0; overflow: hidden; background-color: #000000; color: white; font-family: 'Inter', sans-serif; display: flex; flex-direction: row; height: 100vh; }
+        .ui-panel { width: 300px; min-width: 300px; background: linear-gradient(180deg, #0f1117 0%, #111827 100%); padding: 16px 14px; box-shadow: 4px 0 30px rgba(0,0,0,0.8); border-right: 1px solid rgba(255,255,255,0.06); overflow-y: auto; display: flex; flex-direction: column; z-index: 10; scrollbar-width: none; -ms-overflow-style: none; }
         .ui-panel::-webkit-scrollbar { display: none; }
         #canvas-container { flex-grow: 1; height: 100%; min-height: 0; position: relative; outline: none; background: #000000; }
         canvas { display: block; outline: none; }
-        .btn-group { display: flex; flex-direction: column; gap: 3px; margin-bottom: 12px; background: rgba(0,0,0,0.25); padding: 5px; border-radius: 12px; border: 1px solid #374151; }
-        button { background: transparent; color: #9CA3AF; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; transition: all 0.2s ease; font-weight: 500; font-size: 13px; text-align: left; width: 100%; display: block; box-sizing: border-box; }
-        button:hover { background: rgba(59,130,246,0.15); color: #E5E7EB; }
-        button.active { background: linear-gradient(135deg,#2563EB,#3B82F6); color: white; font-weight: 600; box-shadow: 0 3px 10px rgba(59,130,246,0.35); border-radius: 8px; }
+
+        /* Tab buttons */
+        .btn-group { display: flex; flex-direction: column; gap: 2px; margin-bottom: 14px; }
+        .tab-btn {
+            background: transparent;
+            color: #6B7280;
+            border: none;
+            padding: 9px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            font-weight: 500;
+            font-size: 12.5px;
+            text-align: left;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            box-sizing: border-box;
+            position: relative;
+        }
+        .tab-btn:hover { background: rgba(255,255,255,0.05); color: #D1D5DB; }
+        .tab-btn.active {
+            background: rgba(59,130,246,0.12);
+            color: #fff;
+            font-weight: 600;
+        }
+        .tab-btn.active::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 20%; bottom: 20%;
+            width: 3px;
+            background: linear-gradient(180deg, #3B82F6, #A78BFA);
+            border-radius: 0 3px 3px 0;
+        }
+        .tab-num {
+            width: 22px; height: 22px;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: 700;
+            color: #6B7280;
+            flex-shrink: 0;
+            transition: all 0.18s;
+        }
+        .tab-btn.active .tab-num {
+            background: linear-gradient(135deg, #2563EB, #7C3AED);
+            border-color: transparent;
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(59,130,246,0.4);
+        }
+        .tab-btn:hover .tab-num { color: #D1D5DB; background: rgba(255,255,255,0.1); }
+
+        /* Divider */
+        .panel-divider { height: 1px; background: rgba(255,255,255,0.06); margin: 10px 0; }
+
         .math-text { font-family: monospace; color: #93C5FD; font-size: 1em; }
         .badge-blue { color: #60A5FA; font-weight: bold; }
         .badge-red { color: #F87171; font-weight: bold; }
         .badge-purple { color: #C084FC; font-weight: bold; }
         .badge-green { color: #4ADE80; font-weight: bold; }
         .description-content { display: none; }
-        .description-content h3 { font-size: 15px; font-weight: 700; margin-bottom: 7px; color: #F9FAFB; }
-        .description-content p { font-size: 12.5px; color: #D1D5DB; margin-bottom: 5px; line-height: 1.5; }
+        .description-content h3 { font-size: 14px; font-weight: 700; margin-bottom: 7px; color: #F9FAFB; letter-spacing: 0.2px; }
+        .description-content p { font-size: 12px; color: #D1D5DB; margin-bottom: 5px; line-height: 1.55; }
         .description-content ul { padding-left: 16px; margin: 0; }
-        .description-content li { font-size: 12px; color: #D1D5DB; margin-bottom: 4px; line-height: 1.45; }
-        .desc-box { background: rgba(0,0,0,0.3); padding: 10px 12px; border-radius: 10px; border: 1px solid #374151; margin-top: 8px; }
-        .desc-math-center { text-align:center; padding: 5px 0; margin: 6px 0; background: rgba(0,0,0,0.2); border-radius: 6px; }
+        .description-content li { font-size: 11.5px; color: #D1D5DB; margin-bottom: 4px; line-height: 1.45; }
+        .desc-box { background: rgba(0,0,0,0.35); padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.07); margin-top: 8px; }
+        .desc-math-center { text-align:center; padding: 5px 0; margin: 6px 0; background: rgba(59,130,246,0.07); border-radius: 6px; border: 1px solid rgba(59,130,246,0.15); }
         #desc-1 { display: block; }
 
         /* --- Mobile --- */
@@ -35,7 +88,7 @@
             .ui-panel {
                 width: 100%; min-width: 100%;
                 height: auto; max-height: 42dvh;
-                border-right: none; border-bottom: 1px solid #374151;
+                border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06);
                 padding: 10px 12px;
                 box-shadow: 0 4px 20px rgba(0,0,0,0.5);
                 overflow-y: auto;
@@ -44,18 +97,21 @@
             #canvas-container { flex-grow: 1; width: 100%; order: 2; height: 58dvh; }
             .title-block { display: none; }
             .btn-group { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px; margin-bottom: 8px; }
-            button { padding: 7px 6px; font-size: 11px; text-align: center; }
+            .tab-btn { padding: 7px 6px; font-size: 11px; flex-direction: column; align-items: center; gap: 3px; text-align: center; }
+            .tab-btn.active::before { display: none; }
+            .tab-num { width: 20px; height: 20px; font-size: 10px; }
             .description-content h3 { font-size: 13px; margin-bottom: 4px; }
             .description-content p { font-size: 11px; margin-bottom: 3px; }
             .description-content li { font-size: 11px; margin-bottom: 2px; }
             .desc-box { padding: 7px 9px; margin-top: 5px; }
             .desc-math-center { padding: 3px 0; margin: 4px 0; font-size: 11px; }
             .math-text { font-size: 0.88em; }
+            .panel-divider { margin: 6px 0; }
         }
 
         @media (max-width: 400px) {
             .btn-group { grid-template-columns: 1fr 1fr; }
-            button { font-size: 10px; padding: 6px 4px; }
+            .tab-btn { font-size: 10px; padding: 6px 4px; }
         }
     </style>
 </head>
@@ -87,14 +143,15 @@
         </style>
     </div>
     <div class="btn-group">
-        <button id="btn-1" onclick="setMode(1)">1. Orthogonal Vectors</button>
-        <button id="btn-2" onclick="setMode(2)">2. Subspace Types</button>
-        <button id="btn-3" onclick="setMode(3)">3. 1D Ortho Subspaces</button>
-        <button id="btn-4" onclick="setMode(4)">4. Intersecting Planes</button>
-        <button id="btn-5" onclick="setMode(5)">5. Orthogonal Complement</button>
-        <button id="btn-6" onclick="setMode(6)">6. Projection</button>
-        <button id="btn-7" onclick="setMode(7)">7. Fundamental Subspaces</button>
+        <button id="btn-1" class="tab-btn" onclick="setMode(1)"><span class="tab-num">1</span>Orthogonal Vectors</button>
+        <button id="btn-2" class="tab-btn" onclick="setMode(2)"><span class="tab-num">2</span>Subspace Types</button>
+        <button id="btn-3" class="tab-btn" onclick="setMode(3)"><span class="tab-num">3</span>1D Ortho Subspaces</button>
+        <button id="btn-4" class="tab-btn" onclick="setMode(4)"><span class="tab-num">4</span>Intersecting Planes</button>
+        <button id="btn-5" class="tab-btn" onclick="setMode(5)"><span class="tab-num">5</span>Orthogonal Complement</button>
+        <button id="btn-6" class="tab-btn" onclick="setMode(6)"><span class="tab-num">6</span>Projection</button>
+        <button id="btn-7" class="tab-btn" onclick="setMode(7)"><span class="tab-num">7</span>Fundamental Subspaces</button>
     </div>
+    <div class="panel-divider"></div>
 
     <div id="desc-1" class="description-content">
         <h3>Orthogonal Vectors</h3>
