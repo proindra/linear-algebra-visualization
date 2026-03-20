@@ -68,6 +68,20 @@
         /* Divider */
         .panel-divider { height: 1px; background: rgba(255,255,255,0.06); margin: 10px 0; }
 
+        /* Projection sub-buttons */
+        #proj-line, #proj-plane {
+            flex: 1; padding: 7px 5px; font-size: 11px;
+            border-radius: 7px; border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05); color: #9CA3AF;
+            cursor: pointer; transition: all 0.18s; font-weight: 500;
+        }
+        #proj-line:hover, #proj-plane:hover { background: rgba(255,255,255,0.1); color: #E5E7EB; }
+        #proj-line.active, #proj-plane.active {
+            background: linear-gradient(135deg, #1D4ED8, #4F46E5);
+            border-color: transparent; color: #fff;
+            box-shadow: 0 2px 8px rgba(59,130,246,0.35);
+        }
+
         .math-text { font-family: monospace; color: #93C5FD; font-size: 1em; }
         .badge-blue { color: #60A5FA; font-weight: bold; }
         .badge-red { color: #F87171; font-weight: bold; }
@@ -224,8 +238,8 @@
         <h3>Projection</h3>
         <p class="text-gray-300">Closest point in a subspace to <span style="color:#FBBF24;font-weight:bold;">b</span>.</p>
         <div style="display:flex;gap:6px;margin:6px 0;">
-            <button onclick="setProjMode('line')" id="proj-line" style="flex:1;padding:5px;font-size:11px;">Onto Line</button>
-            <button onclick="setProjMode('plane')" id="proj-plane" style="flex:1;padding:5px;font-size:11px;">Onto Plane</button>
+            <button onclick="setProjMode('line')" id="proj-line" style="flex:1;padding:7px 5px;font-size:11px;border-radius:7px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:#9CA3AF;cursor:pointer;transition:all 0.18s;font-weight:500;">Onto Line</button>
+            <button onclick="setProjMode('plane')" id="proj-plane" style="flex:1;padding:7px 5px;font-size:11px;border-radius:7px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:#9CA3AF;cursor:pointer;transition:all 0.18s;font-weight:500;">Onto Plane</button>
         </div>
         <div class="desc-box text-gray-300">
             <p><span style="color:#FBBF24;font-weight:bold;">&#9632; b</span> — original vector</p>
