@@ -136,12 +136,12 @@
             background: #1a1f2e; border: 1px solid rgba(255,255,255,0.1);
             border-left: none; border-radius: 0 8px 8px 0;
             cursor: pointer; display: flex; align-items: center; justify-content: center;
-            color: #6B7280; font-size: 11px; transition: left 0.3s ease, background 0.2s;
+            color: #6B7280; font-size: 11px; transition: left 0.35s cubic-bezier(0.4,0,0.2,1), background 0.2s;
         }
         #panel-toggle:hover { background: #252d3d; color: #D1D5DB; }
-        body.panel-hidden .ui-panel { transform: translateX(-100%); }
+        body.panel-hidden .ui-panel { margin-left: -300px; }
         body.panel-hidden #panel-toggle { left: 0; }
-        .ui-panel { transition: transform 0.3s ease; }
+        .ui-panel { transition: margin-left 0.35s cubic-bezier(0.4,0,0.2,1); }
 
         @media (max-width: 768px) { #panel-toggle { display: none; } }
         #zoom-slider::-webkit-slider-runnable-track { height:4px; border-radius:4px; background:linear-gradient(90deg,#3B82F6,#A78BFA); }
@@ -607,13 +607,17 @@
     function togglePanel() {
         var hidden = document.body.classList.toggle('panel-hidden');
         document.getElementById('panel-toggle').innerHTML = hidden ? '&#8250;' : '&#8249;';
-        // Resize renderer after transition
-        setTimeout(function() {
-            var container = document.getElementById('canvas-container');
+        // Continuously resize canvas during the 350ms transition for smooth fill
+        var start = performance.now();
+        var duration = 360;
+        var container = document.getElementById('canvas-container');
+        function step(now) {
             camera.aspect = container.clientWidth / container.clientHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(container.clientWidth, container.clientHeight);
-        }, 320);
+            if (now - start < duration) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
     }
 
     function init() {
