@@ -238,38 +238,64 @@
         <h3>Projection</h3>
         <p class="text-gray-300">Closest point in a subspace to <span style="color:#FBBF24;font-weight:bold;">b</span>.</p>
         <div style="display:flex;gap:6px;margin:6px 0;">
-            <button onclick="setProjMode('line')" id="proj-line">Onto Line</button>
-            <button onclick="setProjMode('plane')" id="proj-plane">Onto Plane</button>
+            <button onclick="setProjMode('line')" id="proj-line">Projection Vector</button>
+            <button onclick="setProjMode('plane')" id="proj-plane">Projection Matrix</button>
         </div>
-        <div class="desc-box text-gray-300">
-            <p><span style="color:#FBBF24;font-weight:bold;">&#9632; b</span> — original vector</p>
-            <p><span class="badge-blue">&#9632; p</span> — projection (shadow on subspace)</p>
-            <p><span class="badge-red">&#9632; e = b − p</span> — error (perpendicular)</p>
-            <div class="desc-math-center" style="margin-top:6px;">
-                <span class="math-text">x&#x0302; = a<sup>T</sup>b / a<sup>T</sup>a &nbsp;&nbsp; p = x&#x0302;a</span>
+
+        <!-- Onto Line info -->
+        <div id="proj-info-line">
+            <div class="desc-box text-gray-300">
+                <p><span style="color:#FBBF24;font-weight:bold;">&#9632; b</span> — original vector</p>
+                <p><span class="badge-blue">&#9632; p</span> — projection onto line <span class="math-text">a</span></p>
+                <p><span class="badge-red">&#9632; e = b − p</span> — error (perpendicular to <span class="math-text">a</span>)</p>
+                <div class="desc-math-center" style="margin-top:6px;">
+                    <span class="math-text">x&#x0302; = a<sup>T</sup>b / a<sup>T</sup>a &nbsp;&nbsp; p = x&#x0302;a</span>
+                </div>
+            </div>
+            <div class="desc-box text-gray-300" style="margin-top:8px;">
+                <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:5px;">Projection Matrix (onto line)</p>
+                <div class="desc-math-center"><span class="math-text">P = aa<sup>T</sup> / a<sup>T</sup>a</span></div>
+                <div class="desc-math-center" style="margin-top:4px;"><span class="math-text">p = Pb</span></div>
+                <ul style="margin-top:5px;">
+                    <li>P is symmetric: <span class="math-text">P = P<sup>T</sup></span></li>
+                    <li>Its square is itself: <span class="math-text">P<sup>2</sup> = P</span></li>
+                </ul>
+            </div>
+            <div class="desc-box text-gray-300" style="margin-top:8px;">
+                <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:5px;">Cauchy-Schwarz Inequality</p>
+                <p style="font-size:11px; color:#9CA3AF; margin-bottom:4px;">Derived from the fact that error <span class="badge-red">e = b − p</span> has length ≥ 0</p>
+                <div class="desc-math-center"><span class="math-text">|a<sup>T</sup>b| ≤ ‖a‖ ‖b‖</span></div>
+                <ul style="margin-top:5px;">
+                    <li>Dividing both sides by ‖a‖‖b‖:</li>
+                </ul>
+                <div class="desc-math-center"><span class="math-text">|a<sup>T</sup>b| / ‖a‖‖b‖ ≤ 1</span></div>
+                <ul style="margin-top:5px;">
+                    <li>That gives the definition of angle:</li>
+                </ul>
+                <div class="desc-math-center"><span class="math-text">cos θ = a<sup>T</sup>b / (‖a‖ ‖b‖)</span></div>
             </div>
         </div>
-        <div class="desc-box text-gray-300" style="margin-top:8px;">
-            <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:5px;">Projection Matrix</p>
-            <div class="desc-math-center"><span class="math-text">P = aa<sup>T</sup> / a<sup>T</sup>a</span></div>
-            <div class="desc-math-center" style="margin-top:4px;"><span class="math-text">p = Pb</span></div>
-            <ul style="margin-top:5px;">
-                <li>P is symmetric: <span class="math-text">P = P<sup>T</sup></span></li>
-                <li>Its square is itself: <span class="math-text">P<sup>2</sup> = P</span></li>
-            </ul>
-        </div>
-        <div class="desc-box text-gray-300" style="margin-top:8px;">
-            <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:5px;">Cauchy-Schwarz Inequality</p>
-            <p style="font-size:11px; color:#9CA3AF; margin-bottom:4px;">Derived from the fact that error <span class="badge-red">e = b − p</span> has length ≥ 0</p>
-            <div class="desc-math-center"><span class="math-text">|a<sup>T</sup>b| ≤ ‖a‖ ‖b‖</span></div>
-            <ul style="margin-top:5px;">
-                <li>Dividing both sides by ‖a‖‖b‖:</li>
-            </ul>
-            <div class="desc-math-center"><span class="math-text">|a<sup>T</sup>b| / ‖a‖‖b‖ ≤ 1</span></div>
-            <ul style="margin-top:5px;">
-                <li>That gives the definition of angle:</li>
-            </ul>
-            <div class="desc-math-center"><span class="math-text">cos θ = a<sup>T</sup>b / (‖a‖ ‖b‖)</span></div>
+
+        <!-- Onto Plane info -->
+        <div id="proj-info-plane" style="display:none;">
+            <div class="desc-box text-gray-300">
+                <p><span style="color:#FBBF24;font-weight:bold;">&#9632; b</span> — original vector</p>
+                <p><span class="badge-blue">&#9632; p</span> — projection onto plane (columns of <span class="math-text">A</span>)</p>
+                <p><span class="badge-red">&#9632; e = b − p</span> — error (perpendicular to plane)</p>
+                <div class="desc-math-center" style="margin-top:6px;">
+                    <span class="math-text">x&#x0302; = (A<sup>T</sup>A)<sup>-1</sup>A<sup>T</sup>b &nbsp;&nbsp; p = Ax&#x0302;</span>
+                </div>
+            </div>
+            <div class="desc-box text-gray-300" style="margin-top:8px;">
+                <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:5px;">Projection Matrix (onto plane)</p>
+                <div class="desc-math-center"><span class="math-text">P = A(A<sup>T</sup>A)<sup>-1</sup>A<sup>T</sup></span></div>
+                <div class="desc-math-center" style="margin-top:4px;"><span class="math-text">p = Pb</span></div>
+                <ul style="margin-top:5px;">
+                    <li>P is symmetric: <span class="math-text">P = P<sup>T</sup></span></li>
+                    <li>Its square is itself: <span class="math-text">P<sup>2</sup> = P</span></li>
+                    <li><span class="math-text">I − P</span> projects onto the perpendicular complement</li>
+                </ul>
+            </div>
         </div>
     </div>
 
@@ -765,6 +791,8 @@
         window.setProjMode = function(m) {
             document.getElementById('proj-line').classList.toggle('active', m === 'line');
             document.getElementById('proj-plane').classList.toggle('active', m === 'plane');
+            document.getElementById('proj-info-line').style.display = m === 'line' ? 'block' : 'none';
+            document.getElementById('proj-info-plane').style.display = m === 'plane' ? 'block' : 'none';
             buildProjection(m);
         };
 
