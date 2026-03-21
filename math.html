@@ -280,8 +280,9 @@
         <div id="proj-info-plane" style="display:none;">
             <div class="desc-box text-gray-300">
                 <p><span style="color:#FBBF24;font-weight:bold;">&#9632; b</span> — original vector</p>
-                <p><span class="badge-blue">&#9632; p</span> — projection onto plane (columns of <span class="math-text">A</span>)</p>
-                <p><span class="badge-red">&#9632; e = b − p</span> — error (perpendicular to plane)</p>
+                <p><span style="color:#60A5FA;font-weight:bold;">&#9632; Plane</span> — the subspace (columns of <span class="math-text">A</span>)</p>
+                <p><span style="color:#60A5FA;font-weight:bold;">&#9632; p</span> — projection onto plane</p>
+                <p><span style="color:#F87171;font-weight:bold;">&#9632; e = b − p</span> — error (perpendicular to plane)</p>
                 <div class="desc-math-center" style="margin-top:6px;">
                     <span class="math-text">x&#x0302; = (A<sup>T</sup>A)<sup>-1</sup>A<sup>T</sup>b &nbsp;&nbsp; p = Ax&#x0302;</span>
                 </div>
@@ -297,7 +298,10 @@
                 </ul>
             </div>
             <div class="desc-box text-gray-300" style="margin-top:8px;">
-                <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:6px;">Remarks</p>
+                <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:6px; cursor:pointer; display:flex; justify-content:space-between; align-items:center;" onclick="var r=document.getElementById('remarks-body'); var a=document.getElementById('remarks-arrow'); var open=r.style.display!=='none'; r.style.display=open?'none':'block'; a.textContent=open?'▶':'▼';">
+                    Remarks <span id="remarks-arrow">▼</span>
+                </p>
+                <div id="remarks-body">
                 <ul>
                     <li><strong>Remark 1.</strong> If <span class="math-text">b</span> is in the column space:
                         <div class="desc-math-center" style="margin-top:4px;"><span class="math-text">p = A(A<sup>T</sup>A)<sup>-1</sup>A<sup>T</sup>Ax = Ax = b</span></div>
@@ -309,7 +313,11 @@
                         <div class="desc-math-center" style="margin-top:4px;"><span class="math-text">p = A(A<sup>T</sup>A)<sup>-1</sup>A<sup>T</sup>b = AA<sup>-1</sup>(A<sup>T</sup>)<sup>-1</sup>A<sup>T</sup>b = b</span></div>
                         <p style="font-size:11px; color:#9CA3AF; margin-top:3px;">Only when A is invertible can we split (A<sup>T</sup>A)<sup>-1</sup> = A<sup>-1</sup>(A<sup>T</sup>)<sup>-1</sup>. Not possible for rectangular A.</p>
                     </li>
+                    <li style="margin-top:6px;"><strong>Remark 4.</strong> If A has only one column <span class="math-text">a</span>, then <span class="math-text">A<sup>T</sup>A</span> is the number <span class="math-text">a<sup>T</sup>a</span> and <span class="math-text">x&#x0302; = a<sup>T</sup>b / a<sup>T</sup>a</span>. We return to the earlier formula:
+                        <div class="desc-math-center" style="margin-top:4px;"><span class="math-text">p = a(a<sup>T</sup>a)<sup>-1</sup>a<sup>T</sup>b = aa<sup>T</sup>b / a<sup>T</sup>a</span></div>
+                    </li>
                 </ul>
+                </div>
             </div>
         </div>
     </div>
