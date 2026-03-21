@@ -10,7 +10,7 @@
         .ui-panel { width: 300px; min-width: 300px; background: linear-gradient(180deg, #0f1117 0%, #111827 100%); padding: 16px 14px; box-shadow: 4px 0 30px rgba(0,0,0,0.8); border-right: 1px solid rgba(255,255,255,0.06); overflow-y: auto; display: flex; flex-direction: column; z-index: 10; scrollbar-width: none; -ms-overflow-style: none; }
         .ui-panel::-webkit-scrollbar { display: none; }
         #canvas-container { flex-grow: 1; height: 100%; min-height: 0; position: relative; outline: none; background: #000000; }
-        canvas { display: block; outline: none; }
+        canvas { display: block; outline: none; width: 100% !important; height: 100% !important; }
 
         /* Tab buttons */
         .btn-group { display: flex; flex-direction: column; gap: 2px; margin-bottom: 14px; }
@@ -607,17 +607,6 @@
     function togglePanel() {
         var hidden = document.body.classList.toggle('panel-hidden');
         document.getElementById('panel-toggle').innerHTML = hidden ? '&#8250;' : '&#8249;';
-        // Continuously resize canvas during the 350ms transition for smooth fill
-        var start = performance.now();
-        var duration = 360;
-        var container = document.getElementById('canvas-container');
-        function step(now) {
-            camera.aspect = container.clientWidth / container.clientHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(container.clientWidth, container.clientHeight);
-            if (now - start < duration) requestAnimationFrame(step);
-        }
-        requestAnimationFrame(step);
     }
 
     function init() {
@@ -634,7 +623,7 @@
 
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setPixelRatio(window.devicePixelRatio);
-        renderer.setSize(W, H);
+        renderer.setSize(W, H, false);  // false = don't set canvas CSS size (we use CSS 100%/100%)
         container.appendChild(renderer.domElement);
 
         controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -860,9 +849,7 @@
         scene.add(vectorsGroup, typesGroup, subspacesGroup, complementGroup, planesGroup, projectionGroup);
 
         window.addEventListener('resize', function() {
-            camera.aspect = container.clientWidth / container.clientHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(container.clientWidth, container.clientHeight);
+            // animate loop handles resize automatically
         });
 
         setMode(1);
@@ -870,6 +857,14 @@
 
     function animate() {
         requestAnimationFrame(animate);
+        // Auto-resize renderer to match CSS canvas size every frame (smooth panel transition)
+        var canvas = renderer.domElement;
+        var w = canvas.clientWidth, h = canvas.clientHeight;
+        if (canvas.width !== w || canvas.height !== h) {
+            renderer.setSize(w, h, false);
+            camera.aspect = w / h;
+            camera.updateProjectionMatrix();
+        }
         controls.update();
         renderer.render(scene, camera);
     }
