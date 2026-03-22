@@ -94,7 +94,6 @@
         .description-content li { font-size: 11.5px; color: #D1D5DB; margin-bottom: 4px; line-height: 1.45; }
         .desc-box { background: rgba(0,0,0,0.35); padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.07); margin-top: 8px; }
         .desc-math-center { text-align:center; padding: 5px 0; margin: 6px 0; background: rgba(59,130,246,0.07); border-radius: 6px; border: 1px solid rgba(59,130,246,0.15); }
-        #desc-1 { display: block; }
 
         /* --- Mobile --- */
         @media (max-width: 768px) {
@@ -188,7 +187,7 @@
         <h3>Orthogonal Vectors</h3>
         <p class="text-gray-300">Inner product of <span class="badge-blue">x(2,1,0)</span> and <span class="badge-red">y(-1,2,0)</span> is zero.
         <span class="math-text">x<sup>T</sup>y = y<sup>T</sup>x = 0</span></p>
-        <div class="desc-box text-gray-300">
+        <div class="desc-box">
             <ul>
                 <li>Zero is the <strong>only</strong> vector orthogonal to itself.</li>
                 <li>Zero is the <strong>only</strong> vector orthogonal to every other vector.</li>
@@ -199,7 +198,7 @@
     <div id="desc-2" class="description-content">
         <h3>Types of Subspaces in ℝ³</h3>
         <p class="text-gray-300">A subspace must always contain the origin. Four types in 3D:</p>
-        <div class="desc-box text-gray-300">
+        <div class="desc-box">
             <ul>
                 <li><strong>0D:</strong> Origin alone <span class="math-text">Z={0}</span></li>
                 <li><span class="badge-blue">1D:</span> Any line through origin</li>
@@ -213,7 +212,7 @@
         <h3>Orthogonal Subspaces</h3>
         <p class="text-gray-300">Subspaces <span class="badge-blue">S</span> and <span class="badge-red">T</span> are orthogonal if every x∈S is orthogonal to every y∈T.
         <span class="math-text">x<sup>T</sup>y = 0</span></p>
-        <div class="desc-box text-gray-300">
+        <div class="desc-box">
             <ul>
                 <li>Z={0} is orthogonal to all subspaces.</li>
                 <li>In ℝ³, a line can be orthogonal to a plane.</li>
@@ -230,7 +229,7 @@
     <div id="desc-4" class="description-content">
         <h3>"A plane cannot be orthogonal to another plane"</h3>
         <p class="text-gray-300">In ℝ³, two 2D planes must intersect along a line. They share the <span class="badge-purple">Purple Vector v</span>.</p>
-        <div class="desc-box text-gray-300">
+        <div class="desc-box">
             Since v is in both planes and <span class="math-text">v<sup>T</sup>v ≠ 0</span>, the planes cannot be orthogonal subspaces.
         </div>
     </div>
@@ -239,9 +238,9 @@
         <h3>Orthogonal Complement</h3>
         <p class="text-gray-300">Given a subspace <span class="badge-blue">V</span> of ℝⁿ, the space of all vectors orthogonal to <span class="badge-blue">V</span> is called the <strong>orthogonal complement</strong> of <span class="badge-blue">V</span>, written <span class="badge-red math-text">V<sup>⊥</sup></span> and read as <em>"V perp"</em>.</p>
         <p class="text-gray-300">Let <span class="badge-red">W = V<sup>⊥</sup></span> — the orthogonal complement of <span class="badge-blue">V</span>.</p>
-        <div class="desc-box text-gray-300">
+        <div class="desc-box">
             <div class="desc-math-center"><span class="math-text">If W = V<sup>⊥</sup> then V = W<sup>⊥</sup> and V<sup>⊥⊥</sup> = V</span></div>
-            <div class="desc-math-center" style="margin-top:4px;"><span class="math-text">dim V + dim W = n</span></div>
+            <div class="desc-math-center"><span class="math-text">dim V + dim W = n</span></div>
             <ul>
                 <li>Here n=3, dim V=1 → dim V<sup>⊥</sup>=2 ✓</li>
                 <li>The whole space ℝⁿ is decomposed into two perpendicular parts <span class="badge-blue">V</span> and <span class="badge-red">W = V<sup>⊥</sup></span>.</li>
@@ -249,7 +248,6 @@
             </ul>
         </div>
     </div>
-
 
     <div id="desc-6" class="description-content">
         <h3>Projection</h3>
@@ -261,7 +259,7 @@
 
         <!-- Onto Line info -->
         <div id="proj-info-line">
-            <div class="desc-box text-gray-300">
+            <div class="desc-box">
                 <p><span style="color:#FBBF24;font-weight:bold;">&#9632; b</span> — original vector</p>
                 <p><span class="badge-blue">&#9632; p</span> — projection onto line <span class="math-text">a</span></p>
                 <p><span class="badge-red">&#9632; e = b − p</span> — error (perpendicular to <span class="math-text">a</span>)</p>
@@ -269,7 +267,7 @@
                     <span class="math-text">x&#x0302; = a<sup>T</sup>b / a<sup>T</sup>a &nbsp;&nbsp; p = x&#x0302;a</span>
                 </div>
             </div>
-            <div class="desc-box text-gray-300" style="margin-top:8px;">
+            <div class="desc-box" style="margin-top:8px;">
                 <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:5px;">Projection Matrix (onto line)</p>
                 <div class="desc-math-center"><span class="math-text">P = aa<sup>T</sup> / a<sup>T</sup>a</span></div>
                 <div class="desc-math-center" style="margin-top:4px;"><span class="math-text">p = Pb</span></div>
@@ -278,7 +276,7 @@
                     <li>Its square is itself: <span class="math-text">P<sup>2</sup> = P</span></li>
                 </ul>
             </div>
-            <div class="desc-box text-gray-300" style="margin-top:8px;">
+            <div class="desc-box" style="margin-top:8px;">
                 <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:5px;">Cauchy-Schwarz Inequality</p>
                 <p style="font-size:11px; color:#9CA3AF; margin-bottom:4px;">Derived from the fact that error <span class="badge-red">e = b − p</span> has length ≥ 0</p>
                 <div class="desc-math-center"><span class="math-text">|a<sup>T</sup>b| ≤ ‖a‖ ‖b‖</span></div>
@@ -295,7 +293,7 @@
 
         <!-- Onto Plane info -->
         <div id="proj-info-plane" style="display:none;">
-            <div class="desc-box text-gray-300">
+            <div class="desc-box">
                 <p><span style="color:#FBBF24;font-weight:bold;">&#9632; b</span> — original vector</p>
                 <p><span style="color:#60A5FA;font-weight:bold;">&#9632; Plane</span> — the subspace (columns of <span class="math-text">A</span>)</p>
                 <p><span style="color:#60A5FA;font-weight:bold;">&#9632; p</span> — projection onto plane</p>
@@ -304,7 +302,7 @@
                     <span class="math-text">x&#x0302; = (A<sup>T</sup>A)<sup>-1</sup>A<sup>T</sup>b &nbsp;&nbsp; p = Ax&#x0302;</span>
                 </div>
             </div>
-            <div class="desc-box text-gray-300" style="margin-top:8px;">
+            <div class="desc-box" style="margin-top:8px;">
                 <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:5px;">Projection Matrix (onto plane)</p>
                 <div class="desc-math-center"><span class="math-text">P = A(A<sup>T</sup>A)<sup>-1</sup>A<sup>T</sup></span></div>
                 <div class="desc-math-center" style="margin-top:4px;"><span class="math-text">p = Pb</span></div>
@@ -314,7 +312,7 @@
                     <li><span class="math-text">I − P</span> projects onto the perpendicular complement</li>
                 </ul>
             </div>
-            <div class="desc-box text-gray-300" style="margin-top:8px;">
+            <div class="desc-box" style="margin-top:8px;">
                 <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:6px; cursor:pointer; display:flex; justify-content:space-between; align-items:center;" onclick="var r=document.getElementById('remarks-body'); var a=document.getElementById('remarks-arrow'); var open=r.style.display!=='none'; r.style.display=open?'none':'block'; a.textContent=open?'▶':'▼';">
                     Remarks <span id="remarks-arrow">▶</span>
                 </p>
@@ -348,7 +346,7 @@
     <div id="desc-7" class="description-content">
         <h3>Fundamental Subspaces</h3>
         <p class="text-gray-300">For an m×n matrix A of rank r, there are four fundamental subspaces.</p>
-        <div class="desc-box text-gray-300">
+        <div class="desc-box">
             <ul>
                 <li><span class="badge-blue">&#9632; Row space</span> C(Aᵀ) ⊂ ℝⁿ, dim = r</li>
                 <li><span style="color:#10b981;font-weight:bold;">&#9632; Nullspace</span> N(A) ⊂ ℝⁿ, dim = n−r</li>
@@ -848,10 +846,6 @@
         buildProjection('line');
 
         scene.add(vectorsGroup, typesGroup, subspacesGroup, complementGroup, planesGroup, projectionGroup);
-
-        window.addEventListener('resize', function() {
-            // animate loop handles resize automatically
-        });
 
         setMode(1);
     }
