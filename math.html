@@ -5,24 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Primary SEO -->
-    <title>Interactive 3D Linear Algebra Visualizer | Orthogonality, Projection & Subspaces</title>
-    <meta name="description" content="Explore linear algebra visually — orthogonal vectors, subspaces, projections, projection matrices, and the four fundamental subspaces of a matrix. Interactive 3D visualizations built with Three.js.">
-    <meta name="keywords" content="linear algebra, 3D visualization, orthogonal vectors, projection matrix, fundamental subspaces, nullspace, column space, row space, Cauchy-Schwarz, orthogonal complement, Three.js, interactive math, learn linear algebra">
+    <title>Linear Algebra Visualizer — Interactive 3D Vector & Matrix Transformation Tool</title>
+    <meta name="description" content="Learn linear algebra visually. Explore orthogonal vectors, dot product, matrix transformations, projection matrices, and the four fundamental subspaces with this free interactive 3D visualization tool.">
+    <meta name="keywords" content="linear algebra visualization, linear algebra visualizer, interactive linear algebra tool, matrix transformation visualization, vector visualization tool, orthogonal vectors visualization, dot product visualization, inner product linear algebra, vector transformation visualizer, matrix multiplication visualization, linear transformations interactive, 2D vector visualization, 3D vector visualization, learn linear algebra visually, interactive vector transformation tool, understand orthogonal vectors with visualization, linear algebra for beginners interactive, visualize matrix transformations online, how vectors work visually, dot product explained visually, projection matrix, fundamental subspaces, nullspace, column space, row space, orthogonal complement, rank nullity theorem">
     <meta name="author" content="Proindra">
     <link rel="canonical" href="https://proindra.github.io/linear-algebra-visualization/">
 
     <!-- Open Graph (Facebook, LinkedIn, WhatsApp previews) -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Interactive 3D Linear Algebra Visualizer">
-    <meta property="og:description" content="Visualize orthogonality, projections, and the four fundamental subspaces interactively in 3D. Great for students and educators.">
+    <meta property="og:title" content="Linear Algebra Visualizer — Interactive 3D Vector & Matrix Tool">
+    <meta property="og:description" content="Visualize orthogonal vectors, dot product, matrix transformations, projections, and the four fundamental subspaces interactively in 3D. Free tool for students and educators.">
     <meta property="og:url" content="https://proindra.github.io/linear-algebra-visualization/">
     <meta property="og:site_name" content="Linear Algebra Visualizer">
     <meta property="og:locale" content="en_US">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Interactive 3D Linear Algebra Visualizer">
-    <meta name="twitter:description" content="Explore orthogonal vectors, projection matrices, nullspace, column space and more — all in interactive 3D.">
+    <meta name="twitter:title" content="Linear Algebra Visualizer — Interactive 3D Vector & Matrix Tool">
+    <meta name="twitter:description" content="Learn linear algebra visually — orthogonal vectors, dot product, matrix transformations, projection matrices, nullspace, column space and more in interactive 3D.">
 
     <!-- Indexing -->
     <meta name="robots" content="index, follow">
@@ -33,8 +33,9 @@
     {
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      "name": "Interactive 3D Linear Algebra Visualizer",
-      "description": "Interactive 3D visualizations of core linear algebra concepts including orthogonal vectors, subspaces, projections, projection matrices, and the four fundamental subspaces.",
+      "name": "Linear Algebra Visualizer",
+      "alternateName": "Interactive Linear Algebra Tool",
+      "description": "A free interactive 3D tool to learn linear algebra visually. Covers orthogonal vectors, dot product, inner product, matrix transformations, projection matrices, vector transformation, and the four fundamental subspaces including nullspace, column space, row space, and left nullspace.",
       "url": "https://proindra.github.io/linear-algebra-visualization/",
       "applicationCategory": "EducationalApplication",
       "educationalUse": ["visualization", "instruction", "self-study"],
@@ -42,7 +43,7 @@
         "@type": "EducationalAudience",
         "educationalRole": ["student", "teacher"]
       },
-      "keywords": "linear algebra, orthogonality, projection, subspaces, Three.js, interactive",
+      "keywords": "linear algebra visualization, matrix transformation visualization, vector visualization tool, orthogonal vectors, dot product, interactive linear algebra, learn linear algebra visually",
       "inLanguage": "en",
       "isAccessibleForFree": true,
       "author": {
@@ -397,6 +398,18 @@
             </ul>
             <div class="desc-math-center" style="margin-top:6px;"><span class="math-text">Ax<sub>r</sub> = b &nbsp;|&nbsp; Ax<sub>n</sub> = 0 &nbsp;|&nbsp; Ax = b</span></div>
             <p style="margin-top:4px;">Hover over regions in the diagram to see mappings.</p>
+        </div>
+        <div class="desc-box" style="margin-top:8px;">
+            <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:5px;">Rank-Nullity Theorem</p>
+            <p style="font-size:11px; color:#D1D5DB; margin-bottom:4px;">The dimensions of the four subspaces satisfy two fundamental identities:</p>
+            <div class="desc-math-center"><span class="math-text">r + (n−r) = n &nbsp; (in ℝⁿ)</span></div>
+            <div class="desc-math-center" style="margin-top:4px;"><span class="math-text">r + (m−r) = m &nbsp; (in ℝᵐ)</span></div>
+            <ul style="margin-top:6px;">
+                <li><span class="badge-blue">dim C(Aᵀ)</span> + <span style="color:#10b981;font-weight:bold;">dim N(A)</span> = n</li>
+                <li><span class="badge-red">dim C(A)</span> + <span style="color:#f59e0b;font-weight:bold;">dim N(Aᵀ)</span> = m</li>
+                <li style="margin-top:4px; color:#9CA3AF; font-size:11px;">Row space and nullspace are orthogonal complements in ℝⁿ.</li>
+                <li style="color:#9CA3AF; font-size:11px;">Column space and left nullspace are orthogonal complements in ℝᵐ.</li>
+            </ul>
         </div>
     </div>
 
@@ -906,30 +919,29 @@
 </script>
 <!-- SEO: hidden structured content for crawlers, invisible to users -->
 <div style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;" aria-hidden="true">
-    <h1>Interactive 3D Linear Algebra Visualizer</h1>
-    <p>An interactive 3D tool to visualize core linear algebra concepts including orthogonal vectors, subspaces, projections, and the four fundamental subspaces of a matrix.</p>
+    <h1>Linear Algebra Visualizer — Interactive 3D Vector and Matrix Transformation Tool</h1>
+    <p>A free interactive linear algebra visualization tool to learn linear algebra visually. Explore orthogonal vectors, dot product, inner product, matrix transformations, vector transformations, projection matrices, and the four fundamental subspaces in interactive 3D.</p>
 
-    <h2>Orthogonal Vectors</h2>
-    <p>Visualize two orthogonal vectors in 3D space. The inner product x&#7488;y = 0. Zero is the only vector orthogonal to itself and to every other vector.</p>
+    <h2>Orthogonal Vectors Visualization</h2>
+    <p>Visualize orthogonal vectors in 3D space and understand the dot product visually. The inner product x&#7488;y = 0 when vectors are perpendicular. Learn how vectors work visually with this interactive vector visualization tool.</p>
 
-    <h2>Types of Subspaces in ℝ³</h2>
-    <p>Explore the four types of subspaces in three-dimensional space: the origin (0D), lines through the origin (1D), planes through the origin (2D), and the entire ℝ³ space (3D).</p>
+    <h2>2D and 3D Vector Visualization — Types of Subspaces</h2>
+    <p>Explore 2D vector visualization and 3D vector visualization of subspace types: the origin (0D), lines through the origin (1D), planes through the origin (2D), and the entire ℝ³ space (3D). Understand linear transformations interactively.</p>
 
-    <h2>Orthogonal Subspaces</h2>
-    <p>Two subspaces S and T are orthogonal if every vector in S is orthogonal to every vector in T. The dimension constraint is dim S + dim T ≤ n.</p>
+    <h2>Orthogonal Subspaces — Inner Product Linear Algebra</h2>
+    <p>Two subspaces S and T are orthogonal if every vector in S is orthogonal to every vector in T. The inner product linear algebra constraint is dim S + dim T ≤ n. Understand dot product visualization and vector transformation visually.</p>
 
-    <h2>Intersecting Planes</h2>
-    <p>In ℝ³, two 2D planes must intersect along a line, proving that two planes cannot be orthogonal subspaces.</p>
+    <h2>Intersecting Planes — Matrix Transformation Visualization</h2>
+    <p>In ℝ³, two 2D planes must intersect along a line, proving that two planes cannot be orthogonal subspaces. Visualize matrix transformations online with this interactive tool.</p>
 
-    <h2>Orthogonal Complement</h2>
-    <p>The orthogonal complement V⊥ of a subspace V contains all vectors orthogonal to V. Every vector in ℝⁿ splits uniquely into a part in V and a part in V⊥.</p>
+    <h2>Orthogonal Complement — Interactive Vector Transformation Tool</h2>
+    <p>The orthogonal complement V⊥ of a subspace V contains all vectors orthogonal to V. Every vector in ℝⁿ splits uniquely into a part in V and a part in V⊥. Use this interactive vector transformation tool to understand orthogonal vectors with visualization.</p>
 
-    <h2>Projection Vector and Projection Matrix</h2>
-    <p>The projection of vector b onto line a is p = (a&#7488;b / a&#7488;a)a. The projection matrix onto a line is P = aa&#7488; / a&#7488;a. For projection onto a plane, P = A(A&#7488;A)⁻¹A&#7488;. The matrix P is symmetric and idempotent: P² = P.</p>
-    <p>The Cauchy-Schwarz inequality |a&#7488;b| ≤ ‖a‖‖b‖ is derived from the fact that the error vector e = b − p has non-negative length.</p>
+    <h2>Projection Vector and Projection Matrix — Linear Transformations Interactive</h2>
+    <p>The projection of vector b onto line a is p = (a&#7488;b / a&#7488;a)a. The projection matrix onto a line is P = aa&#7488; / a&#7488;a. For projection onto a plane, P = A(A&#7488;A)⁻¹A&#7488;. The matrix P is symmetric and idempotent: P² = P. The Cauchy-Schwarz inequality |a&#7488;b| ≤ ‖a‖‖b‖ is derived from the error vector e = b − p. Dot product explained visually.</p>
 
-    <h2>Four Fundamental Subspaces</h2>
-    <p>For an m×n matrix A of rank r, the four fundamental subspaces are: the row space C(A&#7488;) in ℝⁿ with dimension r, the nullspace N(A) in ℝⁿ with dimension n−r, the column space C(A) in ℝᵐ with dimension r, and the left nullspace N(A&#7488;) in ℝᵐ with dimension m−r.</p>
+    <h2>Four Fundamental Subspaces — Rank-Nullity Theorem</h2>
+    <p>For an m×n matrix A of rank r, the four fundamental subspaces are: the row space C(A&#7488;) in ℝⁿ with dimension r, the nullspace N(A) in ℝⁿ with dimension n−r, the column space C(A) in ℝᵐ with dimension r, and the left nullspace N(A&#7488;) in ℝᵐ with dimension m−r. The rank-nullity theorem states: dim C(A&#7488;) + dim N(A) = n and dim C(A) + dim N(A&#7488;) = m. Learn linear algebra for beginners interactively.</p>
 </div>
 
 </body>
