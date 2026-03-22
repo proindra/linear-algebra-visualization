@@ -52,8 +52,19 @@
     }
     </script>
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Preload critical JS -->
+    <link rel="preload" href="three.min.js" as="script">
+
+    <!-- Replace full Tailwind runtime with only the utility classes actually used -->
     <style>
+        .text-gray-300 { color: #D1D5DB; }
+        strong { font-weight: 700; }
+        em { font-style: italic; }
         body { margin: 0; overflow: hidden; background-color: #000000; color: white; font-family: 'Inter', sans-serif; display: flex; flex-direction: row; height: 100vh; }
         .ui-panel { width: 300px; min-width: 300px; background: linear-gradient(180deg, #0f1117 0%, #111827 100%); padding: 16px 14px; box-shadow: 4px 0 30px rgba(0,0,0,0.8); border-right: 1px solid rgba(255,255,255,0.06); overflow-y: auto; display: flex; flex-direction: column; z-index: 10; scrollbar-width: none; -ms-overflow-style: none; }
         .ui-panel::-webkit-scrollbar { display: none; }
@@ -416,9 +427,9 @@
     </div>
 </div>
 
-<script src="three.min.js"></script>
-<script src="OrbitControls.js"></script>
-<script>
+<script src="three.min.js" defer></script>
+<script src="OrbitControls.js" defer></script>
+<script defer>
     var scene, camera, renderer, controls;
     var vectorsGroup, typesGroup, subspacesGroup, complementGroup, planesGroup, projectionGroup;
     var u, v, w1, w2, origin;
