@@ -67,7 +67,7 @@
 
     <!-- Styles -->
     <style>
-        /* Tailwind utility used in panel content */
+        /* Utility class */
         .text-gray-300 { color: #D1D5DB; }
 
         /* Layout */
@@ -538,7 +538,6 @@
         var card = document.getElementById('subspace-card');
         var wrap = document.getElementById('subspace-svg-wrap');
 
-        // Only build once
         if (_subspaceBuilt) return;
         _subspaceBuilt = true;
 
@@ -709,6 +708,7 @@
         subspacesGroup  = new THREE.Group();
         complementGroup = new THREE.Group();
         planesGroup     = new THREE.Group();
+
         // --- MODE 1: Orthogonal Vectors ---
         var arrowU = createThickArrow(u, origin, 2.5, 0x3B82F6);
         var arrowV = createThickArrow(v, origin, 2.5, 0xEF4444);
