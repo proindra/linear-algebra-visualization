@@ -926,5 +926,33 @@
     init();
     animate();
 </script>
+<!-- SEO: hidden structured content for crawlers, invisible to users -->
+<div style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;" aria-hidden="true">
+    <h1>Interactive 3D Linear Algebra Visualizer</h1>
+    <p>An interactive 3D tool to visualize core linear algebra concepts including orthogonal vectors, subspaces, projections, and the four fundamental subspaces of a matrix.</p>
+
+    <h2>Orthogonal Vectors</h2>
+    <p>Visualize two orthogonal vectors in 3D space. The inner product x&#7488;y = 0. Zero is the only vector orthogonal to itself and to every other vector.</p>
+
+    <h2>Types of Subspaces in ℝ³</h2>
+    <p>Explore the four types of subspaces in three-dimensional space: the origin (0D), lines through the origin (1D), planes through the origin (2D), and the entire ℝ³ space (3D).</p>
+
+    <h2>Orthogonal Subspaces</h2>
+    <p>Two subspaces S and T are orthogonal if every vector in S is orthogonal to every vector in T. The dimension constraint is dim S + dim T ≤ n.</p>
+
+    <h2>Intersecting Planes</h2>
+    <p>In ℝ³, two 2D planes must intersect along a line, proving that two planes cannot be orthogonal subspaces.</p>
+
+    <h2>Orthogonal Complement</h2>
+    <p>The orthogonal complement V⊥ of a subspace V contains all vectors orthogonal to V. Every vector in ℝⁿ splits uniquely into a part in V and a part in V⊥.</p>
+
+    <h2>Projection Vector and Projection Matrix</h2>
+    <p>The projection of vector b onto line a is p = (a&#7488;b / a&#7488;a)a. The projection matrix onto a line is P = aa&#7488; / a&#7488;a. For projection onto a plane, P = A(A&#7488;A)⁻¹A&#7488;. The matrix P is symmetric and idempotent: P² = P.</p>
+    <p>The Cauchy-Schwarz inequality |a&#7488;b| ≤ ‖a‖‖b‖ is derived from the fact that the error vector e = b − p has non-negative length.</p>
+
+    <h2>Four Fundamental Subspaces</h2>
+    <p>For an m×n matrix A of rank r, the four fundamental subspaces are: the row space C(A&#7488;) in ℝⁿ with dimension r, the nullspace N(A) in ℝⁿ with dimension n−r, the column space C(A) in ℝᵐ with dimension r, and the left nullspace N(A&#7488;) in ℝᵐ with dimension m−r.</p>
+</div>
+
 </body>
 </html>
