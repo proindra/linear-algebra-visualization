@@ -134,14 +134,17 @@
         .panel-divider { height: 1px; background: rgba(255,255,255,0.06); margin: 10px 0; }
 
         /* Projection sub-buttons */
-        #proj-line, #proj-plane {
+        #proj-line, #proj-plane,
+        #ls-line, #ls-weighted {
             flex: 1; padding: 7px 5px; font-size: 11px;
             border-radius: 7px; border: 1px solid rgba(255,255,255,0.1);
             background: rgba(255,255,255,0.05); color: #9CA3AF;
             cursor: pointer; transition: all 0.18s; font-weight: 500;
         }
-        #proj-line:hover, #proj-plane:hover { background: rgba(255,255,255,0.1); color: #E5E7EB; }
-        #proj-line.active, #proj-plane.active {
+        #proj-line:hover, #proj-plane:hover,
+        #ls-line:hover, #ls-weighted:hover { background: rgba(255,255,255,0.1); color: #E5E7EB; }
+        #proj-line.active, #proj-plane.active,
+        #ls-line.active, #ls-weighted.active {
             background: linear-gradient(135deg, #1D4ED8, #4F46E5);
             border-color: transparent; color: #fff;
             box-shadow: 0 2px 8px rgba(59,130,246,0.35);
@@ -225,8 +228,10 @@
         <button id="btn-3" class="tab-btn" onclick="setMode(3)"><span class="tab-num">3</span>1D Ortho Subspaces</button>
         <button id="btn-4" class="tab-btn" onclick="setMode(4)"><span class="tab-num">4</span>Intersecting Planes</button>
         <button id="btn-5" class="tab-btn" onclick="setMode(5)"><span class="tab-num">5</span>Orthogonal Complement</button>
-        <button id="btn-6" class="tab-btn" onclick="setMode(6)"><span class="tab-num">6</span><span style="line-height:1.3;">Projection Vector<br><span style="font-size:10.5px;color:#9CA3AF;font-weight:400;">& Matrix</span></span></button>
-        <button id="btn-7" class="tab-btn" onclick="setMode(7)"><span class="tab-num">7</span>Fundamental Subspaces</button>
+        <button id="btn-6" class="tab-btn" onclick="setMode(6)"><span class="tab-num">6</span>Fundamental Subspaces</button>
+        <button id="btn-7" class="tab-btn" onclick="setMode(7)"><span class="tab-num">7</span><span style="line-height:1.3;">Projection Vector<br><span style="font-size:10.5px;color:#9CA3AF;font-weight:400;">& Matrix</span></span></button>
+        <button id="btn-8" class="tab-btn" onclick="setMode(8)"><span class="tab-num">8</span><span style="line-height:1.3;">Least Squares<br><span style="font-size:10.5px;color:#9CA3AF;font-weight:400;">Line & Weighted</span></span></button>
+        <button id="btn-9" class="tab-btn" onclick="setMode(9)"><span class="tab-num">9</span>Orthonormal</button>
     </div>
     <div class="panel-divider"></div>
 
@@ -296,12 +301,12 @@
         </div>
     </div>
 
-    <div id="desc-6" class="description-content">
+    <div id="desc-7" class="description-content">
         <h3>Projection</h3>
         <p class="text-gray-300">Closest point in a subspace to <span style="color:#FBBF24;font-weight:bold;">b</span>.</p>
         <div style="display:flex;gap:6px;margin:6px 0;">
-            <button onclick="setProjMode('line')" id="proj-line">Projection Vector</button>
-            <button onclick="setProjMode('plane')" id="proj-plane">Projection Matrix</button>
+            <button onclick="setProjMode('line')" id="proj-line">Onto Line</button>
+            <button onclick="setProjMode('plane')" id="proj-plane">Onto Plane</button>
         </div>
 
         <!-- Onto Line info -->
@@ -342,7 +347,7 @@
         <div id="proj-info-plane" style="display:none;">
             <div class="desc-box">
                 <p><span style="color:#FBBF24;font-weight:bold;">&#9632; b</span> — original vector</p>
-                <p><span style="color:#60A5FA;font-weight:bold;">&#9632; Plane</span> — the subspace (columns of <span class="math-text">A</span>)</p>
+                <p><span style="color:#34D399;font-weight:bold;">&#9632; Plane</span> — the subspace (columns of <span class="math-text">A</span>)</p>
                 <p><span style="color:#60A5FA;font-weight:bold;">&#9632; p</span> — projection onto plane</p>
                 <p><span style="color:#F87171;font-weight:bold;">&#9632; e = b − p</span> — error (perpendicular to plane)</p>
                 <div class="desc-math-center" style="margin-top:6px;">
@@ -353,35 +358,41 @@
                 <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:5px;">Projection Matrix (onto plane)</p>
                 <div class="desc-math-center"><span class="math-text">P = A(A<sup>T</sup>A)<sup>-1</sup>A<sup>T</sup></span></div>
                 <div class="desc-math-center" style="margin-top:4px;"><span class="math-text">p = Pb</span></div>
-                <ul style="margin-top:5px;">
-                    <li>P is symmetric: <span class="math-text">P = P<sup>T</sup></span></li>
-                    <li>Its square is itself: <span class="math-text">P<sup>2</sup> = P</span></li>
-                    <li><span class="math-text">I − P</span> projects onto the perpendicular complement</li>
-                </ul>
             </div>
             <div class="desc-box" style="margin-top:8px;">
                 <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:6px; cursor:pointer; display:flex; justify-content:space-between; align-items:center;" onclick="var r=document.getElementById('remarks-body'); var a=document.getElementById('remarks-arrow'); var open=r.style.display!=='none'; r.style.display=open?'none':'block'; a.textContent=open?'▶':'▼';">
                     Remarks <span id="remarks-arrow">▶</span>
                 </p>
                 <div id="remarks-body" style="display:none;">
+                    <div style="margin-top:6px; padding:8px 10px; background:rgba(248,113,113,0.06); border-radius:8px; border-left:3px solid #F87171;">
+                        <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:4px;">Remark 1 — Properties of P</p>
+                        <p style="font-size:11px; color:#D1D5DB; margin-bottom:4px;">The projection matrix <span class="math-text">P = A(A<sup>T</sup>A)<sup>-1</sup>A<sup>T</sup></span> has two basic properties:</p>
+                        <ul style="margin-top:4px; margin-bottom:4px;">
+                            <li style="font-size:11px; color:#D1D5DB; margin-bottom:4px;"><strong style="color:#F9FAFB;">(i)</strong> It equals its square: <span class="math-text">P<sup>2</sup> = P</span></li>
+                            <li style="font-size:11px; color:#D1D5DB; margin-bottom:4px;"><strong style="color:#F9FAFB;">(ii)</strong> It equals its transpose: <span class="math-text">P<sup>T</sup> = P</span></li>
+                            <li style="font-size:11px; color:#D1D5DB; margin-bottom:4px;"><strong style="color:#F9FAFB;">(iii)</strong> <span class="math-text">I − P</span> projects onto the perpendicular complement.</li>
+                        </ul>
+                        <p style="font-size:11px; color:#D1D5DB; margin-bottom:0;">Conversely, any symmetric matrix with <span class="math-text">P<sup>2</sup> = P</span> represents a projection.</p>
+                        <p style="font-size:10.5px; color:#FCD34D; margin-top:5px; margin-bottom:0;">Note: There may be a risk of confusion with permutation matrices, also denoted by P, but the risk should be small.</p>
+                    </div>
                     <div style="margin-top:6px; padding:8px 10px; background:rgba(59,130,246,0.06); border-radius:8px; border-left:3px solid #3B82F6;">
-                        <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:4px;">Remark 1 — b in column space</p>
+                        <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:4px;">Remark 2 — b in column space</p>
                         <p style="font-size:11px; color:#D1D5DB; margin-bottom:4px;">If <span style="color:#FBBF24;font-weight:bold;">b</span> is already in the column space, projection gives back <span style="color:#FBBF24;font-weight:bold;">b</span> itself:</p>
                         <div class="desc-math-center"><span class="math-text"><span style="color:#60A5FA;">p</span> = A(A<sup>T</sup>A)<sup>-1</sup>A<sup>T</sup>Ax = Ax = <span style="color:#FBBF24;">b</span></span></div>
                     </div>
                     <div style="margin-top:6px; padding:8px 10px; background:rgba(16,185,129,0.06); border-radius:8px; border-left:3px solid #10b981;">
-                        <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:4px;">Remark 2 — b in left nullspace</p>
+                        <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:4px;">Remark 3 — b in left nullspace</p>
                         <p style="font-size:11px; color:#D1D5DB; margin-bottom:4px;">If <span style="color:#FBBF24;font-weight:bold;">b</span> ⊥ every column, <span class="math-text">A<sup>T</sup>b = 0</span>, projection is zero:</p>
                         <div class="desc-math-center"><span class="math-text"><span style="color:#60A5FA;">p</span> = A(A<sup>T</sup>A)<sup>-1</sup> · 0 = <span style="color:#60A5FA;">0</span></span></div>
                     </div>
                     <div style="margin-top:6px; padding:8px 10px; background:rgba(168,85,247,0.06); border-radius:8px; border-left:3px solid #A78BFA;">
-                        <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:4px;">Remark 3 — A invertible</p>
+                        <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:4px;">Remark 4 — A invertible</p>
                         <p style="font-size:11px; color:#D1D5DB; margin-bottom:4px;">Column space is all of ℝⁿ, every vector projects to itself:</p>
                         <div class="desc-math-center"><span class="math-text"><span style="color:#60A5FA;">p</span> = AA<sup>-1</sup>(A<sup>T</sup>)<sup>-1</sup>A<sup>T</sup><span style="color:#FBBF24;">b</span> = <span style="color:#FBBF24;">b</span></span></div>
                         <p style="font-size:10.5px; color:#9CA3AF; margin-top:3px;">Only valid for square invertible A — not rectangular.</p>
                     </div>
                     <div style="margin-top:6px; padding:8px 10px; background:rgba(245,158,11,0.06); border-radius:8px; border-left:3px solid #F59E0B;">
-                        <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:4px;">Remark 4 — A has one column</p>
+                        <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:4px;">Remark 5 — A has one column</p>
                         <p style="font-size:11px; color:#D1D5DB; margin-bottom:4px;">A<sup>T</sup>A reduces to the scalar a<sup>T</sup>a, returning to the line formula:</p>
                         <div class="desc-math-center"><span class="math-text"><span style="color:#60A5FA;">p</span> = aa<sup>T</sup><span style="color:#FBBF24;">b</span> / a<sup>T</sup>a</span></div>
                     </div>
@@ -390,7 +401,83 @@
         </div>
     </div>
 
-    <div id="desc-7" class="description-content">
+    <div id="desc-8" class="description-content">
+        <h3>Least Squares</h3>
+        <p class="text-gray-300">Fit the best line through data with no exact solution.</p>
+        <div style="display:flex;gap:6px;margin:6px 0;">
+            <button onclick="setLSMode('line')" id="ls-line">Least Squares Line</button>
+            <button onclick="setLSMode('weighted')" id="ls-weighted">Weighted</button>
+        </div>
+
+        <!-- Least Squares Line info -->
+        <div id="ls-info-line">
+            <div class="desc-box">
+                <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:5px;">◆ Familiar equation</p>
+                <div class="desc-math-center"><span class="math-text">y = mx + c</span></div>
+                <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-top:8px; margin-bottom:5px;">◆ Least squares line</p>
+                <div class="desc-math-center"><span class="math-text"><span style="color:#34D399;">A</span>x&#x0302; = <span style="color:#34D399;">A</span>(<span style="color:#34D399;">A</span><sup>T</sup><span style="color:#34D399;">A</span>)<sup>-1</sup><span style="color:#34D399;">A</span><sup>T</sup><span style="color:#FBBF24;">b</span> = P<span style="color:#FBBF24;">b</span></span></div>
+            </div>
+            <div class="desc-box" style="margin-top:8px;">
+                <p style="font-size:11.5px; font-weight:600; color:#F87171; margin-bottom:6px;">◆ What does each symbol mean?</p>
+                <p style="font-size:11px; color:#F9FAFB; font-weight:600; margin-bottom:4px;">In <span class="math-text">y = mx + c</span></p>
+                <ul style="margin:0 0 8px; padding-left:14px;">
+                    <li style="font-size:11px; color:#D1D5DB; margin-bottom:3px;"><span class="math-text">x</span> → input (independent variable)</li>
+                    <li style="font-size:11px; color:#D1D5DB; margin-bottom:3px;"><span class="math-text">y</span> → output</li>
+                    <li style="font-size:11px; color:#D1D5DB;"><span class="math-text">m, c</span> → unknowns (what we want to find)</li>
+                </ul>
+                <p style="font-size:11px; color:#F9FAFB; font-weight:600; margin-bottom:4px;">In least squares</p>
+                <ul style="margin:0 0 8px; padding-left:14px;">
+                    <li style="font-size:11px; color:#D1D5DB; margin-bottom:3px;"><span style="color:#34D399;" class="math-text">A</span> → matrix of inputs</li>
+                    <li style="font-size:11px; color:#D1D5DB; margin-bottom:3px;"><span style="color:#FBBF24;" class="math-text">b</span> → outputs (observed data)</li>
+                    <li style="font-size:11px; color:#D1D5DB;"><span class="math-text">x</span> → <strong style="color:#F9FAFB;">unknown parameters</strong></li>
+                </ul>
+                <div style="padding:7px 10px; background:rgba(251,191,36,0.07); border-radius:7px; border-left:3px solid #FBBF24;">
+                    <p style="font-size:11px; color:#F9FAFB; margin-bottom:0;">👉 Here, <span class="math-text">x</span> = <strong>parameters (like <span class="math-text">m</span> and <span class="math-text">c</span>)</strong>, not the input!</p>
+                </div>
+            </div>
+            <div class="desc-box" style="margin-top:8px;">
+                <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:6px;">◆ Projection Matrix</p>
+                <div class="desc-math-center"><span class="math-text"><span style="color:#60A5FA;">p</span> = P<span style="color:#FBBF24;">b</span> &nbsp;&nbsp; P = <span style="color:#34D399;">A</span>(<span style="color:#34D399;">A</span><sup>T</sup><span style="color:#34D399;">A</span>)<sup>-1</sup><span style="color:#34D399;">A</span><sup>T</sup></span></div>
+                <p style="font-size:11px; color:#D1D5DB; margin-top:7px; margin-bottom:5px;">The least squares solution is:</p>
+                <div class="desc-math-center"><span class="math-text">x&#x0302; = (<span style="color:#34D399;">A</span><sup>T</sup><span style="color:#34D399;">A</span>)<sup>-1</sup><span style="color:#34D399;">A</span><sup>T</sup><span style="color:#FBBF24;">b</span></span></div>
+                <p style="font-size:11px; color:#D1D5DB; margin-top:7px; margin-bottom:5px;">If you plug this back into <span class="math-text"><span style="color:#34D399;">A</span>x&#x0302;</span>:</p>
+                <div class="desc-math-center"><span class="math-text"><span style="color:#34D399;">A</span>x&#x0302; = <span style="color:#34D399;">A</span>(<span style="color:#34D399;">A</span><sup>T</sup><span style="color:#34D399;">A</span>)<sup>-1</sup><span style="color:#34D399;">A</span><sup>T</sup><span style="color:#FBBF24;">b</span> = P<span style="color:#FBBF24;">b</span></span></div>
+                <div style="margin-top:8px; padding:7px 10px; background:rgba(251,191,36,0.07); border-radius:7px; border-left:3px solid #FBBF24;">
+                    <p style="font-size:11px; color:#F9FAFB; margin-bottom:4px; font-weight:600;">👉 So:</p>
+                    <ul style="margin:0; padding-left:14px;">
+                        <li style="font-size:11px; color:#D1D5DB; margin-bottom:3px;"><span class="math-text"><span style="color:#34D399;">A</span>x&#x0302; = <span style="color:#34D399;">A</span>(<span style="color:#34D399;">A</span><sup>T</sup><span style="color:#34D399;">A</span>)<sup>-1</sup><span style="color:#34D399;">A</span><sup>T</sup><span style="color:#FBBF24;">b</span> = P<span style="color:#FBBF24;">b</span></span> — least square line</li>
+                        <li style="font-size:11px; color:#D1D5DB; margin-bottom:3px;"><span class="math-text">P</span> = projection matrix</li>
+                        <li style="font-size:11px; color:#D1D5DB;">Least squares = computing that projection</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Weighted Least Squares info -->
+        <div id="ls-info-weighted" style="display:none;">
+            <div class="desc-box">
+                <p style="font-size:11px; color:#D1D5DB; line-height:1.6; margin-bottom:0;">
+                    The ordinary least-squares problem leading to <span class="math-text" style="color:#34D399;">x&#x0302;<sub>W</sub></span> comes from changing
+                    <span class="math-text"><span style="color:#34D399;">A</span>x = <span style="color:#FBBF24;">b</span></span>
+                    to the new system
+                    <span class="math-text">W<span style="color:#34D399;">A</span>x = W<span style="color:#FBBF24;">b</span></span>.
+                    <span style="font-weight:700; color:#F9FAFB;">This changes the solution from x&#x0302; to <span style="color:#34D399;">x&#x0302;<sub>W</sub></span>.</span>
+                    The matrix <span class="math-text">W<sup>T</sup>W</span> turns up on both sides of the weighted normal equations:
+                </p>
+            </div>
+            <div style="margin-top:8px; padding:10px 12px; background:rgba(52,211,153,0.07); border-radius:10px; border:1px solid rgba(52,211,153,0.25);">
+                <p style="font-size:11.5px; font-weight:700; color:#34D399; margin-bottom:8px; letter-spacing:0.3px;">Weighted Normal Equations</p>
+                <div class="desc-math-center" style="background:rgba(0,0,0,0.3); border-radius:6px; padding:6px 4px; margin-bottom:6px;">
+                    <span class="math-text">(<span style="color:#34D399;">A</span><sup>T</sup>W<sup>T</sup>W<span style="color:#34D399;">A</span>)<span style="color:#34D399;">x&#x0302;<sub>W</sub></span> = <span style="color:#34D399;">A</span><sup>T</sup>W<sup>T</sup>W<span style="color:#FBBF24;">b</span></span>
+                </div>
+                <div class="desc-math-center" style="background:rgba(0,0,0,0.3); border-radius:6px; padding:6px 4px;">
+                    <span class="math-text"><span style="color:#34D399;">x&#x0302;<sub>W</sub></span> = (<span style="color:#34D399;">A</span><sup>T</sup>W<sup>T</sup>W<span style="color:#34D399;">A</span>)<sup>-1</sup><span style="color:#34D399;">A</span><sup>T</sup>W<sup>T</sup>W<span style="color:#FBBF24;">b</span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="desc-6" class="description-content">
         <h3>Fundamental Subspaces</h3>
         <p class="text-gray-300">For an m×n matrix A of rank r, there are four fundamental subspaces.</p>
         <div class="desc-box">
@@ -417,6 +504,12 @@
         </div>
     </div>
 
+    <div id="desc-9" class="description-content">
+        <h3>Orthonormal</h3>
+        <p class="text-gray-300">See the notes panel →</p>
+    </div>
+
+
 </div>
 
 <div id="canvas-container">
@@ -425,13 +518,84 @@
             <div id="subspace-svg-wrap" style="background:#0a0a0a; border-radius:20px; border:1px solid #262626; box-shadow:0 30px 60px rgba(0,0,0,0.8); overflow:hidden;"></div>
         </div>
     </div>
+    <div id="ortho-overlay" style="display:none; position:absolute; inset:0; overflow-y:auto; background:#000; padding:24px 20px; box-sizing:border-box;">
+        <div style="max-width:700px; margin:0 auto; display:flex; flex-direction:column; gap:14px;">
+
+            <div style="padding:12px 16px; background:rgba(96,165,250,0.07); border-radius:12px; border:1px solid rgba(96,165,250,0.2);">
+                <p style="font-size:13px; font-weight:700; color:#60A5FA; margin-bottom:8px; letter-spacing:0.3px;">◆ Definition</p>
+                <p style="font-size:12px; color:#D1D5DB; margin-bottom:8px;">Vectors <span style="color:#60A5FA; font-family:monospace;">q₁, q₂, ..., qₙ</span> are orthonormal if:</p>
+                <div style="text-align:center; padding:8px; background:rgba(0,0,0,0.4); border-radius:8px; font-family:monospace; color:#93C5FD; font-size:13px;">
+                    qᵢᵀqⱼ = 0 &nbsp;(i ≠ j) &nbsp;&nbsp;&nbsp; qᵢᵀqᵢ = 1
+                </div>
+                <div style="text-align:center; padding:8px; background:rgba(0,0,0,0.4); border-radius:8px; font-family:monospace; color:#93C5FD; font-size:14px; margin-top:6px;">
+                    QᵀQ = I
+                </div>
+            </div>
+
+            <div style="padding:12px 16px; background:rgba(96,165,250,0.07); border-radius:12px; border:1px solid rgba(96,165,250,0.2);">
+                <p style="font-size:13px; font-weight:700; color:#60A5FA; margin-bottom:8px;">◆ Orthogonal Matrix Q</p>
+                <p style="font-size:12px; color:#D1D5DB; margin-bottom:6px;">When Q is square, QᵀQ = I means Qᵀ = Q⁻¹:</p>
+                <div style="text-align:center; padding:8px; background:rgba(0,0,0,0.4); border-radius:8px; font-family:monospace; color:#93C5FD; font-size:14px; margin-bottom:8px;">
+                    QᵀQ = QQᵀ = I
+                </div>
+                <ul style="margin:0; padding-left:18px;">
+                    <li style="font-size:12px; color:#D1D5DB; margin-bottom:4px;">Columns of Q are orthonormal</li>
+                    <li style="font-size:12px; color:#D1D5DB; margin-bottom:4px;">Q preserves lengths: <span style="font-family:monospace; color:#93C5FD;">‖Qx‖ = ‖x‖</span></li>
+                    <li style="font-size:12px; color:#D1D5DB;">Q preserves dot products: <span style="font-family:monospace; color:#93C5FD;">(Qx)ᵀ(Qy) = xᵀy</span></li>
+                </ul>
+            </div>
+
+            <div style="padding:12px 16px; background:rgba(96,165,250,0.07); border-radius:12px; border:1px solid rgba(96,165,250,0.2);">
+                <p style="font-size:13px; font-weight:700; color:#60A5FA; margin-bottom:8px;">◆ Projection with Orthonormal Basis</p>
+                <p style="font-size:12px; color:#D1D5DB; margin-bottom:6px;">When columns of A are orthonormal (A = Q), projection simplifies:</p>
+                <div style="text-align:center; padding:8px; background:rgba(0,0,0,0.4); border-radius:8px; font-family:monospace; color:#93C5FD; font-size:14px; margin-bottom:6px;">
+                    P = QQᵀ
+                </div>
+                <p style="font-size:12px; color:#D1D5DB; margin-bottom:6px;">Least squares solution — no matrix inversion needed:</p>
+                <div style="text-align:center; padding:8px; background:rgba(0,0,0,0.4); border-radius:8px; font-family:monospace; color:#93C5FD; font-size:14px;">
+                    x̂ = Qᵀb
+                </div>
+            </div>
+
+            <div style="padding:12px 16px; background:rgba(96,165,250,0.07); border-radius:12px; border:1px solid rgba(96,165,250,0.2);">
+                <p style="font-size:13px; font-weight:700; color:#60A5FA; margin-bottom:8px;">◆ Gram-Schmidt Process</p>
+                <p style="font-size:12px; color:#D1D5DB; margin-bottom:6px;">Converts independent vectors a, b into orthonormal q₁, q₂:</p>
+                <div style="text-align:center; padding:8px; background:rgba(0,0,0,0.4); border-radius:8px; font-family:monospace; color:#93C5FD; font-size:13px; margin-bottom:6px;">
+                    q₁ = a / ‖a‖
+                </div>
+                <div style="text-align:center; padding:8px; background:rgba(0,0,0,0.4); border-radius:8px; font-family:monospace; color:#93C5FD; font-size:13px; margin-bottom:8px;">
+                    b* = b − (q₁ᵀb)q₁ &nbsp;&nbsp; q₂ = b* / ‖b*‖
+                </div>
+                <div style="padding:7px 10px; background:rgba(96,165,250,0.1); border-radius:7px; border-left:3px solid #60A5FA;">
+                    <p style="font-size:12px; color:#D1D5DB; margin-bottom:0;">Gives the <strong style="color:#F9FAFB;">QR decomposition</strong>: <span style="font-family:monospace; color:#93C5FD;">A = QR</span>, where R is upper triangular.</p>
+                </div>
+            </div>
+
+            <div style="padding:12px 16px; background:rgba(167,139,250,0.07); border-radius:12px; border:1px solid rgba(167,139,250,0.25);">
+                <p style="font-size:13px; font-weight:700; color:#A78BFA; margin-bottom:8px;">◆ Remark 1</p>
+                <p style="font-size:12px; color:#D1D5DB; margin-bottom:6px;">Every vector <span style="color:#FBBF24; font-family:monospace;">b</span> is the sum of its one-dimensional projections onto the lines through the <span style="color:#60A5FA; font-family:monospace;">q</span>'s:</p>
+                <div style="text-align:center; padding:8px; background:rgba(0,0,0,0.4); border-radius:8px; font-family:monospace; color:#93C5FD; font-size:13px; margin-bottom:6px;">
+                    b = (q₁ᵀb)q₁ + (q₂ᵀb)q₂ + ··· + (qₙᵀb)qₙ
+                </div>
+                <div style="text-align:center; padding:8px; background:rgba(0,0,0,0.4); border-radius:8px; font-family:monospace; color:#93C5FD; font-size:14px;">
+                    = QQᵀb = b
+                </div>
+            </div>
+
+            <div style="padding:12px 16px; background:rgba(167,139,250,0.07); border-radius:12px; border:1px solid rgba(167,139,250,0.25);">
+                <p style="font-size:13px; font-weight:700; color:#A78BFA; margin-bottom:8px;">◆ Remark 2</p>
+                <p style="font-size:12px; color:#D1D5DB; margin-bottom:0;">The rows of a square matrix are orthonormal whenever the columns are. Both <span style="font-family:monospace; color:#93C5FD;">QᵀQ = I</span> and <span style="font-family:monospace; color:#93C5FD;">QQᵀ = I</span> hold.</p>
+            </div>
+
+        </div>
+    </div>
 </div>
 
 <script src="three.min.js"></script>
 <script src="OrbitControls.js"></script>
 <script>
     var scene, camera, renderer, controls;
-    var vectorsGroup, typesGroup, subspacesGroup, complementGroup, planesGroup, projectionGroup;
+    var vectorsGroup, typesGroup, subspacesGroup, complementGroup, planesGroup, projectionGroup, wlsGroup, lslGroup;
     var u, v, w1, w2, origin;
 
     function makeTextSprite(message, color) {
@@ -495,7 +659,7 @@
     }
 
     function setMode(mode) {
-        for (var i = 1; i <= 7; i++) {
+        for (var i = 1; i <= 9; i++) {
             document.getElementById('btn-' + i).classList.remove('active');
             document.getElementById('desc-' + i).style.display = 'none';
         }
@@ -505,13 +669,18 @@
         var overlay = document.getElementById('subspace-overlay');
         var canvas = renderer.domElement;
 
-        if (mode === 7) {
+        if (mode === 6) {
             canvas.style.display = 'none';
             overlay.style.display = 'flex';
             buildSubspacesSVG();
+        } else if (mode === 9) {
+            canvas.style.display = 'none';
+            overlay.style.display = 'none';
+            document.getElementById('ortho-overlay').style.display = 'block';
         } else {
             canvas.style.display = 'block';
             overlay.style.display = 'none';
+            document.getElementById('ortho-overlay').style.display = 'none';
         }
 
         vectorsGroup.visible    = (mode === 1);
@@ -519,8 +688,11 @@
         subspacesGroup.visible  = (mode === 3);
         planesGroup.visible     = (mode === 4);
         complementGroup.visible = (mode === 5);
-        projectionGroup.visible = (mode === 6);
-        if (mode === 6) setProjMode('line');
+        projectionGroup.visible = (mode === 7);
+        wlsGroup.visible        = (mode === 8);
+        lslGroup.visible        = (mode === 8);
+        if (mode === 8) setLSMode('line');
+        if (mode === 7) setProjMode('line');
 
         controls.autoRotateSpeed = (mode === 2 || mode === 4) ? 0.5 : 1.0;
     }
@@ -845,12 +1017,12 @@
                 var e = new THREE.Vector3().subVectors(b, p);
 
                 // plane
-                var planeMesh = new THREE.Mesh(new THREE.PlaneGeometry(8,8), new THREE.MeshBasicMaterial({ color: 0x3B82F6, side: THREE.DoubleSide, transparent: true, opacity: 0.18 }));
+                var planeMesh = new THREE.Mesh(new THREE.PlaneGeometry(8,8), new THREE.MeshBasicMaterial({ color: 0x10B981, side: THREE.DoubleSide, transparent: true, opacity: 0.18 }));
                 planeMesh.rotation.x = Math.PI / 2;
-                var planeGrid = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.PlaneGeometry(8,8,8,8)), new THREE.LineBasicMaterial({ color: 0x3B82F6, transparent: true, opacity: 0.3 }));
+                var planeGrid = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.PlaneGeometry(8,8,8,8)), new THREE.LineBasicMaterial({ color: 0x10B981, transparent: true, opacity: 0.3 }));
                 planeGrid.rotation.x = Math.PI / 2;
                 projectionGroup.add(planeMesh, planeGrid);
-                var lblPlane = makeTextSprite('Plane', '#60A5FA'); lblPlane.position.set(3.5, 0, -3.5); projectionGroup.add(lblPlane);
+                var lblPlane = makeTextSprite('Plane', '#34D399'); lblPlane.position.set(3.5, 0, -3.5); projectionGroup.add(lblPlane);
 
                 // b vector (yellow)
                 projectionGroup.add(createThickArrow(b.clone().normalize(), orig, b.length() + 0.5, 0xFBBF24));
@@ -899,7 +1071,148 @@
 
         buildProjection('line');
 
-        scene.add(vectorsGroup, typesGroup, subspacesGroup, complementGroup, planesGroup, projectionGroup);
+        window.setLSMode = function(m) {
+            document.getElementById('ls-line').classList.toggle('active', m === 'line');
+            document.getElementById('ls-weighted').classList.toggle('active', m === 'weighted');
+            document.getElementById('ls-info-line').style.display = m === 'line' ? 'block' : 'none';
+            document.getElementById('ls-info-weighted').style.display = m === 'weighted' ? 'block' : 'none';
+            lslGroup.visible = (m === 'line');
+            wlsGroup.visible = (m === 'weighted');
+        };
+
+        // --- MODE 8: Weighted Least Squares ---
+        wlsGroup = new THREE.Group();
+
+        // Data points with different weights (size = weight)
+        var dataPoints = [
+            { pos: new THREE.Vector3(-3, -2.5, 0), w: 3.0, color: 0xFBBF24 },
+            { pos: new THREE.Vector3(-1,  1.2, 0), w: 1.5, color: 0xFBBF24 },
+            { pos: new THREE.Vector3( 0, -0.8, 0), w: 2.5, color: 0xFBBF24 },
+            { pos: new THREE.Vector3( 1,  2.8, 0), w: 1.0, color: 0xFBBF24 },
+            { pos: new THREE.Vector3( 2,  0.5, 0), w: 3.5, color: 0xFBBF24 },
+            { pos: new THREE.Vector3( 3,  4.2, 0), w: 2.0, color: 0xFBBF24 },
+        ];
+
+        // Weighted least squares fit: y = mx + c
+        var sumW=0, sumWx=0, sumWy=0, sumWxx=0, sumWxy=0;
+        dataPoints.forEach(function(d) {
+            var x=d.pos.x, y=d.pos.y, w=d.w;
+            sumW+=w; sumWx+=w*x; sumWy+=w*y; sumWxx+=w*x*x; sumWxy+=w*x*y;
+        });
+        var det = sumW*sumWxx - sumWx*sumWx;
+        var m = (sumW*sumWxy - sumWx*sumWy) / det;
+        var c = (sumWy*sumWxx - sumWx*sumWxy) / det;
+
+        // Fitted line
+        var x0=-4, x1=4;
+        var lineStart = new THREE.Vector3(x0, m*x0+c, 0);
+        var lineEnd   = new THREE.Vector3(x1, m*x1+c, 0);
+        wlsGroup.add(createThickLine(lineStart, lineEnd, 0x34D399));
+        var lblFit = makeTextSprite('Ax\u0302 (WLS fit)', '#34D399');
+        lblFit.position.set(x1+0.3, m*x1+c+0.5, 0);
+        wlsGroup.add(lblFit);
+
+        // Data points + residuals
+        var maxResidual = null, maxResidualMid = null, maxResidualLen = 0;
+        dataPoints.forEach(function(d) {
+            var r = d.w / 3.5 * 0.22;
+            var sphere = new THREE.Mesh(new THREE.SphereGeometry(r, 16, 16), new THREE.MeshBasicMaterial({ color: d.color }));
+            sphere.position.copy(d.pos);
+            wlsGroup.add(sphere);
+
+            // residual thick line to fit
+            var foot = new THREE.Vector3(d.pos.x, m*d.pos.x+c, 0);
+            wlsGroup.add(createThickLine(d.pos, foot, 0xF87171));
+
+            // track largest residual for label placement
+            var len = d.pos.distanceTo(foot);
+            if (len > maxResidualLen) {
+                maxResidualLen = len;
+                maxResidualMid = new THREE.Vector3().addVectors(d.pos, foot).multiplyScalar(0.5);
+            }
+        });
+
+        // Axis lines
+        wlsGroup.add(createThickLine(new THREE.Vector3(-4.5,0,0), new THREE.Vector3(4.5,0,0), 0x4B5563));
+        wlsGroup.add(createThickLine(new THREE.Vector3(0,-3,0),   new THREE.Vector3(0,4.5,0), 0x4B5563));
+
+        // Labels
+        var lblB = makeTextSprite('b (data)', '#FBBF24'); lblB.position.set(-3.5, -2.2, 0); wlsGroup.add(lblB);
+        var lblE = makeTextSprite('e (residual)', '#F87171');
+        lblE.position.set(maxResidualMid.x + 0.8, maxResidualMid.y, 0);
+        wlsGroup.add(lblE);
+        var lblW = makeTextSprite('size = weight w', '#9CA3AF'); lblW.position.set(-3.5, 3.5, 0); wlsGroup.add(lblW);
+
+        // --- MODE 9: Least Squares Line ---
+        lslGroup = new THREE.Group();
+
+        // Data points: (t, b) pairs — no exact line fits
+        var lslData = [
+            { t: -3, b: -1.0 },
+            { t: -1,  b:  1.5 },
+            { t:  0,  b:  0.5 },
+            { t:  1,  b:  2.5 },
+            { t:  2,  b:  1.8 },
+            { t:  3,  b:  3.8 },
+        ];
+
+        // Ordinary least squares: fit y = C + Dt
+        var n9 = lslData.length;
+        var st=0, sb=0, stt=0, stb=0;
+        lslData.forEach(function(d){ st+=d.t; sb+=d.b; stt+=d.t*d.t; stb+=d.t*d.b; });
+        var det9 = n9*stt - st*st;
+        var C = (sb*stt - st*stb) / det9;
+        var D = (n9*stb - st*sb)  / det9;
+
+        // Fitted line
+        var tMin=-4, tMax=4;
+        lslGroup.add(createThickLine(
+            new THREE.Vector3(tMin, C+D*tMin, 0),
+            new THREE.Vector3(tMax, C+D*tMax, 0),
+            0x34D399
+        ));
+        var lblLine = makeTextSprite('Ax\u0302 = Pb', '#34D399');
+        lblLine.position.set(tMax+0.2, C+D*tMax+0.5, 0);
+        lslGroup.add(lblLine);
+
+        // Data points + residuals
+        var maxLen9=0, maxMid9=null;
+        lslData.forEach(function(d) {
+            // data sphere (yellow)
+            var sp = new THREE.Mesh(new THREE.SphereGeometry(0.18,16,16), new THREE.MeshBasicMaterial({ color: 0xFBBF24 }));
+            sp.position.set(d.t, d.b, 0);
+            lslGroup.add(sp);
+
+            // residual bar (red)
+            var foot = new THREE.Vector3(d.t, C+D*d.t, 0);
+            var pt   = new THREE.Vector3(d.t, d.b, 0);
+            lslGroup.add(createThickLine(pt, foot, 0xF87171));
+
+            var len = Math.abs(d.b - (C+D*d.t));
+            if (len > maxLen9) {
+                maxLen9 = len;
+                maxMid9 = new THREE.Vector3(d.t + 0.6, (d.b + C+D*d.t)*0.5, 0);
+            }
+        });
+
+        // Projection foot dots on line
+        lslData.forEach(function(d) {
+            var dot = new THREE.Mesh(new THREE.SphereGeometry(0.1,16,16), new THREE.MeshBasicMaterial({ color: 0x34D399 }));
+            dot.position.set(d.t, C+D*d.t, 0);
+            lslGroup.add(dot);
+        });
+
+        // Axes
+        lslGroup.add(createThickLine(new THREE.Vector3(-4.5,0,0), new THREE.Vector3(4.5,0,0), 0x4B5563));
+        lslGroup.add(createThickLine(new THREE.Vector3(0,-3,0),   new THREE.Vector3(0,4.5,0), 0x4B5563));
+
+        // Labels
+        var lblB9 = makeTextSprite('b (data)', '#FBBF24'); lblB9.position.set(-4, -2, 0); lslGroup.add(lblB9);
+        if (maxMid9) {
+            var lblE9 = makeTextSprite('e (error)', '#F87171'); lblE9.position.copy(maxMid9); lslGroup.add(lblE9);
+        }
+
+        scene.add(vectorsGroup, typesGroup, subspacesGroup, complementGroup, planesGroup, projectionGroup, wlsGroup, lslGroup);
 
         setMode(1);
     }
