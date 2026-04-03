@@ -226,7 +226,8 @@
         <button id="btn-4" class="tab-btn" onclick="setMode(4)"><span class="tab-num">4</span>Intersecting Planes</button>
         <button id="btn-5" class="tab-btn" onclick="setMode(5)"><span class="tab-num">5</span>Orthogonal Complement</button>
         <button id="btn-6" class="tab-btn" onclick="setMode(6)"><span class="tab-num">6</span><span style="line-height:1.3;">Projection Vector<br><span style="font-size:10.5px;color:#9CA3AF;font-weight:400;">& Matrix</span></span></button>
-        <button id="btn-7" class="tab-btn" onclick="setMode(7)"><span class="tab-num">7</span>Fundamental Subspaces</button>
+        <button id="btn-7" class="tab-btn" onclick="setMode(7)"><span class="tab-num">7</span>Weighted Least Squares</button>
+        <button id="btn-8" class="tab-btn" onclick="setMode(8)"><span class="tab-num">8</span>Fundamental Subspaces</button>
     </div>
     <div class="panel-divider"></div>
 
@@ -397,6 +398,73 @@
     </div>
 
     <div id="desc-7" class="description-content">
+        <h3>Weighted Least Squares</h3>
+        <p class="text-gray-300">When measurements have different reliability, assign weight <span class="math-text">w<sub>i</sub></span> to each equation. Higher weight = more trusted data point.</p>
+
+        <!-- Definition -->
+        <div class="desc-box">
+            <p style="font-size:11px; color:#D1D5DB; line-height:1.6; margin-bottom:0;">
+                The ordinary least-squares problem leading to <span class="math-text" style="color:#34D399;">x&#x0302;<sub>W</sub></span> comes from changing
+                <span class="math-text"><span style="color:#34D399;">A</span>x = <span style="color:#FBBF24;">b</span></span>
+                to the new system
+                <span class="math-text">W<span style="color:#34D399;">A</span>x = W<span style="color:#FBBF24;">b</span></span>.
+                <span style="font-weight:700; color:#F9FAFB;">This changes the solution from x&#x0302; to <span style="color:#34D399;">x&#x0302;<sub>W</sub></span>.</span>
+                The matrix <span class="math-text">W<sup>T</sup>W</span> turns up on both sides of the weighted normal equations:
+            </p>
+        </div>
+
+        <!-- Weighted normal equations — highlighted block -->
+        <div style="margin-top:8px; padding:10px 12px; background:rgba(52,211,153,0.07); border-radius:10px; border:1px solid rgba(52,211,153,0.25);">
+            <p style="font-size:11.5px; font-weight:700; color:#34D399; margin-bottom:8px; letter-spacing:0.3px;">Weighted Normal Equations</p>
+            <div class="desc-math-center" style="background:rgba(0,0,0,0.3); border-radius:6px; padding:6px 4px; margin-bottom:6px;">
+                <span class="math-text">
+                    (<span style="color:#34D399;">A</span><sup>T</sup>W<sup>T</sup>W<span style="color:#34D399;">A</span>)<span style="color:#34D399;">x&#x0302;<sub>W</sub></span>
+                    = <span style="color:#34D399;">A</span><sup>T</sup>W<sup>T</sup>W<span style="color:#FBBF24;">b</span>
+                </span>
+            </div>
+            <div class="desc-math-center" style="background:rgba(0,0,0,0.3); border-radius:6px; padding:6px 4px;">
+                <span class="math-text">
+                    <span style="color:#34D399;">x&#x0302;<sub>W</sub></span>
+                    = (<span style="color:#34D399;">A</span><sup>T</sup>W<sup>T</sup>W<span style="color:#34D399;">A</span>)<sup>-1</sup>
+                    <span style="color:#34D399;">A</span><sup>T</sup>W<sup>T</sup>W<span style="color:#FBBF24;">b</span>
+                </span>
+            </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="desc-box" style="margin-top:8px;">
+            <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:6px;">Scene Legend</p>
+            <div style="display:flex; flex-direction:column; gap:4px;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span style="width:10px;height:10px;border-radius:50%;background:#FBBF24;flex-shrink:0;"></span>
+                    <span style="font-size:11px; color:#D1D5DB;"><span style="color:#FBBF24; font-weight:600;">b</span> — observed data (sphere size = weight)</span>
+                </div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span style="width:10px;height:3px;background:#34D399;flex-shrink:0;border-radius:2px;"></span>
+                    <span style="font-size:11px; color:#D1D5DB;"><span style="color:#34D399; font-weight:600;">Ax&#x0302;<sub>W</sub></span> — WLS fitted line</span>
+                </div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span style="width:10px;height:3px;background:#F87171;flex-shrink:0;border-radius:2px;"></span>
+                    <span style="font-size:11px; color:#D1D5DB;"><span style="color:#F87171; font-weight:600;">e = b − p</span> — residuals</span>
+                </div>
+            </div>
+            <div class="desc-math-center" style="margin-top:8px;">
+                <span class="math-text">min &nbsp; ‖W<sup>1/2</sup>(<span style="color:#FBBF24;">b</span> − <span style="color:#34D399;">A</span>x)‖<sup>2</sup> = Σ w<sub>i</sub>(<span style="color:#F87171;">e<sub>i</sub></span>)<sup>2</sup></span>
+            </div>
+        </div>
+
+        <!-- Connection box -->
+        <div class="desc-box" style="margin-top:8px;">
+            <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:5px;">Connection to ordinary least squares</p>
+            <div class="desc-math-center"><span class="math-text">W<sup>1/2</sup><span style="color:#34D399;">A</span>x = W<sup>1/2</sup><span style="color:#FBBF24;">b</span></span></div>
+            <ul style="margin-top:6px;">
+                <li style="font-size:11px; color:#D1D5DB; margin-bottom:3px;">If all <span class="math-text">w<sub>i</sub> = 1</span>, reduces to ordinary least squares.</li>
+                <li style="font-size:11px; color:#D1D5DB;">W is symmetric positive definite, so <span class="math-text"><span style="color:#34D399;">A</span><sup>T</sup>WA</span> is invertible when A has full column rank.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="desc-8" class="description-content">
         <h3>Fundamental Subspaces</h3>
         <p class="text-gray-300">For an m×n matrix A of rank r, there are four fundamental subspaces.</p>
         <div class="desc-box">
@@ -437,7 +505,7 @@
 <script src="OrbitControls.js"></script>
 <script>
     var scene, camera, renderer, controls;
-    var vectorsGroup, typesGroup, subspacesGroup, complementGroup, planesGroup, projectionGroup;
+    var vectorsGroup, typesGroup, subspacesGroup, complementGroup, planesGroup, projectionGroup, wlsGroup;
     var u, v, w1, w2, origin;
 
     function makeTextSprite(message, color) {
@@ -501,7 +569,7 @@
     }
 
     function setMode(mode) {
-        for (var i = 1; i <= 7; i++) {
+        for (var i = 1; i <= 8; i++) {
             document.getElementById('btn-' + i).classList.remove('active');
             document.getElementById('desc-' + i).style.display = 'none';
         }
@@ -511,7 +579,7 @@
         var overlay = document.getElementById('subspace-overlay');
         var canvas = renderer.domElement;
 
-        if (mode === 7) {
+        if (mode === 8) {
             canvas.style.display = 'none';
             overlay.style.display = 'flex';
             buildSubspacesSVG();
@@ -526,6 +594,7 @@
         planesGroup.visible     = (mode === 4);
         complementGroup.visible = (mode === 5);
         projectionGroup.visible = (mode === 6);
+        wlsGroup.visible        = (mode === 7);
         if (mode === 6) setProjMode('line');
 
         controls.autoRotateSpeed = (mode === 2 || mode === 4) ? 0.5 : 1.0;
@@ -905,7 +974,70 @@
 
         buildProjection('line');
 
-        scene.add(vectorsGroup, typesGroup, subspacesGroup, complementGroup, planesGroup, projectionGroup);
+        // --- MODE 8: Weighted Least Squares ---
+        wlsGroup = new THREE.Group();
+
+        // Data points with different weights (size = weight)
+        var dataPoints = [
+            { pos: new THREE.Vector3(-3, -2.5, 0), w: 3.0, color: 0xFBBF24 },
+            { pos: new THREE.Vector3(-1,  1.2, 0), w: 1.5, color: 0xFBBF24 },
+            { pos: new THREE.Vector3( 0, -0.8, 0), w: 2.5, color: 0xFBBF24 },
+            { pos: new THREE.Vector3( 1,  2.8, 0), w: 1.0, color: 0xFBBF24 },
+            { pos: new THREE.Vector3( 2,  0.5, 0), w: 3.5, color: 0xFBBF24 },
+            { pos: new THREE.Vector3( 3,  4.2, 0), w: 2.0, color: 0xFBBF24 },
+        ];
+
+        // Weighted least squares fit: y = mx + c
+        var sumW=0, sumWx=0, sumWy=0, sumWxx=0, sumWxy=0;
+        dataPoints.forEach(function(d) {
+            var x=d.pos.x, y=d.pos.y, w=d.w;
+            sumW+=w; sumWx+=w*x; sumWy+=w*y; sumWxx+=w*x*x; sumWxy+=w*x*y;
+        });
+        var det = sumW*sumWxx - sumWx*sumWx;
+        var m = (sumW*sumWxy - sumWx*sumWy) / det;
+        var c = (sumWy*sumWxx - sumWx*sumWxy) / det;
+
+        // Fitted line
+        var x0=-4, x1=4;
+        var lineStart = new THREE.Vector3(x0, m*x0+c, 0);
+        var lineEnd   = new THREE.Vector3(x1, m*x1+c, 0);
+        wlsGroup.add(createThickLine(lineStart, lineEnd, 0x34D399));
+        var lblFit = makeTextSprite('Ax\u0302 (WLS fit)', '#34D399');
+        lblFit.position.set(x1+0.3, m*x1+c+0.5, 0);
+        wlsGroup.add(lblFit);
+
+        // Data points + residuals
+        var maxResidual = null, maxResidualMid = null, maxResidualLen = 0;
+        dataPoints.forEach(function(d) {
+            var r = d.w / 3.5 * 0.22;
+            var sphere = new THREE.Mesh(new THREE.SphereGeometry(r, 16, 16), new THREE.MeshBasicMaterial({ color: d.color }));
+            sphere.position.copy(d.pos);
+            wlsGroup.add(sphere);
+
+            // residual thick line to fit
+            var foot = new THREE.Vector3(d.pos.x, m*d.pos.x+c, 0);
+            wlsGroup.add(createThickLine(d.pos, foot, 0xF87171));
+
+            // track largest residual for label placement
+            var len = d.pos.distanceTo(foot);
+            if (len > maxResidualLen) {
+                maxResidualLen = len;
+                maxResidualMid = new THREE.Vector3().addVectors(d.pos, foot).multiplyScalar(0.5);
+            }
+        });
+
+        // Axis lines
+        wlsGroup.add(createThickLine(new THREE.Vector3(-4.5,0,0), new THREE.Vector3(4.5,0,0), 0x4B5563));
+        wlsGroup.add(createThickLine(new THREE.Vector3(0,-3,0),   new THREE.Vector3(0,4.5,0), 0x4B5563));
+
+        // Labels
+        var lblB = makeTextSprite('b (data)', '#FBBF24'); lblB.position.set(-3.5, -2.2, 0); wlsGroup.add(lblB);
+        var lblE = makeTextSprite('e (residual)', '#F87171');
+        lblE.position.set(maxResidualMid.x + 0.8, maxResidualMid.y, 0);
+        wlsGroup.add(lblE);
+        var lblW = makeTextSprite('size = weight w', '#9CA3AF'); lblW.position.set(-3.5, 3.5, 0); wlsGroup.add(lblW);
+
+        scene.add(vectorsGroup, typesGroup, subspacesGroup, complementGroup, planesGroup, projectionGroup, wlsGroup);
 
         setMode(1);
     }
