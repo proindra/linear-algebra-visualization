@@ -342,7 +342,7 @@
         <div id="proj-info-plane" style="display:none;">
             <div class="desc-box">
                 <p><span style="color:#FBBF24;font-weight:bold;">&#9632; b</span> — original vector</p>
-                <p><span style="color:#60A5FA;font-weight:bold;">&#9632; Plane</span> — the subspace (columns of <span class="math-text">A</span>)</p>
+                <p><span style="color:#34D399;font-weight:bold;">&#9632; Plane</span> — the subspace (columns of <span class="math-text">A</span>)</p>
                 <p><span style="color:#60A5FA;font-weight:bold;">&#9632; p</span> — projection onto plane</p>
                 <p><span style="color:#F87171;font-weight:bold;">&#9632; e = b − p</span> — error (perpendicular to plane)</p>
                 <div class="desc-math-center" style="margin-top:6px;">
@@ -353,35 +353,41 @@
                 <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:5px;">Projection Matrix (onto plane)</p>
                 <div class="desc-math-center"><span class="math-text">P = A(A<sup>T</sup>A)<sup>-1</sup>A<sup>T</sup></span></div>
                 <div class="desc-math-center" style="margin-top:4px;"><span class="math-text">p = Pb</span></div>
-                <ul style="margin-top:5px;">
-                    <li>P is symmetric: <span class="math-text">P = P<sup>T</sup></span></li>
-                    <li>Its square is itself: <span class="math-text">P<sup>2</sup> = P</span></li>
-                    <li><span class="math-text">I − P</span> projects onto the perpendicular complement</li>
-                </ul>
             </div>
             <div class="desc-box" style="margin-top:8px;">
                 <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:6px; cursor:pointer; display:flex; justify-content:space-between; align-items:center;" onclick="var r=document.getElementById('remarks-body'); var a=document.getElementById('remarks-arrow'); var open=r.style.display!=='none'; r.style.display=open?'none':'block'; a.textContent=open?'▶':'▼';">
                     Remarks <span id="remarks-arrow">▶</span>
                 </p>
                 <div id="remarks-body" style="display:none;">
+                    <div style="margin-top:6px; padding:8px 10px; background:rgba(248,113,113,0.06); border-radius:8px; border-left:3px solid #F87171;">
+                        <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:4px;">Remark 1 — Properties of P</p>
+                        <p style="font-size:11px; color:#D1D5DB; margin-bottom:4px;">The projection matrix <span class="math-text">P = A(A<sup>T</sup>A)<sup>-1</sup>A<sup>T</sup></span> has two basic properties:</p>
+                        <ul style="margin-top:4px; margin-bottom:4px;">
+                            <li style="font-size:11px; color:#D1D5DB; margin-bottom:4px;"><strong style="color:#F9FAFB;">(i)</strong> It equals its square: <span class="math-text">P<sup>2</sup> = P</span></li>
+                            <li style="font-size:11px; color:#D1D5DB; margin-bottom:4px;"><strong style="color:#F9FAFB;">(ii)</strong> It equals its transpose: <span class="math-text">P<sup>T</sup> = P</span></li>
+                            <li style="font-size:11px; color:#D1D5DB; margin-bottom:4px;"><strong style="color:#F9FAFB;">(iii)</strong> <span class="math-text">I − P</span> projects onto the perpendicular complement.</li>
+                        </ul>
+                        <p style="font-size:11px; color:#D1D5DB; margin-bottom:0;">Conversely, any symmetric matrix with <span class="math-text">P<sup>2</sup> = P</span> represents a projection.</p>
+                        <p style="font-size:10.5px; color:#FCD34D; margin-top:5px; margin-bottom:0;">Note: There may be a risk of confusion with permutation matrices, also denoted by P, but the risk should be small.</p>
+                    </div>
                     <div style="margin-top:6px; padding:8px 10px; background:rgba(59,130,246,0.06); border-radius:8px; border-left:3px solid #3B82F6;">
-                        <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:4px;">Remark 1 — b in column space</p>
+                        <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:4px;">Remark 2 — b in column space</p>
                         <p style="font-size:11px; color:#D1D5DB; margin-bottom:4px;">If <span style="color:#FBBF24;font-weight:bold;">b</span> is already in the column space, projection gives back <span style="color:#FBBF24;font-weight:bold;">b</span> itself:</p>
                         <div class="desc-math-center"><span class="math-text"><span style="color:#60A5FA;">p</span> = A(A<sup>T</sup>A)<sup>-1</sup>A<sup>T</sup>Ax = Ax = <span style="color:#FBBF24;">b</span></span></div>
                     </div>
                     <div style="margin-top:6px; padding:8px 10px; background:rgba(16,185,129,0.06); border-radius:8px; border-left:3px solid #10b981;">
-                        <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:4px;">Remark 2 — b in left nullspace</p>
+                        <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:4px;">Remark 3 — b in left nullspace</p>
                         <p style="font-size:11px; color:#D1D5DB; margin-bottom:4px;">If <span style="color:#FBBF24;font-weight:bold;">b</span> ⊥ every column, <span class="math-text">A<sup>T</sup>b = 0</span>, projection is zero:</p>
                         <div class="desc-math-center"><span class="math-text"><span style="color:#60A5FA;">p</span> = A(A<sup>T</sup>A)<sup>-1</sup> · 0 = <span style="color:#60A5FA;">0</span></span></div>
                     </div>
                     <div style="margin-top:6px; padding:8px 10px; background:rgba(168,85,247,0.06); border-radius:8px; border-left:3px solid #A78BFA;">
-                        <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:4px;">Remark 3 — A invertible</p>
+                        <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:4px;">Remark 4 — A invertible</p>
                         <p style="font-size:11px; color:#D1D5DB; margin-bottom:4px;">Column space is all of ℝⁿ, every vector projects to itself:</p>
                         <div class="desc-math-center"><span class="math-text"><span style="color:#60A5FA;">p</span> = AA<sup>-1</sup>(A<sup>T</sup>)<sup>-1</sup>A<sup>T</sup><span style="color:#FBBF24;">b</span> = <span style="color:#FBBF24;">b</span></span></div>
                         <p style="font-size:10.5px; color:#9CA3AF; margin-top:3px;">Only valid for square invertible A — not rectangular.</p>
                     </div>
                     <div style="margin-top:6px; padding:8px 10px; background:rgba(245,158,11,0.06); border-radius:8px; border-left:3px solid #F59E0B;">
-                        <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:4px;">Remark 4 — A has one column</p>
+                        <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:4px;">Remark 5 — A has one column</p>
                         <p style="font-size:11px; color:#D1D5DB; margin-bottom:4px;">A<sup>T</sup>A reduces to the scalar a<sup>T</sup>a, returning to the line formula:</p>
                         <div class="desc-math-center"><span class="math-text"><span style="color:#60A5FA;">p</span> = aa<sup>T</sup><span style="color:#FBBF24;">b</span> / a<sup>T</sup>a</span></div>
                     </div>
@@ -845,12 +851,12 @@
                 var e = new THREE.Vector3().subVectors(b, p);
 
                 // plane
-                var planeMesh = new THREE.Mesh(new THREE.PlaneGeometry(8,8), new THREE.MeshBasicMaterial({ color: 0x3B82F6, side: THREE.DoubleSide, transparent: true, opacity: 0.18 }));
+                var planeMesh = new THREE.Mesh(new THREE.PlaneGeometry(8,8), new THREE.MeshBasicMaterial({ color: 0x10B981, side: THREE.DoubleSide, transparent: true, opacity: 0.18 }));
                 planeMesh.rotation.x = Math.PI / 2;
-                var planeGrid = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.PlaneGeometry(8,8,8,8)), new THREE.LineBasicMaterial({ color: 0x3B82F6, transparent: true, opacity: 0.3 }));
+                var planeGrid = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.PlaneGeometry(8,8,8,8)), new THREE.LineBasicMaterial({ color: 0x10B981, transparent: true, opacity: 0.3 }));
                 planeGrid.rotation.x = Math.PI / 2;
                 projectionGroup.add(planeMesh, planeGrid);
-                var lblPlane = makeTextSprite('Plane', '#60A5FA'); lblPlane.position.set(3.5, 0, -3.5); projectionGroup.add(lblPlane);
+                var lblPlane = makeTextSprite('Plane', '#34D399'); lblPlane.position.set(3.5, 0, -3.5); projectionGroup.add(lblPlane);
 
                 // b vector (yellow)
                 projectionGroup.add(createThickArrow(b.clone().normalize(), orig, b.length() + 0.5, 0xFBBF24));
