@@ -15,9 +15,10 @@ An interactive 3D tool to learn linear algebra visually — orthogonal vectors, 
 | 3 | **1D Ortho Subspaces** | Two orthogonal lines S and T through the origin |
 | 4 | **Intersecting Planes** | Two 2D planes sharing a line — proof that planes can't be orthogonal in ℝ³ |
 | 5 | **Orthogonal Complement** | A 1D subspace V (blue line) and its complement V⊥ (red plane) |
-| 6 | **Projection** | Project vector b onto a line or plane — shows p (projection) and e (error vector); includes Cauchy-Schwarz inequality and projection matrix P with remarks |
-| 7 | **Least Squares** | Two sub-modes: **Least Squares Line** — yellow data points, teal fitted line `Ax̂ = A(AᵀA)⁻¹Aᵀb = Pb`, red residual bars; **Weighted** — same scene with sphere size = weight and weighted normal equations `(AᵀWᵀWA)x̂_W = AᵀWᵀWb` |
-| 8 | **Fundamental Subspaces** | Interactive SVG diagram of the four fundamental subspaces of matrix A — row space, nullspace, column space, left nullspace — with rank-nullity theorem, hover highlights, and 3D card rotation |
+| 6 | **Fundamental Subspaces** | Interactive SVG diagram of the four fundamental subspaces of matrix A — row space, nullspace, column space, left nullspace — with rank-nullity theorem, hover highlights, and 3D card rotation |
+| 7 | **Projection** | Project vector b onto a line or plane — shows p (projection) and e (error vector); includes Cauchy-Schwarz inequality and projection matrix P with remarks |
+| 8 | **Least Squares** | Two sub-modes: **Least Squares Line** — yellow data points, teal fitted line `Ax̂ = A(AᵀA)⁻¹Aᵀb = Pb`, red residual bars; **Weighted** — same scene with sphere size = weight and weighted normal equations `(AᵀWᵀWA)x̂_W = AᵀWᵀWb` |
+| 9 | **Orthonormal** | Full-screen notes overlay covering definition (QᵀQ = I), orthogonal matrix Q, projection with orthonormal basis (P = QQᵀ, x̂ = Qᵀb), Gram-Schmidt / QR decomposition, and two remarks |
 
 ---
 
@@ -27,9 +28,9 @@ An interactive 3D tool to learn linear algebra visually — orthogonal vectors, 
 - **Zoom slider** — drag right to zoom in, left to zoom out (shows % indicator)
 - **Auto-rotate** — scene rotates automatically; orbit drag pauses it
 - **Tab buttons** — switch between visualizations using the numbered sidebar
-- **Onto Line / Onto Plane** — toggle projection mode in Tab 6
-- **Least Squares Line / Weighted** — toggle sub-modes in Tab 7
-- **Tab 8 card drag** — click and drag the diagram to rotate it in 3D; hover regions to highlight subspace mappings
+- **Onto Line / Onto Plane** — toggle projection mode in Tab 7
+- **Least Squares Line / Weighted** — toggle sub-modes in Tab 8
+- **Tab 6 card drag** — click and drag the diagram to rotate it in 3D; hover regions to highlight subspace mappings
 
 ---
 
