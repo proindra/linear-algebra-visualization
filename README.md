@@ -16,7 +16,7 @@ An interactive 3D tool to learn linear algebra visually — orthogonal vectors, 
 | 4 | **Intersecting Planes** | Two 2D planes sharing a line — proof that planes can't be orthogonal in ℝ³ |
 | 5 | **Orthogonal Complement** | A 1D subspace V (blue line) and its complement V⊥ (red plane) |
 | 6 | **Projection** | Project vector b onto a line or plane — shows p (projection) and e (error vector); includes Cauchy-Schwarz inequality and projection matrix P with remarks |
-| 7 | **Weighted Least Squares** | 3D scatter of data points (sphere size = weight), teal WLS fitted line, red residual bars; panel shows weighted normal equations (AᵀWᵀWA)x̂_W = AᵀWᵀWb |
+| 7 | **Least Squares** | Two sub-modes: **Least Squares Line** — yellow data points, teal fitted line `Ax̂ = A(AᵀA)⁻¹Aᵀb = Pb`, red residual bars; **Weighted** — same scene with sphere size = weight and weighted normal equations `(AᵀWᵀWA)x̂_W = AᵀWᵀWb` |
 | 8 | **Fundamental Subspaces** | Interactive SVG diagram of the four fundamental subspaces of matrix A — row space, nullspace, column space, left nullspace — with rank-nullity theorem, hover highlights, and 3D card rotation |
 
 ---
@@ -28,6 +28,7 @@ An interactive 3D tool to learn linear algebra visually — orthogonal vectors, 
 - **Auto-rotate** — scene rotates automatically; orbit drag pauses it
 - **Tab buttons** — switch between visualizations using the numbered sidebar
 - **Onto Line / Onto Plane** — toggle projection mode in Tab 6
+- **Least Squares Line / Weighted** — toggle sub-modes in Tab 7
 - **Tab 8 card drag** — click and drag the diagram to rotate it in 3D; hover regions to highlight subspace mappings
 
 ---
@@ -37,7 +38,7 @@ An interactive 3D tool to learn linear algebra visually — orthogonal vectors, 
 - Interactive 3D vector and matrix transformation visualization
 - Orthogonal vectors and dot product visualization
 - Projection matrix visualization (onto line and plane) with collapsible remarks
-- Weighted least squares visualization — color-coded data, fit line, and residuals
+- Least squares visualization — Least Squares Line (`Ax̂ = Pb`) and Weighted Least Squares with sub-mode toggle
 - Four fundamental subspaces with rank-nullity theorem
 - Outlined 3D labels — readable even when overlapping during rotation
 - Compact side panel with numbered badge tabs and active accent bar
