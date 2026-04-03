@@ -431,37 +431,6 @@
             </div>
         </div>
 
-        <!-- Legend -->
-        <div class="desc-box" style="margin-top:8px;">
-            <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:6px;">Scene Legend</p>
-            <div style="display:flex; flex-direction:column; gap:4px;">
-                <div style="display:flex; align-items:center; gap:8px;">
-                    <span style="width:10px;height:10px;border-radius:50%;background:#FBBF24;flex-shrink:0;"></span>
-                    <span style="font-size:11px; color:#D1D5DB;"><span style="color:#FBBF24; font-weight:600;">b</span> — observed data (sphere size = weight)</span>
-                </div>
-                <div style="display:flex; align-items:center; gap:8px;">
-                    <span style="width:10px;height:3px;background:#34D399;flex-shrink:0;border-radius:2px;"></span>
-                    <span style="font-size:11px; color:#D1D5DB;"><span style="color:#34D399; font-weight:600;">Ax&#x0302;<sub>W</sub></span> — WLS fitted line</span>
-                </div>
-                <div style="display:flex; align-items:center; gap:8px;">
-                    <span style="width:10px;height:3px;background:#F87171;flex-shrink:0;border-radius:2px;"></span>
-                    <span style="font-size:11px; color:#D1D5DB;"><span style="color:#F87171; font-weight:600;">e = b − p</span> — residuals</span>
-                </div>
-            </div>
-            <div class="desc-math-center" style="margin-top:8px;">
-                <span class="math-text">min &nbsp; ‖W<sup>1/2</sup>(<span style="color:#FBBF24;">b</span> − <span style="color:#34D399;">A</span>x)‖<sup>2</sup> = Σ w<sub>i</sub>(<span style="color:#F87171;">e<sub>i</sub></span>)<sup>2</sup></span>
-            </div>
-        </div>
-
-        <!-- Connection box -->
-        <div class="desc-box" style="margin-top:8px;">
-            <p style="font-size:11.5px; font-weight:600; color:#F9FAFB; margin-bottom:5px;">Connection to ordinary least squares</p>
-            <div class="desc-math-center"><span class="math-text">W<sup>1/2</sup><span style="color:#34D399;">A</span>x = W<sup>1/2</sup><span style="color:#FBBF24;">b</span></span></div>
-            <ul style="margin-top:6px;">
-                <li style="font-size:11px; color:#D1D5DB; margin-bottom:3px;">If all <span class="math-text">w<sub>i</sub> = 1</span>, reduces to ordinary least squares.</li>
-                <li style="font-size:11px; color:#D1D5DB;">W is symmetric positive definite, so <span class="math-text"><span style="color:#34D399;">A</span><sup>T</sup>WA</span> is invertible when A has full column rank.</li>
-            </ul>
-        </div>
     </div>
 
     <div id="desc-8" class="description-content">

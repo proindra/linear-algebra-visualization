@@ -1,6 +1,6 @@
 # Linear Algebra Visualizer
 
-An interactive 3D tool to learn linear algebra visually — orthogonal vectors, dot product, matrix transformations, projection matrices, and the four fundamental subspaces. Built with [Three.js](https://threejs.org/), pure HTML/CSS/JS, no build step.
+An interactive 3D tool to learn linear algebra visually — orthogonal vectors, dot product, matrix transformations, projection matrices, weighted least squares, and the four fundamental subspaces. Built with [Three.js](https://threejs.org/), pure HTML/CSS/JS, no build step.
 
 🔗 **Live Demo**: [https://proindra.github.io/linear-algebra-visualization](https://proindra.github.io/linear-algebra-visualization)
 
@@ -15,8 +15,9 @@ An interactive 3D tool to learn linear algebra visually — orthogonal vectors, 
 | 3 | **1D Ortho Subspaces** | Two orthogonal lines S and T through the origin |
 | 4 | **Intersecting Planes** | Two 2D planes sharing a line — proof that planes can't be orthogonal in ℝ³ |
 | 5 | **Orthogonal Complement** | A 1D subspace V (blue line) and its complement V⊥ (red plane) |
-| 6 | **Projection** | Project vector b onto a line or plane — shows p (projection) and e (error vector); includes Cauchy-Schwarz inequality and projection matrix P |
-| 7 | **Fundamental Subspaces** | Interactive SVG diagram of the four fundamental subspaces of matrix A — row space, nullspace, column space, left nullspace — with rank-nullity theorem, hover highlights, and 3D card rotation |
+| 6 | **Projection** | Project vector b onto a line or plane — shows p (projection) and e (error vector); includes Cauchy-Schwarz inequality and projection matrix P with remarks |
+| 7 | **Weighted Least Squares** | 3D scatter of data points (sphere size = weight), teal WLS fitted line, red residual bars; panel shows weighted normal equations (AᵀWᵀWA)x̂_W = AᵀWᵀWb |
+| 8 | **Fundamental Subspaces** | Interactive SVG diagram of the four fundamental subspaces of matrix A — row space, nullspace, column space, left nullspace — with rank-nullity theorem, hover highlights, and 3D card rotation |
 
 ---
 
@@ -27,7 +28,7 @@ An interactive 3D tool to learn linear algebra visually — orthogonal vectors, 
 - **Auto-rotate** — scene rotates automatically; orbit drag pauses it
 - **Tab buttons** — switch between visualizations using the numbered sidebar
 - **Onto Line / Onto Plane** — toggle projection mode in Tab 6
-- **Tab 7 card drag** — click and drag the diagram to rotate it in 3D; hover regions to highlight subspace mappings
+- **Tab 8 card drag** — click and drag the diagram to rotate it in 3D; hover regions to highlight subspace mappings
 
 ---
 
@@ -35,11 +36,12 @@ An interactive 3D tool to learn linear algebra visually — orthogonal vectors, 
 
 - Interactive 3D vector and matrix transformation visualization
 - Orthogonal vectors and dot product visualization
-- Projection matrix visualization (onto line and plane)
+- Projection matrix visualization (onto line and plane) with collapsible remarks
+- Weighted least squares visualization — color-coded data, fit line, and residuals
 - Four fundamental subspaces with rank-nullity theorem
 - Outlined 3D labels — readable even when overlapping during rotation
 - Compact side panel with numbered badge tabs and active accent bar
-- Tab 7 uses an interactive SVG overlay with hover-based opacity highlighting
+- Tab 8 uses an interactive SVG overlay with hover-based opacity highlighting
 - 3D rotatable card for the fundamental subspaces diagram
 - Full SEO optimization — meta tags, Open Graph, Twitter Card, JSON-LD structured data
 - Custom SVG favicon
@@ -64,7 +66,6 @@ An interactive 3D tool to learn linear algebra visually — orthogonal vectors, 
 ├── index.html                       # Copy of math.html served by GitHub Pages
 ├── three.min.js                     # Three.js r134 (local)
 ├── OrbitControls.js                 # Three.js OrbitControls (local)
-├── four_fundamental_subspaces.jsx   # Original JSX reference design for Tab 7
 └── .github/
     └── workflows/
         └── deploy.yml               # GitHub Pages auto-deploy
