@@ -552,22 +552,12 @@
                     P = QQᵀ
                 </div>
                 <p style="font-size:12px; color:#D1D5DB; margin-bottom:6px;">Least squares solution — no matrix inversion needed:</p>
-                <div style="text-align:center; padding:8px; background:rgba(0,0,0,0.4); border-radius:8px; font-family:monospace; color:#93C5FD; font-size:14px;">
+                <div style="text-align:center; padding:8px; background:rgba(0,0,0,0.4); border-radius:8px; font-family:monospace; color:#93C5FD; font-size:14px; margin-bottom:8px;">
                     x̂ = Qᵀb
                 </div>
-            </div>
-
-            <div style="padding:12px 16px; background:rgba(96,165,250,0.07); border-radius:12px; border:1px solid rgba(96,165,250,0.2);">
-                <p style="font-size:13px; font-weight:700; color:#60A5FA; margin-bottom:8px;">◆ Gram-Schmidt Process</p>
-                <p style="font-size:12px; color:#D1D5DB; margin-bottom:6px;">Converts independent vectors a, b into orthonormal q₁, q₂:</p>
-                <div style="text-align:center; padding:8px; background:rgba(0,0,0,0.4); border-radius:8px; font-family:monospace; color:#93C5FD; font-size:13px; margin-bottom:6px;">
-                    q₁ = a / ‖a‖
-                </div>
-                <div style="text-align:center; padding:8px; background:rgba(0,0,0,0.4); border-radius:8px; font-family:monospace; color:#93C5FD; font-size:13px; margin-bottom:8px;">
-                    b* = b − (q₁ᵀb)q₁ &nbsp;&nbsp; q₂ = b* / ‖b*‖
-                </div>
-                <div style="padding:7px 10px; background:rgba(96,165,250,0.1); border-radius:7px; border-left:3px solid #60A5FA;">
-                    <p style="font-size:12px; color:#D1D5DB; margin-bottom:0;">Gives the <strong style="color:#F9FAFB;">QR decomposition</strong>: <span style="font-family:monospace; color:#93C5FD;">A = QR</span>, where R is upper triangular.</p>
+                <p style="font-size:12px; color:#D1D5DB; margin-bottom:6px;">Projection onto a plane = sum of projections onto orthonormal <span style="color:#93C5FD; font-family:monospace;">q₁</span> and <span style="color:#93C5FD; font-family:monospace;">q₂</span>:</p>
+                <div style="text-align:center; padding:8px; background:rgba(0,0,0,0.4); border-radius:8px; font-family:monospace; color:#93C5FD; font-size:13px;">
+                    p = (q₁ᵀb)q₁ + (q₂ᵀb)q₂ = QQᵀb
                 </div>
             </div>
 
@@ -585,6 +575,35 @@
             <div style="padding:12px 16px; background:rgba(167,139,250,0.07); border-radius:12px; border:1px solid rgba(167,139,250,0.25);">
                 <p style="font-size:13px; font-weight:700; color:#A78BFA; margin-bottom:8px;">◆ Remark 2</p>
                 <p style="font-size:12px; color:#D1D5DB; margin-bottom:0;">The rows of a square matrix are orthonormal whenever the columns are. Both <span style="font-family:monospace; color:#93C5FD;">QᵀQ = I</span> and <span style="font-family:monospace; color:#93C5FD;">QQᵀ = I</span> hold.</p>
+            </div>
+
+            <div style="padding:12px 16px; background:rgba(96,165,250,0.07); border-radius:12px; border:1px solid rgba(96,165,250,0.2);">
+                <p style="font-size:13px; font-weight:700; color:#60A5FA; margin-bottom:8px;">◆ Rectangular Matrices with Orthogonal Columns</p>
+                <p style="font-size:12px; color:#D1D5DB; margin-bottom:8px; line-height:1.6;">For <span style="font-family:monospace; color:#93C5FD;">Qx = b</span> when Q is not necessarily square — there may be more rows than columns. The <span style="font-family:monospace; color:#93C5FD;">n</span> orthonormal vectors <span style="font-family:monospace; color:#93C5FD;">qᵢ</span> in the columns of Q have <span style="font-family:monospace; color:#93C5FD;">m &gt; n</span> components. Then Q is an <span style="font-family:monospace; color:#93C5FD;">m × n</span> matrix and we cannot expect to solve <span style="font-family:monospace; color:#93C5FD;">Qx = b</span> exactly. <em style="color:#F9FAFB;">We solve it by least squares.</em></p>
+                <p style="font-size:12px; color:#D1D5DB; margin-bottom:8px; line-height:1.6;">Orthonormal columns should make the problem simple. We still have <span style="font-family:monospace; color:#93C5FD;">QᵀQ = I</span>, so <span style="font-family:monospace; color:#93C5FD;">Qᵀ</span> is still the <strong style="color:#F9FAFB;">left-inverse</strong> of Q.</p>
+                <p style="font-size:12px; color:#D1D5DB; margin-bottom:6px; line-height:1.6;">The normal equations come from multiplying <span style="font-family:monospace; color:#93C5FD;">Ax = b</span> by the transpose, giving <span style="font-family:monospace; color:#93C5FD;">AᵀAx̂ = Aᵀb</span>. Now the normal equations are <span style="font-family:monospace; color:#93C5FD;">QᵀQx̂ = Qᵀb</span>. But <span style="font-family:monospace; color:#93C5FD;">QᵀQ = I</span>! Therefore:</p>
+                <div style="text-align:center; padding:8px; background:rgba(0,0,0,0.4); border-radius:8px; font-family:monospace; color:#93C5FD; font-size:14px;">
+                    x̂ = Qᵀb
+                </div>
+                <p style="font-size:11px; color:#9CA3AF; margin-top:8px; margin-bottom:0;">Whether Q is square and x̂ is an exact solution, or Q is rectangular and we need least squares — the answer is always <span style="font-family:monospace; color:#93C5FD;">x̂ = Qᵀb</span>.</p>
+                <p style="font-size:12px; color:#D1D5DB; margin-top:8px; margin-bottom:6px;">The projection onto the column space of Q is:</p>
+                <div style="text-align:center; padding:8px; background:rgba(0,0,0,0.4); border-radius:8px; font-family:monospace; color:#93C5FD; font-size:14px;">
+                    p = Qx̂ = QQᵀb
+                </div>
+            </div>
+
+            <div style="padding:12px 16px; background:rgba(96,165,250,0.07); border-radius:12px; border:1px solid rgba(96,165,250,0.2);">
+                <p style="font-size:13px; font-weight:700; color:#60A5FA; margin-bottom:8px;">◆ Gram-Schmidt Process</p>
+                <p style="font-size:12px; color:#D1D5DB; margin-bottom:6px;">Converts independent vectors a, b into orthonormal q₁, q₂:</p>
+                <div style="text-align:center; padding:8px; background:rgba(0,0,0,0.4); border-radius:8px; font-family:monospace; color:#93C5FD; font-size:13px; margin-bottom:6px;">
+                    q₁ = a / ‖a‖
+                </div>
+                <div style="text-align:center; padding:8px; background:rgba(0,0,0,0.4); border-radius:8px; font-family:monospace; color:#93C5FD; font-size:13px; margin-bottom:8px;">
+                    b* = b − (q₁ᵀb)q₁ &nbsp;&nbsp; q₂ = b* / ‖b*‖
+                </div>
+                <div style="padding:7px 10px; background:rgba(96,165,250,0.1); border-radius:7px; border-left:3px solid #60A5FA;">
+                    <p style="font-size:12px; color:#D1D5DB; margin-bottom:0;">Gives the <strong style="color:#F9FAFB;">QR decomposition</strong>: <span style="font-family:monospace; color:#93C5FD;">A = QR</span>, where R is upper triangular.</p>
+                </div>
             </div>
 
         </div>

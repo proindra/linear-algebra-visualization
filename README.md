@@ -18,7 +18,7 @@ An interactive 3D tool to learn linear algebra visually — orthogonal vectors, 
 | 6 | **Fundamental Subspaces** | Interactive SVG diagram of the four fundamental subspaces of matrix A — row space, nullspace, column space, left nullspace — with rank-nullity theorem, hover highlights, and 3D card rotation |
 | 7 | **Projection** | Project vector b onto a line or plane — shows p (projection) and e (error vector); includes Cauchy-Schwarz inequality and projection matrix P with remarks |
 | 8 | **Least Squares** | Two sub-modes: **Least Squares Line** — yellow data points, teal fitted line `Ax̂ = A(AᵀA)⁻¹Aᵀb = Pb`, red residual bars; **Weighted** — same scene with sphere size = weight and weighted normal equations `(AᵀWᵀWA)x̂_W = AᵀWᵀWb` |
-| 9 | **Orthonormal** | Full-screen notes overlay covering definition (QᵀQ = I), orthogonal matrix Q, projection with orthonormal basis (P = QQᵀ, x̂ = Qᵀb), Gram-Schmidt / QR decomposition, and two remarks |
+| 9 | **Orthonormal** | Full-screen notes overlay covering definition (QᵀQ = I), orthogonal matrix Q, projection with orthonormal basis (P = QQᵀ, x̂ = Qᵀb, p = QQᵀb), Remarks 1 & 2, rectangular matrices with orthogonal columns (p = Qx̂ = QQᵀb), and Gram-Schmidt / QR decomposition |
 
 ---
 
